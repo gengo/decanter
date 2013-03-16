@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from bottle import route
+from lib.decorator import route
+from lib.decorator import get
 
-@route('/')
+
+@get('/')
 def index():
-    return 'Hello Decanter!'
+    return {'word': 'Hello Decanter!'}

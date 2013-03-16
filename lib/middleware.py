@@ -45,7 +45,6 @@ class Dispatcher(object):
         try:
             app = self.config.apppath.strip(os.path.sep).split(os.path.sep).pop()
             name = '.'.join([app, 'bundles', self.bundle, 'controllers', self.controller])
-            print("controller: {0}, name: {1}".format(self.controller, name))
             __import__(name, fromlist=[self.controller])
         except Exception as e:
             print("Dispatcher: {0}".format(e))

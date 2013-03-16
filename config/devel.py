@@ -11,7 +11,6 @@ pidfile = "/var/run/decanter_{0}.py"
 hostname = 'localhost'
 port = 9001
 
-
 import os
 import sys
 # the application directory
@@ -22,3 +21,6 @@ default = {
     'bundle': 'home',
     'controller': 'index'
 }
+
+# list of plugins names to install by default
+plugins = ['json']

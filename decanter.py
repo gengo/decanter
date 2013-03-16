@@ -11,6 +11,7 @@ from vendor.daemon import Daemon
 from lib.middleware import Dispatcher
 from lib.middleware import StripPath
 from lib.config import Config
+import lib.plugin
 
 
 class Decanter(Daemon):
@@ -18,12 +19,21 @@ class Decanter(Daemon):
         self.app = app
         self.hostname = hostname
         self.port = int(port)
+        # remove all bottle templates by default
+        bottle.uninstall(True)
         config = Config.get_instance()
+        self.install(plugins=config.plugins)
         if config.debug:
             stdout = os.popen('tty').read().strip()
             stderr = os.popen('tty').read().strip()
 
         super(Decanter, self).__init__(pidfile, stdout=stdout, stderr=stderr)
+
+    def install(self, plugins=[]):
+        for plugin in plugins:
+            name = ''.join([plugin.lower().capitalize(), 'Plugin'])
+            cls = getattr(lib.plugin, name)
+            bottle.install(cls())
 
     def run(self):
         try:
