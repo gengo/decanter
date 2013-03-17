@@ -23,6 +23,7 @@ class Decanter(Daemon):
         # remove all bottle templates by default
         bottle.uninstall(True)
         bottle.DEBUG = config.debug
+        # install template we want
         self.install(plugins=config.plugins)
         if config.debug:
             stdout = os.popen('tty').read().strip()
@@ -53,17 +54,19 @@ class Decanter(Daemon):
             print("Decanter is not running")
 
 def usage():
-    print("usage: {0} config.module start|stop|restart|status".format(sys.argv[0]))
+    print("usage: {0} -h hostname -p port -c config.module start|stop|restart|status".format(sys.argv[0]))
 
 
 if __name__ == '__main__':
     try:
-        if len(sys.argv) == 3:
+        if len(sys.argv) == 8:
             command = sys.argv.pop()
-            config = Config(sys.argv[1])
+
+            hostname = sys.argv[sys.argv.index('-h') + 1]
+            port = int(sys.argv[sys.argv.index('-p') + 1])
+            config = Config(sys.argv[sys.argv.index('-c') + 1])
+
             app = Dispatcher(StripPath(bottle.default_app()), config)
-            port = int(config.port)
-            hostname = config.hostname
             pidfile = config.pidfile.format(port)
             decanter = Decanter(app, hostname, port, pidfile)
             if 'start' == command:

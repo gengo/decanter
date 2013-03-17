@@ -8,9 +8,6 @@ group = 'www-data'
 
 pidfile = "/var/run/decanter_{0}.py"
 
-hostname = 'localhost'
-port = 9001
-
 import os
 import sys
 # the application directory
