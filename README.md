@@ -16,14 +16,14 @@ Decanter does not particularly favor convention over configuration, it uses a co
 For example the app directory path is set in the configuration file, while the structure of the directory uses the following convention:
 
 * app
-* * bundles
-* * * home
-* * * * controlles
-* * * * views
-* * * admin
-* * * * controllers
-* * * * views
-* * views
+    - bundles
+        - home
+            - controlles
+            - views
+        - admin
+            - controllers
+            - views
+    - views
 
 #### Bundles, controllers and the url path
 In the controllers directory there are modules with bottle style routes. Default bundle and default controller are configured in the configuration module (i.e. config.devel.py), so the single forward slash path "/" will load the default controller in the default bundle.
