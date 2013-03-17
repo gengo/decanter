@@ -23,4 +23,4 @@ default = {
 }
 
 # list of plugins names to install by default
-plugins = ['json']
+plugins = ['jinja2']

@@ -1,2 +1,4 @@
 bottle
 gevent
+MarkupSafe
+jinja2

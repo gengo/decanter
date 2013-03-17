@@ -19,9 +19,10 @@ class Decanter(Daemon):
         self.app = app
         self.hostname = hostname
         self.port = int(port)
+        config = Config.get_instance()
         # remove all bottle templates by default
         bottle.uninstall(True)
-        config = Config.get_instance()
+        bottle.DEBUG = config.debug
         self.install(plugins=config.plugins)
         if config.debug:
             stdout = os.popen('tty').read().strip()
