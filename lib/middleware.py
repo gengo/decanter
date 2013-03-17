@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 
 
 class Dispatcher(object):
@@ -45,8 +46,9 @@ class Dispatcher(object):
         try:
             app = self.config.apppath.strip(os.path.sep).split(os.path.sep).pop()
             name = '.'.join([app, 'bundles', self.bundle, 'controllers', self.controller])
-            print("module: {0}".format(name))
-            __import__(name, fromlist=[self.controller])
+            if name not in sys.modules:
+                __import__(name, fromlist=[self.controller])
+
         except Exception as e:
             print("Dispatcher: {0}".format(e))
 
