@@ -18,6 +18,8 @@ def route(path=None, method='GET', func=None, name=None, apply=None, skip=None, 
                 cls = ''.join([apply.lower().capitalize(), 'Plugin'])
                 cls = getattr(lib.plugin, cls)
                 plugins.append(cls())
+        if path != '/':
+            path = path.rstrip('/')
         callback = bottle.route(path=path, method=method, callback=func, name=name,
                                 apply=plugins, skip=skip, **config)(callback)
         @wraps(callback)
