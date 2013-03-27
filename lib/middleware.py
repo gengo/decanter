@@ -73,5 +73,6 @@ class StripPath(object):
         self.app = wsgi
 
     def __call__(self, environ, start_response):
-        environ['PATH_INFO'] = environ['PATH_INFO'].rstrip('/')
+        if environ['PATH_INFO'] != '/':
+            environ['PATH_INFO'] = environ['PATH_INFO'].rstrip('/')
         return self.app(environ, start_response)
