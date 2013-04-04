@@ -6,7 +6,16 @@ debug = True
 user = 'www-data'
 group = 'www-data'
 
+# pid file
 pidfile = "/var/run/decanter_{0}.py"
+
+# logging
+logger = {
+    # log directory path, first {0} is the port number and second {1] is the date
+    'filepath': '/var/log/decanter_{0}-{1}.log',
+    # DEBUG, INFO, WARNING, ERROR, FATAL
+    'level': 'DEBUG'
+}
 
 import os
 import sys

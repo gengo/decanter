@@ -3,15 +3,19 @@
 
 import os
 import sys
+import pwd
+import grp
 from gevent import monkey
 monkey.patch_all()
 from gevent import pywsgi
 import bottle
+from datetime import date
 from vendor.daemon import Daemon
 from lib.middleware import Dispatcher
 from lib.middleware import StripPath
 from lib.config import Config
 import lib.plugin
+from lib.logger import Log
 
 
 class Decanter(Daemon):
@@ -19,13 +23,15 @@ class Decanter(Daemon):
         self.app = app
         self.hostname = hostname
         self.port = int(port)
-        config = Config.get_instance()
-        # remove all bottle templates by default
+        self.pidfile = pidfile
+        self.config = Config.get_instance()
+
+        # remove all default bottle plugins
         bottle.uninstall(True)
-        bottle.DEBUG = config.debug
-        # install template we want
-        self.install(plugins=config.plugins)
-        if config.debug:
+        bottle.DEBUG = self.config.debug
+        # install plugins
+        self.install(plugins=self.config.plugins)
+        if self.config.debug:
             stdout = os.popen('tty').read().strip()
             stderr = os.popen('tty').read().strip()
 
@@ -36,6 +42,21 @@ class Decanter(Daemon):
             name = ''.join([plugin.lower().capitalize(), 'Plugin'])
             cls = getattr(lib.plugin, name)
             bottle.install(cls())
+
+    def daemonize(self):
+        haspid = os.path.isfile(self.pidfile)
+        super(Decanter, self).daemonize()
+
+        username = pwd.getpwuid(os.getuid()).pw_name
+        if username != self.config.user:
+            uid = pwd.getpwnam(self.config.user).pw_uid
+            gid = grp.getgrnam(self.config.group).gr_gid
+            os.chown(self.pidfile, uid, gid)
+            os.setgid(gid)
+            os.setuid(uid)
+
+        if not haspid and os.path.isfile(self.pidfile):
+            print("Starting daemon with pidfile: {0}".format(self.pidfile))
 
     def run(self):
         try:
@@ -68,6 +89,9 @@ if __name__ == '__main__':
 
             app = Dispatcher(StripPath(bottle.default_app()), config)
             pidfile = config.pidfile.format(port)
+            logfile = config.logger['filepath'].format(port, date.today())
+            # initialize logger
+            log = Log(logfile)
             decanter = Decanter(app, hostname, port, pidfile)
             if 'start' == command:
                 decanter.start()
@@ -83,5 +107,3 @@ if __name__ == '__main__':
             usage()
     except ValueError:
         usage()
-    except Exception as e:
-        print("Error: {0}".format(e))
