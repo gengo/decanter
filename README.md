@@ -5,7 +5,7 @@ A web framework based on [bottle](http://bottlepy.org/docs/stable/), see [requir
 
 
 ### To run it
-sudo ./decanter.py -c hostname -p port -c config.module start|stop|restart|status
+sudo ./decanter.py -h hostname -p port -c config.module start|stop|restart|status
 
 **config.module** must match the location of a module containing decanter required configuration items, i.e. config/devel.py but without the .py extension.
 
@@ -18,7 +18,7 @@ For example the app directory path is set in the configuration file, while the s
 * app
     - bundles
         - home
-            - controlles
+            - controllers
             - views
         - admin
             - controllers
