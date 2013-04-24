@@ -22,9 +22,10 @@ class Log(object):
                 handler = logging.handlers.TimedRotatingFileHandler(self.filepath, 'midnight', 1, 10, 'UTF-8')
             except IOError:
                 # check if log directory exists
-                if not os.path.exists(path):
+                parent_path = parent_path = os.path.abspath(os.path.dirname(self.filepath))
+                if not os.path.exists(parent_path):
                     # try to create the logs directory
-                    os.makedirs(path, mode=0755)
+                    os.makedirs(parent_path, mode=0755)
                 # and try again
                 handler = logging.handlers.TimedRotatingFileHandler(self.filepath, 'midnight', 1, 10, 'UTF-8')
 
