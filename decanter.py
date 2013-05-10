@@ -89,6 +89,12 @@ if __name__ == '__main__':
 
             app = Dispatcher(StripPath(bottle.default_app()), config)
             pidfile = config.pidfile.format(port)
+
+            # make directory to put pid file
+            piddir = os.path.dirname(pidfile)
+            if not os.path.isdir(piddir):
+                os.makedirs(piddir)
+
             logfile = config.logger['filepath'].format(port, date.today())
             # initialize logger
             log = Log(logfile)
