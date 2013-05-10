@@ -33,3 +33,6 @@ nosetests.xml
 .project
 .pydevproject
 *.wpr
+
+# decanter generated
+gen
