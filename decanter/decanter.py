@@ -16,6 +16,7 @@ from lib.middleware import StripPath
 from lib.config import Config
 import lib.plugin
 from lib.logger import Log
+import argparse
 
 
 class Decanter(Daemon):
@@ -74,42 +75,55 @@ class Decanter(Daemon):
         except (OSError, IOError):
             print("Decanter is not running")
 
-def usage():
-    print("usage: {0} -h hostname -p port -c config.module start|stop|restart|status".format(sys.argv[0]))
 
+def parse_args(source=sys.argv):
+    """
+    This function will parse command line arguments. To display help and exit
+    if the argument is invalid. Will return command, hostname, port and config.
+    """
+    defaults = {
+        'myself': source.pop(0),
+        'hostname': 'localhost',
+        'port': 9000
+    }
+    if len(source) == 0:
+        source.append(defaults['myself'])
+
+    parser = argparse.ArgumentParser(description='Example: {myself} -h {hostname} -p {port} -c config/devel.py start'.format(**defaults), conflict_handler='resolve')
+    parser.add_argument('command', choices=['start', 'stop', 'restart', 'status'])
+    parser.add_argument('-h', '--hostname', default=defaults['hostname'])
+    parser.add_argument('-p', '--port', type=int, default=defaults['port'])
+    parser.add_argument('-c', '--config', required=True, type=argparse.FileType(), help='config must match the location of a module containing decanter required configuration items, i.e. config/devel.py')
+    args = parser.parse_args(source)
+
+    # 'type=argparse.FileType()' will confirm the existence of a file. but it open file.
+    args.config.close()
+    args.config = os.path.relpath(os.path.realpath(args.config.name),
+                                  os.path.dirname(os.path.realpath(__file__)))
+
+    return args
 
 if __name__ == '__main__':
-    try:
-        if len(sys.argv) == 8:
-            command = sys.argv.pop()
+    args = parse_args()
 
-            hostname = sys.argv[sys.argv.index('-h') + 1]
-            port = int(sys.argv[sys.argv.index('-p') + 1])
-            config = Config(sys.argv[sys.argv.index('-c') + 1])
+    config = Config(args.config)
+    app = Dispatcher(StripPath(bottle.default_app()), config)
+    pidfile = config.pidfile.format(args.port)
 
-            app = Dispatcher(StripPath(bottle.default_app()), config)
-            pidfile = config.pidfile.format(port)
+    # make directory to put pid file
+    piddir = os.path.dirname(pidfile)
+    if not os.path.isdir(piddir):
+        os.makedirs(piddir)
 
-            # make directory to put pid file
-            piddir = os.path.dirname(pidfile)
-            if not os.path.isdir(piddir):
-                os.makedirs(piddir)
+    logfile = config.logger['filepath'].format(args.port, date.today())
+    # initialize logger
+    log = Log(logfile)
+    decanter = Decanter(app, args.hostname, args.port, pidfile)
 
-            logfile = config.logger['filepath'].format(port, date.today())
-            # initialize logger
-            log = Log(logfile)
-            decanter = Decanter(app, hostname, port, pidfile)
-            if 'start' == command:
-                decanter.start()
-            elif 'stop' == command:
-                decanter.stop()
-            elif 'status' == command:
-                decanter.status()
-            elif 'restart' == command:
-                decanter.restart()
-            else:
-                usage()
-        else:
-            usage()
-    except ValueError:
-        usage()
+    # execute command
+    {
+        'start': lambda: decanter.start(),
+        'stop': lambda: decanter.stop(),
+        'status': lambda: decanter.status(),
+        'restart': lambda: decanter.restart()
+    }[args.command]()
