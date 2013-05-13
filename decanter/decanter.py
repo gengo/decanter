@@ -61,7 +61,10 @@ class Decanter(Daemon):
 
     def run(self):
         try:
-            server = pywsgi.WSGIServer((self.hostname, self.port), self.app)
+            # Such a message is noise during test.
+            # 127.0.0.1 - - [yyyy-MM-dd HH:mm:ss] ...
+            log = None if self.config.test else 'default'
+            server = pywsgi.WSGIServer((self.hostname, self.port), self.app, log=log)
             server.serve_forever()
         except Exception as e:
             print("Could not start server: {0}".format(e))
