@@ -56,7 +56,7 @@ class Decanter(Daemon):
             os.setgid(gid)
             os.setuid(uid)
 
-        if not haspid and os.path.isfile(self.pidfile):
+        if not haspid and os.path.isfile(self.pidfile) and not self.config.test:
             print("Starting daemon with pidfile: {0}".format(self.pidfile))
 
     def run(self):

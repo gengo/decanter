@@ -31,32 +31,23 @@ def route(path=None, method='GET', func=None, name=None, apply=None, skip=None, 
         return wrapper
     return decorator
 
+def _wrap(path, method, **kwargs):
+    def decorator(callback):
+        callback = route(path=path, method=method, **kwargs)(callback)
+        @wraps(callback)
+        def wrapper(*args, **kwargs):
+            return callback(*args, **kwargs)
+        return wrapper
+    return decorator
 
 def get(path=None, **kwargs):
-    def decorator(callback):
-        callback = route(path=path, method='GET', **kwargs)(callback)
-        @wraps(callback)
-        def wrapper(*args, **kwargs):
-            return callback(*args, **kwargs)
-        return wrapper
-    return decorator
-
+    return _wrap(path=path, method='GET', **kwargs)
 
 def post(path=None, **kwargs):
-    def decorator(callback):
-        callback = route(path=path, method='POST', **kwargs)(callback)
-        @wraps(callback)
-        def wrapper(*args, **kwargs):
-            return callback(*args, **kwargs)
-        return wrapper
-    return decorator
-
+    return _wrap(path=path, method='POST', **kwargs)
 
 def put(path=None, **kwargs):
-    def decorator(callback):
-        callback = route(path=path, method='PUT', **kwargs)(callback)
-        @wraps(callback)
-        def wrapper(*args, **kwargs):
-            return callback(*args, **kwargs)
-        return wrapper
-    return decorator
+    return _wrap(path=path, method='PUT', **kwargs)
+
+def delete(path=None, **kwargs):
+    return _wrap(path=path, method='DELETE', **kwargs)
