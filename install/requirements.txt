@@ -2,3 +2,4 @@ bottle
 gevent
 MarkupSafe
 jinja2
+requests

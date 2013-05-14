@@ -56,12 +56,15 @@ class Decanter(Daemon):
             os.setgid(gid)
             os.setuid(uid)
 
-        if not haspid and os.path.isfile(self.pidfile):
+        if not haspid and os.path.isfile(self.pidfile) and not self.config.test:
             print("Starting daemon with pidfile: {0}".format(self.pidfile))
 
     def run(self):
         try:
-            server = pywsgi.WSGIServer((self.hostname, self.port), self.app)
+            # Such a message is noise during test.
+            # 127.0.0.1 - - [yyyy-MM-dd HH:mm:ss] ...
+            log = None if self.config.test else 'default'
+            server = pywsgi.WSGIServer((self.hostname, self.port), self.app, log=log)
             server.serve_forever()
         except Exception as e:
             print("Could not start server: {0}".format(e))
