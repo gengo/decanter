@@ -44,9 +44,13 @@ class Dispatcher(object):
 
     def dispatch(self):
         try:
-            app = self.config.apppath.strip(os.path.sep).split(os.path.sep).pop()
+            paths = self.config.apppath.strip(os.path.sep).split(os.path.sep)
+            app = paths.pop()
             name = '.'.join([app, 'bundles', self.bundle, 'controllers', self.controller])
             if name not in sys.modules:
+                appdir = os.sep.join(path for path in paths)
+                if appdir not in sys.path:
+                    sys.path.insert(0, appdir)
                 __import__(name, fromlist=[self.controller])
 
         except Exception as e:
