@@ -3,7 +3,7 @@
 
 from functools import wraps
 import bottle
-import lib.plugin
+import plugin as lib_plugin
 
 
 def route(path=None, method='GET', func=None, name=None, apply=None, skip=None, **config):
@@ -12,12 +12,12 @@ def route(path=None, method='GET', func=None, name=None, apply=None, skip=None, 
         plugins = []
         if isinstance(apply, str):
             cls = ''.join([apply.lower().capitalize(), 'Plugin'])
-            cls = getattr(lib.plugin, cls)
+            cls = getattr(lib_plugin, cls)
             plugins.append(cls())
         elif isinstance(apply, list):
             for plugin in apply:
-                cls = ''.join([apply.lower().capitalize(), 'Plugin'])
-                cls = getattr(lib.plugin, cls)
+                cls = ''.join([plugin.lower().capitalize(), 'Plugin'])
+                cls = getattr(lib_plugin, cls)
                 plugins.append(cls())
 
         if rpath != '/':
