@@ -37,3 +37,7 @@ nosetests.xml
 # logs
 log
 run
+
+# decanter generated
+gen
+
