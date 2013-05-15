@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages
+import os
 setup(
     name = "decanter",
     version = "0.1.0",
@@ -26,7 +27,7 @@ setup(
     author = "Andrea Belvedere",
     author_email = "andrea.belvedere@gengo.com",
     description = "A humble web framework based on bottle",
-    long_description=open('README.md').read(),
+    long_description=open(os.path.join(os.path.dirname(__file__), 'README.md')).read(),
     license = "BSD",
     keywords = "web framework bottle gengo",
     url = "https://github.com/gengo/decanter",   # project home page, if any
