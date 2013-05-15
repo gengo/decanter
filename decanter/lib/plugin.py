@@ -12,6 +12,7 @@ from bottle import JSONPlugin as JsonPlugin
 from config import Config
 from bottle import request, response
 
+
 class Jinja2Plugin(object):
     __state = {}
     name = 'jinja2'
@@ -23,7 +24,8 @@ class Jinja2Plugin(object):
         if 'env' not in self.__dict__:
             self.config = Config.get_instance()
             basepath = os.path.join(self.config.apppath, 'bundles')
-            bundels = [name for name in os.listdir(basepath) if os.path.isdir(os.path.join(basepath, name))]
+            bundels = [name for name in os.listdir(
+                basepath) if os.path.isdir(os.path.join(basepath, name))]
             views = []
 
             for bundle in bundels:
@@ -34,9 +36,9 @@ class Jinja2Plugin(object):
             if 'views' in bundels:
                 views.append(os.path.join(basepath, 'views'))
 
-            self.env = Environment(loader=FileSystemLoader(views, encoding='utf-8'), extensions=['jinja2.ext.i18n'])
+            self.env = Environment(loader=FileSystemLoader(
+                views, encoding='utf-8'), extensions=['jinja2.ext.i18n'])
             self.env.install_gettext_translations(gettext.NullTranslations())
-
 
     def apply(self, callback, route):
         @wraps(callback)
@@ -51,7 +53,8 @@ class Jinja2Plugin(object):
             bundle = callback.__module__.split('.')[-3]
             controller = callback.__module__.split('.')[-1]
             action = callback.__name__
-            template = os.path.join(bundle, controller, '.'.join([action, 'html']))
+            template = os.path.join(
+                bundle, controller, '.'.join([action, 'html']))
             try:
                 tpl = self.env.get_template(template)
             except TemplateNotFound:
@@ -61,10 +64,8 @@ class Jinja2Plugin(object):
 
         return wrapper
 
-
     def setup(self, app):
         pass
-
 
     def close(self):
         pass
@@ -86,10 +87,8 @@ class JsonPlugin(object):
 
         return wrapper
 
-
     def setup(self, app):
         pass
-
 
     def close(self):
         pass

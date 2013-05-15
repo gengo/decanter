@@ -10,6 +10,7 @@ from app.common import errors
 def index():
     return {'word': 'Hello Decanter!'}
 
+
 @get('/home/')
 @get('/home/<name>')
 def home(name='Decanter'):

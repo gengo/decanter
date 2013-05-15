@@ -20,7 +20,8 @@ import argparse
 
 
 class Decanter(Daemon):
-    def __init__(self, app, hostname='localhost', port=9000, pidfile = '/var/run/decanter.pid'):
+
+    def __init__(self, app, hostname='localhost', port=9000, pidfile='/var/run/decanter.pid'):
         self.app = app
         self.hostname = hostname
         self.port = int(port)
@@ -64,7 +65,8 @@ class Decanter(Daemon):
             # Such a message is noise during test.
             # 127.0.0.1 - - [yyyy-MM-dd HH:mm:ss] ...
             log = None if self.config.test else 'default'
-            server = pywsgi.WSGIServer((self.hostname, self.port), self.app, log=log)
+            server = pywsgi.WSGIServer((
+                self.hostname, self.port), self.app, log=log)
             server.serve_forever()
         except Exception as e:
             print("Could not start server: {0}".format(e))
@@ -74,7 +76,8 @@ class Decanter(Daemon):
             with open(self.pidfile, 'r') as fp:
                 pid = int(fp.read())
             os.kill(pid, 0)
-            print("Decanter is running, pidfile: {0}, process: {0}".format(self.pidfile, pid))
+            print("Decanter is running, pidfile: {0}, process: {0}".format(
+                self.pidfile, pid))
         except (OSError, IOError):
             print("Decanter is not running")
 
@@ -92,11 +95,15 @@ def parse_args(filepath=__file__, source=sys.argv):
     if len(source) == 0:
         source.append(defaults['myself'])
 
-    parser = argparse.ArgumentParser(description='Example: {myself} -h {hostname} -p {port} -c config/devel.py start'.format(**defaults), conflict_handler='resolve')
-    parser.add_argument('command', choices=['start', 'stop', 'restart', 'status'])
+    parser = argparse.ArgumentParser(description='Example: {myself} -h {hostname} -p {port} -c config/devel.py start'.format(
+        **defaults), conflict_handler='resolve')
+    parser.add_argument('command', choices=[
+                        'start', 'stop', 'restart', 'status'])
     parser.add_argument('-h', '--hostname', default=defaults['hostname'])
     parser.add_argument('-p', '--port', type=int, default=defaults['port'])
-    parser.add_argument('-c', '--config', required=True, type=argparse.FileType(), help='config must match the location of a module containing decanter required configuration items, i.e. config/devel.py')
+    parser.add_argument(
+        '-c', '--config', required=True, type=argparse.FileType(),
+        help='config must match the location of a module containing decanter required configuration items, i.e. config/devel.py')
     args = parser.parse_args(source)
 
     # 'type=argparse.FileType()' will confirm the existence of a file. but it open file.

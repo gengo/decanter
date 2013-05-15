@@ -17,17 +17,20 @@ class Log(object):
         self.__dict__ = self.__state
         if '_log' not in self.__dict__:
             self.filepath = filepath
-            config = Config.get_instance();
+            config = Config.get_instance()
             try:
-                handler = logging.handlers.TimedRotatingFileHandler(self.filepath, 'midnight', 1, 10, 'UTF-8')
+                handler = logging.handlers.TimedRotatingFileHandler(
+                    self.filepath, 'midnight', 1, 10, 'UTF-8')
             except IOError:
                 # check if log directory exists
-                parent_path = parent_path = os.path.abspath(os.path.dirname(self.filepath))
+                parent_path = parent_path = os.path.abspath(
+                    os.path.dirname(self.filepath))
                 if not os.path.exists(parent_path):
                     # try to create the logs directory
                     os.makedirs(parent_path, mode=0755)
                 # and try again
-                handler = logging.handlers.TimedRotatingFileHandler(self.filepath, 'midnight', 1, 10, 'UTF-8')
+                handler = logging.handlers.TimedRotatingFileHandler(
+                    self.filepath, 'midnight', 1, 10, 'UTF-8')
 
             formatter = logging.Formatter('%(levelname)s - %(asctime)s - ' +
                                           'File:%(pathname)s - Line:' +
@@ -39,7 +42,6 @@ class Log(object):
             self._log = logging.getLogger(__name__)
             self._log.setLevel(config.logger['level'])
             self._log.addHandler(handler)
-
 
     @classmethod
     def get_instance(self):

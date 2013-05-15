@@ -6,6 +6,7 @@ import sys
 
 
 class Dispatcher(object):
+
     """
     dispatch a request to one of the bundles controllers
     """
@@ -46,7 +47,8 @@ class Dispatcher(object):
         try:
             paths = self.config.apppath.strip(os.path.sep).split(os.path.sep)
             app = paths.pop()
-            name = '.'.join([app, 'bundles', self.bundle, 'controllers', self.controller])
+            name = '.'.join(
+                [app, 'bundles', self.bundle, 'controllers', self.controller])
             if name not in sys.modules:
                 appdir = os.sep.join(path for path in paths)
                 if appdir not in sys.path:
@@ -59,15 +61,14 @@ class Dispatcher(object):
             print("Dispatcher: {0}".format(e))
             print(tb)
 
-
     def is_bundle(self, bundle):
         path = os.path.join(self.config.apppath, 'bundles', bundle)
         return os.path.isdir(path)
 
     def is_controller(self, bundle, controller):
-        path = os.path.join(self.config.apppath, 'bundles', bundle, 'controllers', '.'.join([controller, 'py']))
+        path = os.path.join(self.config.apppath, 'bundles',
+                            bundle, 'controllers', '.'.join([controller, 'py']))
         return os.path.isfile(path)
-
 
     def __call__(self, environ, start_response):
         self.route(environ['PATH_INFO'])
@@ -76,6 +77,7 @@ class Dispatcher(object):
 
 
 class StripPath(object):
+
     def __init__(self, wsgi):
         self.app = wsgi
 
