@@ -8,9 +8,8 @@ from functools import wraps
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
 from jinja2 import TemplateNotFound
-from bottle import JSONPlugin as JsonPlugin
 from config import Config
-from bottle import request, response
+from bottle import response
 
 class Jinja2Plugin(object):
     __state = {}
