@@ -2,16 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import os
+import json
 import gettext
 from functools import wraps
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
 from jinja2 import TemplateNotFound
 from bottle import JSONPlugin as JsonPlugin
-from lib.config import Config
-
-
-
+from config import Config
+from bottle import request, response
 
 class Jinja2Plugin(object):
     __state = {}
@@ -59,6 +58,31 @@ class Jinja2Plugin(object):
                 template = os.path.join(controller, '.'.join([action, 'html']))
                 tpl = self.env.get_template(template)
             return tpl.render(data)
+
+        return wrapper
+
+
+    def setup(self, app):
+        pass
+
+
+    def close(self):
+        pass
+
+
+class JsonPlugin(object):
+    name = 'json'
+    api = 2
+
+    def apply(self, callback, route):
+        @wraps(callback)
+        def wrapper(*args, **kwargs):
+            if self.name in route.skiplist:
+                return callback(*args, **kwargs)
+
+            data = callback(*args, **kwargs)
+            response.set_header('Content-Type', 'application/json')
+            return json.dumps(data)
 
         return wrapper
 
