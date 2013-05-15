@@ -79,7 +79,7 @@ class Decanter(Daemon):
             print("Decanter is not running")
 
 
-def parse_args(source=sys.argv):
+def parse_args(filepath=__file__, source=sys.argv):
     """
     This function will parse command line arguments. To display help and exit
     if the argument is invalid. Will return command, hostname, port and config.
@@ -102,7 +102,7 @@ def parse_args(source=sys.argv):
     # 'type=argparse.FileType()' will confirm the existence of a file. but it open file.
     args.config.close()
     args.config = os.path.relpath(os.path.realpath(args.config.name),
-                                  os.path.dirname(os.path.realpath(__file__)))
+                                  os.path.dirname(os.path.realpath(filepath)))
 
     return args
 

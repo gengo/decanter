@@ -4,7 +4,7 @@ setup(
     name = "decanter",
     version = "0.1.0",
     packages = find_packages(),
-    scripts = [],
+    scripts = ['decanter/decanter.py'],
 
     # Required repositories 
     install_requires = [

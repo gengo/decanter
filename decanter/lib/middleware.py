@@ -54,7 +54,10 @@ class Dispatcher(object):
                 __import__(name, fromlist=[self.controller])
 
         except Exception as e:
+            import traceback
+            tb = traceback.format_exc()
             print("Dispatcher: {0}".format(e))
+            print(tb)
 
 
     def is_bundle(self, bundle):
