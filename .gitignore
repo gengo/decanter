@@ -33,3 +33,7 @@ nosetests.xml
 .project
 .pydevproject
 *.wpr
+
+# logs
+log
+run

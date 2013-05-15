@@ -1,7 +1,7 @@
 decanter
 ========
 
-A web framework based on [bottle](http://bottlepy.org/docs/stable/), see [requirements.txt](https://github.com/gengo/decanter/blob/master/install/requirements.txt) for a list of requirements.
+A web framework based on [bottle](http://bottlepy.org/docs/stable/), see [requirements.txt](https://github.com/gengo/decanter/blob/master/install/requirements.txt) for a list of requirements. On Ubuntu, you will also need to have these extra packages installed: `sudo apt-get install python-dev libevent-dev`
 
 
 ### To run it
