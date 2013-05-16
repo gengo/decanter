@@ -57,6 +57,9 @@ class Jinja2Plugin(object):
             if 'views' in bundels:
                 views.append(os.path.join(basepath, 'views'))
 
+             # add app/views directory
+            views.append(os.path.join(self.config.apppath, 'views'))
+
             self.env = Environment(
                 loader=ChoiceLoader([FileSystemLoader(views, encoding='utf-8'),
                                      DecanterLoader(
