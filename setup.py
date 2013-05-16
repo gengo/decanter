@@ -28,7 +28,7 @@ class Pep8Command(Command):
             sys.exit(1)
 
         cwd = os.getcwd()
-        retcode = call(("pep8 %s/decanter/ --exclude=vendor" % (cwd)).split(' '))
+        retcode = call(("pep8 %s/decanter/ --exclude=vendor --ignore=E501" % (cwd)).split(' '))
         sys.exit(retcode)
 
 setup(
