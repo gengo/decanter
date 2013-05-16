@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/gengo/decanter.png?branch=master)](https://travis-ci.org/gengo/decanter)
 decanter
 ========
 
