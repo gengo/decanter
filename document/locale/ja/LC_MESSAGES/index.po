@@ -1,0 +1,48 @@
+# Japanese translations for decanter package.
+# Copyright (C) 2013, Motoki Naruse
+# This file is distributed under the same license as the decanter package.
+# Naruse Motoki <motoki@x201s>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: decanter 0.1.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-05-17 00:44\n"
+"PO-Revision-Date: 2013-05-17 00:44+0900\n"
+"Last-Translator: Naruse Motoki <motoki@x201s>\n"
+"Language-Team: Japanese\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+# 579c74d1a9d74e149af218242a47ef42
+#: ../../source/index.rst:7
+msgid "Welcome to decanter's documentation!"
+msgstr "decanterのドキュメントへようこそ！"
+
+# 7cb9976a62a64fbcbf66e97e7d7e5141
+#: ../../source/index.rst:9
+msgid "Contents:"
+msgstr "コンテンツ:"
+
+# 6e0576612abb43f695514f4cd8dafb0f
+#: ../../source/index.rst:17
+msgid "Indices and tables"
+msgstr "索引とテーブル"
+
+# 912281ae4059401580456da4037023c1
+#: ../../source/index.rst:19
+msgid ":ref:`genindex`"
+msgstr ""
+
+# 22d50b7d84a34e1b925fd9bcc4bc2504
+#: ../../source/index.rst:20
+msgid ":ref:`modindex`"
+msgstr ""
+
+# 157f52fccc9c4b01bce4be326aa0fa9a
+#: ../../source/index.rst:21
+msgid ":ref:`search`"
+msgstr ""
