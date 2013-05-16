@@ -7,3 +7,4 @@ greenlet==0.4.0
 requests==1.2.0
 wsgiref==0.1.2
 nose
+pep8

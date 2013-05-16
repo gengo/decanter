@@ -1,5 +1,6 @@
 from distutils.core import Command
 import os
+import sys
 from setuptools import setup, find_packages
 from subprocess import call
 
