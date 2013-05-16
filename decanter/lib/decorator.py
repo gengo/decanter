@@ -2,9 +2,15 @@
 # -*- coding: utf-8 -*-
 
 from functools import wraps
+import json
 import bottle
+from bottle import request
 import plugin as lib_plugin
+from loaders import SchemaLoader
+from errors import ValidationError
 
+from jsonschema import validate
+from jsonschema import ValidationError as JSONValidationError
 
 def route(path=None, method='GET', func=None, name=None, apply=None, skip=None, **config):
     def decorator(callback):
@@ -59,3 +65,31 @@ def put(path=None, **kwargs):
 
 def delete(path=None, **kwargs):
     return _wrap(path=path, method='DELETE', **kwargs)
+
+
+def validate_schema(schema=None, **kwargs):
+    """
+    Validate input according to some JSON-schema file, 
+    and return an error object if there is a problem.
+    """
+    def decorator(callback):
+        print "Validating schema", schema
+        
+        rules = SchemaLoader.get_instance().load_template(schema)
+        if not rules:
+            raise ValidationError(message="Validation schema not found.", fields=[])
+
+        @wraps(callback)
+        def wrapper(*args, **kwargs):
+            try:
+                obj = request.forms
+                obj = dict(request.forms)
+                validate(obj, json.loads(rules))
+            except JSONValidationError:
+                callback = bottle.route(
+                    path='/json/error', method=method, callback=func, name=name,
+                    apply=plugins, skip=skip, **config)(callback)
+
+            return callback(*args, **kwargs)
+        return wrapper
+    return decorator

@@ -14,6 +14,7 @@ from vendor.daemon import Daemon
 from lib.middleware import Dispatcher
 from lib.middleware import StripPath
 from lib.config import Config
+from lib.loaders import SchemaLoader
 import lib.plugin
 from lib.logger import Log
 import argparse
@@ -27,6 +28,7 @@ class Decanter(Daemon):
         self.port = int(port)
         self.pidfile = pidfile
         self.config = Config.get_instance()
+        self.loaders = SchemaLoader.get_instance(config=self.config)
 
         # remove all default bottle plugins
         bottle.uninstall(True)
