@@ -67,7 +67,8 @@ class Dispatcher(object):
 
     def is_controller(self, bundle, controller):
         path = os.path.join(self.config.apppath, 'bundles',
-                            bundle, 'controllers', '.'.join([controller, 'py']))
+                            bundle, 'controllers',
+                            '.'.join([controller, 'py']))
         return os.path.isfile(path)
 
     def __call__(self, environ, start_response):

@@ -21,8 +21,8 @@ import argparse
 
 
 class Decanter(Daemon):
-
-    def __init__(self, app, hostname='localhost', port=9000, pidfile='/var/run/decanter.pid'):
+    def __init__(self, app, hostname='localhost',
+                 port=9000, pidfile='/var/run/decanter.pid'):
         self.app = app
         self.hostname = hostname
         self.port = int(port)
@@ -97,18 +97,22 @@ def parse_args(filepath=__file__, source=sys.argv):
     if len(source) == 0:
         source.append(defaults['myself'])
 
-    parser = argparse.ArgumentParser(description='Example: {myself} -h {hostname} -p {port} -c config/devel.py start'.format(
-        **defaults), conflict_handler='resolve')
+    parser = argparse.ArgumentParser(
+        description='Example: {myself} -h {hostname}' +
+                    '-p {port} -c config/devel.py start'.format(
+                    **defaults), conflict_handler='resolve')
     parser.add_argument('command', choices=[
                         'start', 'stop', 'restart', 'status'])
     parser.add_argument('-h', '--hostname', default=defaults['hostname'])
     parser.add_argument('-p', '--port', type=int, default=defaults['port'])
     parser.add_argument(
         '-c', '--config', required=True, type=argparse.FileType(),
-        help='config must match the location of a module containing decanter required configuration items, i.e. config/devel.py')
+        help='config must match the location of a module containing' +
+             'decanter required configuration items, i.e. config/devel.py')
     args = parser.parse_args(source)
 
-    # 'type=argparse.FileType()' will confirm the existence of a file. but it open file.
+    # 'type=argparse.FileType()' will confirm the existence of a file.
+    # but it open file.
     args.config.close()
     args.config = os.path.relpath(os.path.realpath(args.config.name),
                                   os.path.dirname(os.path.realpath(filepath)))

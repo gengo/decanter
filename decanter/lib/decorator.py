@@ -12,7 +12,8 @@ from errors import ValidationError
 from jsonschema import validate
 from jsonschema import ValidationError as JSONValidationError
 
-def route(path=None, method='GET', func=None, name=None, apply=None, skip=None, **config):
+def route(path=None, method='GET', func=None,
+          name=None, apply=None, skip=None, **config):
     def decorator(callback):
         rpath = path
         plugins = []
