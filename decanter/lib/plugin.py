@@ -11,6 +11,21 @@ from jinja2 import TemplateNotFound
 from config import Config
 from bottle import response
 
+class DecanterLoader(BaseLoader):
+    def __init__(self, path):
+        self.path = path
+
+    def get_source(self, environment, template):
+        template = template.lstrip('/')
+        bundle = template.partition('/')
+        filepath = os.path.join(self.path, bundle[0], 'views', bundle[2])
+        if os.path.isabs(filepath) and os.path.isfile(filepath):
+            mtime = os.path.getmtime(filepath)
+            with file(filepath) as f:
+                source = f.read().decode('utf-8')
+            return source, filepath, lambda: mtime == os.path.getmtime(filepath)
+        raise TemplateNotFound(template)
+
 class Jinja2Plugin(object):
     __state = {}
     name = 'jinja2'
@@ -33,7 +48,9 @@ class Jinja2Plugin(object):
             if 'views' in bundels:
                 views.append(os.path.join(basepath, 'views'))
 
-            self.env = Environment(loader=FileSystemLoader(views, encoding='utf-8'), extensions=['jinja2.ext.i18n'])
+            self.env = Environment(loader=ChoiceLoader([FileSystemLoader(views, encoding='utf-8'),
+                                                                    DecanterLoader(basepath)]),
+                                                                    extensions=['jinja2.ext.i18n'])
             self.env.install_gettext_translations(gettext.NullTranslations())
 
 
