@@ -3,9 +3,11 @@
 
 from lib.decorator import get
 
+
 @get('/', apply='json', skip='jinja2')
 def index():
     return {'word': 'Hello Decanter!'}
+
 
 @get('/home/')
 @get('/home/<name>')

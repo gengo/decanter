@@ -2,14 +2,16 @@ language: python
 python:
   - "2.6"
   - "2.7"
-  - "3.0"
 
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install libevent-dev
 # command to install dependencies
 install: "pip install -r requirements.txt --use-mirrors"
 # command to run pep8
 before_script: python setup.py pep8
 # command to run tests
-#script: python setup.py test
+script: true
 
 notifications:
   irc: "irc.freenode.net#Gengo"
