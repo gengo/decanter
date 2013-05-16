@@ -49,7 +49,9 @@ class Jinja2Plugin(object):
 
             for bundle in bundels:
                 if bundle != 'views':
-                    views.append(os.path.join(basepath, bundle, 'views'))
+                    baseViews = os.path.join(basepath, bundle, 'views')
+                    if os.path.isdir(baseViews):
+                        views.append(baseViews)
 
             # add views directory in bundle
             if 'views' in bundels:
