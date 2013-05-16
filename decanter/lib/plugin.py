@@ -8,8 +8,11 @@ from functools import wraps
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
 from jinja2 import TemplateNotFound
+from jinja2 import BaseLoader
+from jinja2 import ChoiceLoader
 from config import Config
 from bottle import response
+
 
 class DecanterLoader(BaseLoader):
     def __init__(self, path):
