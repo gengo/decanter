@@ -37,13 +37,10 @@ class DecanterTest(unittest.TestCase):
 
     @mock.patch('os.path.isfile', return_value=True)
     @mock.patch('decanter.vendor.daemon.Daemon.daemonize')
-    @mock.patch('pwd.getpwuid')
-    @mock.patch('pwd.getpwnam')
     @mock.patch('grp.getgrnam')
-    @mock.patch('os.chown')
-    @mock.patch('os.setgid')
-    @mock.patch('os.setuid')
-    def test_daemonize_username_doesnt_match_config_user(self, setuid, setgid,  chown, getgrnam, getpwnam, getpwuid, daemonize, isfile):
+    @mock.patch.multiple('pwd', getpwuid=mock.DEFAULT, getpwnam=mock.DEFAULT)
+    @mock.patch.multiple('os', chown=mock.DEFAULT, setgid=mock.DEFAULT, setuid=mock.DEFAULT)
+    def test_daemonize_username_doesnt_match_config_user(self, getgrnam,  daemonize, isfile, getpwuid, getpwnam, chown, setgid, setuid):
         getpwuid_m = mock.Mock()
         getpwuid_m.pw_name = 'doesnt_match'
 
@@ -58,7 +55,6 @@ class DecanterTest(unittest.TestCase):
         self.decanter.daemonize()
         daemonize.assert_called_once()
         chown.assert_called_with('/var/run/decanter.pid', 1, 1)
-
 
 if __name__ == '__main__':
     unittest.main()
