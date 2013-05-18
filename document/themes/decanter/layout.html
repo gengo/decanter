@@ -13,8 +13,8 @@
     <div class="related">
       <h3>{{ _('Navigation') }}</h3>
       <ul>
-        <li class="right" style="margin-right: 10px"><a href="{{ pathto('../../html/en/', 1) }}{{ pathto(pagename, 0, '.') }}">English</a></li>
-        <li class="right"><a href="{{ pathto('../../html/ja/', 1) }}{{ pathto(pagename, 0, '.') }}">日本語</a></li>
+        <li class="right" style="margin-right: 10px"><a href="{{ pathto('../en/', 1) }}{{ pathto(pagename, 0, '.') }}">English</a></li>
+        <li class="right"><a href="{{ pathto('../ja/', 1) }}{{ pathto(pagename, 0, '.') }}">日本語</a></li>
         {%- for rellink in rellinks %}
         <li class="right">
           <a href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags|e }}"
