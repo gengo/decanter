@@ -10,3 +10,4 @@ Welcome to decanter's documentation!
    :glob:
 
    intro/install
+   intro/tutorial01

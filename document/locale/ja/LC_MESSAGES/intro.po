@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: decanter 0.1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-18 14:50\n"
+"POT-Creation-Date: 2013-05-18 15:43\n"
 "PO-Revision-Date: 2013-05-18 00:30\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -75,7 +75,7 @@ msgstr "Gitを使用する場合"
 # e96ffeaafd0d432dae081874514b37cf
 #: ../../source/intro/install.rst:34
 msgid "Download zip"
-msgstr ""
+msgstr "Zipをダウンロードする場合"
 
 # b1839161c05749b993d17e7c92d50699
 #: ../../source/intro/install.rst:42
@@ -99,4 +99,63 @@ msgstr "このようなディレクトリ構造になったと思います。お
 # 114210e94472440990031717ab93e79e
 #: ../../source/intro/install.rst:1
 msgid "install"
+msgstr "インストール"
+
+# 0b9dab3899c94de89fb60c2c6d076afc
+#: ../../source/intro/tutorial01.rst:6
+msgid "Hello World"
+msgstr "Hello World"
+
+# d24c363f453144a5809a948ee81af521
+#: ../../source/intro/tutorial01.rst:9
+msgid "Start decanter"
+msgstr "decanterの起動"
+
+# 42c32850dc2c4a9b8c1440fe132b88e5
+#: ../../source/intro/tutorial01.rst:11
+msgid "Execute this command."
+msgstr "このコマンドを実行します。"
+
+# f20029573a55410f87f7ac756159f148
+#: ../../source/intro/tutorial01.rst:17
+msgid "It is success if this message is output."
+msgstr "このメッセージが出力されれば成功です。"
+
+# 708bd0dc8ba24272b487d36f2714cb03
+#: ../../source/intro/tutorial01.rst:24
+msgid "Access in browser"
+msgstr "ブラウザでアクセス"
+
+# b4c3869672244139a8372a062b1e7323
+#: ../../source/intro/tutorial01.rst:26
+msgid ""
+"Try to access http://localhost:9000/ in your favorite browser. Did you see "
+"this message?"
 msgstr ""
+"http://localhost:9000/にお気に入りのブラウザでアクセスしてください。このメッ"
+"セージが表示されましたか？"
+
+# d24c363f453144a5809a948ee81af521
+#: ../../source/intro/tutorial01.rst:36
+msgid "Stop decanter"
+msgstr "decanterの停止"
+
+# d060587c59d349a49ee7fd348054d875
+#: ../../source/intro/tutorial01.rst:38
+msgid "Do you hate that hold running a decanter? Execute this command."
+msgstr "decanterが起動したままが気になるのなら、このコマンドを実行します。"
+
+# 3378667d8afa4bf186a22749d2055b15
+#: ../../source/intro/tutorial01.rst:44
+msgid "Because the decanter stopped, can not access in browser."
+msgstr "decanterが停止したため、ブラウザでアクセスすることができなくなりました。"
+
+# 652395078f54448a960a17c2a824916c
+#: ../../source/intro/tutorial01.rst:46
+msgid "Of course, the decanter starts when you execute this command again."
+msgstr "もちろん、再度このコマンドを実行するとdecanterが起動します。"
+
+# 8a8a54314e0b4534a42b5752dfc88e4f
+#: ../../source/intro/tutorial01.rst:1
+msgid "HelloWorld"
+msgstr "HelloWorld"
