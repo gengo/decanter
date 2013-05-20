@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: decanter 0.1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-18 15:43\n"
+"POT-Creation-Date: 2013-05-20 23:29\n"
 "PO-Revision-Date: 2013-05-18 00:30\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -64,8 +64,8 @@ msgstr "開発版"
 
 # 11c6ad1dab674d6c9aa7b721da45ddca
 #: ../../source/intro/install.rst:26
-msgid "You have the option to Git or Zip."
-msgstr "GitかZipかを選択することができます。"
+msgid "You have the option to use Git or Zip"
+msgstr "GitとZipを選択することができます。"
 
 # c630d37b1d2f4356999adf5271ea10a7
 #: ../../source/intro/install.rst:28
@@ -78,22 +78,22 @@ msgid "Download zip"
 msgstr "Zipをダウンロードする場合"
 
 # b1839161c05749b993d17e7c92d50699
-#: ../../source/intro/install.rst:42
-msgid "You would have got a directory like this."
+#: ../../source/intro/install.rst:40
+msgid "You should end up with a directory structure like this:"
 msgstr "このようなディレクトリ構造になったと思います。"
 
 # ad6a0c07b4854d63abcedc8341bde23d
-#: ../../source/intro/install.rst:57
+#: ../../source/intro/install.rst:55
 msgid ""
-"Unnecessary file has a lot of to develop the application. They are used in "
-"the development of decanter itself. Will remove them."
+"These files are used in the development of decanter itself, and should be "
+"removed:"
 msgstr ""
-"アプリケーションを開発するのには不要なファイルがたくさん含まれています。それ"
-"らはdecanter自身を開発するのに使用されます。不要なので消してしまいましょう。"
+"decanter自体を開発するためのファイルが含まれているので、それらを削除します。"
 
-# 09f1e607ae4847e0a0aa80babd6bed20
-#: ../../source/intro/install.rst:63
-msgid "You would have got a directory like this. Congratulations!"
+# b1839161c05749b993d17e7c92d50699
+#: ../../source/intro/install.rst:61
+msgid ""
+"You should end up with a directory structure like this. Congratulations!"
 msgstr "このようなディレクトリ構造になったと思います。おめでとうございます！"
 
 # 114210e94472440990031717ab93e79e
@@ -116,10 +116,10 @@ msgstr "decanterの起動"
 msgid "Execute this command."
 msgstr "このコマンドを実行します。"
 
-# f20029573a55410f87f7ac756159f148
+# 3452f60a5f9948d8bb870a5cfb82353e
 #: ../../source/intro/tutorial01.rst:17
-msgid "It is success if this message is output."
-msgstr "このメッセージが出力されれば成功です。"
+msgid "If successful, it should output this message:"
+msgstr "このメッセージが表示されれば成功です。"
 
 # 708bd0dc8ba24272b487d36f2714cb03
 #: ../../source/intro/tutorial01.rst:24
@@ -140,19 +140,20 @@ msgstr ""
 msgid "Stop decanter"
 msgstr "decanterの停止"
 
-# d060587c59d349a49ee7fd348054d875
+# 42c32850dc2c4a9b8c1440fe132b88e5
 #: ../../source/intro/tutorial01.rst:38
-msgid "Do you hate that hold running a decanter? Execute this command."
-msgstr "decanterが起動したままが気になるのなら、このコマンドを実行します。"
+msgid "To stop decanter, run this command:"
+msgstr "decanterを停止するにはこのコマンドを実行します。"
 
 # 3378667d8afa4bf186a22749d2055b15
 #: ../../source/intro/tutorial01.rst:44
 msgid "Because the decanter stopped, can not access in browser."
-msgstr "decanterが停止したため、ブラウザでアクセスすることができなくなりました。"
+msgstr ""
+"decanterが停止したため、ブラウザでアクセスすることができなくなりました。"
 
 # 652395078f54448a960a17c2a824916c
 #: ../../source/intro/tutorial01.rst:46
-msgid "Of course, the decanter starts when you execute this command again."
+msgid "And of course, to start decanter again, you can run this command again:"
 msgstr "もちろん、再度このコマンドを実行するとdecanterが起動します。"
 
 # 8a8a54314e0b4534a42b5752dfc88e4f

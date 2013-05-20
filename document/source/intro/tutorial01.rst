@@ -14,7 +14,7 @@ Execute this command.
 
     ./decanter.py -c config/devel.py start
 
-It is success if this message is output.
+If successful, it should output this message:
 
 ::
 
@@ -35,7 +35,7 @@ Did you see this message?
 Stop decanter
 =============
 
-Do you hate that hold running a decanter? Execute this command.
+To stop decanter, run this command:
 
 ::
 
@@ -43,7 +43,7 @@ Do you hate that hold running a decanter? Execute this command.
 
 Because the decanter stopped, can not access in browser.
 
-Of course, the decanter starts when you execute this command again.
+And of course, to start decanter again, you can run this command again:
 
 ::
 

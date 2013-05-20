@@ -23,7 +23,7 @@ Official release
 Development version
 -------------------
 
-You have the option to Git or Zip.
+You have the option to use Git or Zip
 
 * Use git
 
@@ -37,9 +37,7 @@ You have the option to Git or Zip.
 
     wget -qO- -O decanter.zip https://github.com/gengo/decanter/archive/master.zip && unzip decanter.zip && rm decanter.zip && mv decanter-master decanter
 
-
-
-You would have got a directory like this.
+You should end up with a directory structure like this:
 
 ::
 
@@ -54,13 +52,13 @@ You would have got a directory like this.
     ├── test_runner.py
     └── tests
 
-Unnecessary file has a lot of to develop the application. They are used in the development of decanter itself. Will remove them.
+These files are used in the development of decanter itself, and should be removed:
 
 ::
 
     mv decanter/decanter tmp && rm -rf decanter && mv tmp decanter
 
-You would have got a directory like this. Congratulations!
+You should end up with a directory structure like this. Congratulations!
 
 ::
 
