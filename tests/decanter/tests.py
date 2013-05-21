@@ -85,7 +85,7 @@ class Tests(unittest.TestCase):
             'config': self.assemble(dirname, 'tests', 'decanter', 'fail_config.py')
         }))
 
-    def test_current_directory_is_contains_decanterpy(self):
+    def test_current_directory_contains_decanterpy(self):
         os.chdir(self.assemble(self.dir_of_original, 'decanter'))
         self.assertFalse(self.is_error_occurred({
             'decanter': 'decanter.py',
@@ -96,7 +96,7 @@ class Tests(unittest.TestCase):
             'config': self.assemble('..', 'tests', 'decanter', 'fail_config.py')
         }))
 
-    def test_current_directory_is_contains_config(self):
+    def test_current_directory_contains_config(self):
         os.chdir(self.assemble(self.dir_of_original, 'tests', 'decanter'))
         self.assertFalse(self.is_error_occurred({
             'decanter': self.assemble('..', '..', 'decanter', 'decanter.py'),
