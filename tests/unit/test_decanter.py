@@ -3,7 +3,6 @@ import unittest
 
 from decanter.decanter import Decanter
 from decanter import lib
-from decanter.vendor.daemon import Daemon
 
 class DecanterTest(unittest.TestCase):
     @mock.patch('decanter.lib.config.Config.get_instance')

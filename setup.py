@@ -42,7 +42,6 @@ class TestCommand(Command):
         pass
 
     def run(self):
-        import sys
         import subprocess
         errno = subprocess.call(['nosetests'])
         raise SystemExit(errno)
