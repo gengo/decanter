@@ -12,6 +12,7 @@ from jinja2 import BaseLoader
 from jinja2 import ChoiceLoader
 from config import Config
 from bottle import response
+from errors import ValidationError
 
 
 class DecanterLoader(BaseLoader):
@@ -104,7 +105,20 @@ class JsonPlugin(object):
             if self.name in route.skiplist:
                 return callback(*args, **kwargs)
 
-            data = callback(*args, **kwargs)
+            try:
+                data = callback(*args, **kwargs)
+            # catch validation errors from the controller
+            except (ValidationError, ), e:
+                # create a standardized error object
+                data = {
+                    'opstat': 'error'
+                }
+                if e.message:
+                    data['error'] = e.message
+                if isinstance(e.fields, dict):
+                    data['fields'] = e.fields.keys()
+                    data.update(e.fields)
+            
             response.set_header('Content-Type', 'application/json')
             return json.dumps(data)
 

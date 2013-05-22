@@ -24,5 +24,4 @@ class Singleton(object):
         try:
             return cls.__instance[cls.__name__]
         except KeyError:
-            print "initializing...", args, kwargs
             return cls(*args, **kwargs)

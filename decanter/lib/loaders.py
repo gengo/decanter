@@ -39,7 +39,7 @@ class BaseLoader(Singleton):
         raise NotImplemented()
 
 
-class SchemaLoader(BaseLoader):
+class JSONLoader(BaseLoader):
 
     def _load_state(self, config):
         """

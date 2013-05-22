@@ -8,7 +8,7 @@ class BaseError(Exception):
 
 class ValidationError(BaseError):
 
-    def __init__(self, message, fields=[]):
+    def __init__(self, message, fields={}):
 
         Exception.__init__(self, message)
         self.message = message
