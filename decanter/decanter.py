@@ -45,7 +45,7 @@ class Decanter(Daemon):
 
     def install(self, plugins=[]):
         for plugin in plugins:
-            name = ''.join([plugin.lower().capitalize(), 'Plugin'])
+            name = ''.join([plugin.capitalize(), 'Plugin'])
             cls = getattr(lib.plugin, name)
             bottle.install(cls())
 

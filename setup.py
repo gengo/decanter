@@ -31,6 +31,21 @@ class Pep8Command(Command):
         retcode = call(("pep8 %s/decanter/ --exclude=vendor --ignore=E501" % (cwd)).split(' '))
         sys.exit(retcode)
 
+class TestCommand(Command):
+    description = "Run tests"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        import subprocess
+        errno = subprocess.call(['nosetests', 'tests/unit'])
+        raise SystemExit(errno)
+
 setup(
     name="decanter",
     version="0.1.1",
@@ -47,6 +62,9 @@ setup(
         'greenlet==0.4.0',
         'requests==1.2.0',
         'wsgiref==0.1.2',
+        'nose',
+        'pep8',
+        'mock',
     ],
 
     package_data={
@@ -61,6 +79,7 @@ setup(
     long_description=open(os.path.join(os.path.dirname(__file__), 'README.md')).read(),
     cmdclass={
         'pep8': Pep8Command,
+        'test': TestCommand,
     },
     license = "BSD",
     keywords = "web framework bottle gengo",

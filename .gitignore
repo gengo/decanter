@@ -27,6 +27,7 @@ nosetests.xml
 
 # Translations
 *.mo
+*.po~
 
 # Mr Developer
 .mr.developer.cfg
@@ -41,3 +42,4 @@ run
 # decanter generated
 gen
 
+*.swp
