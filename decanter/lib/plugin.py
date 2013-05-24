@@ -12,7 +12,7 @@ from jinja2 import BaseLoader
 from jinja2 import ChoiceLoader
 from config import Config
 from bottle import response
-from errors import ValidationError
+from errors import BaseError, ValidationError, ConnectionError
 
 
 class DecanterLoader(BaseLoader):
@@ -113,16 +113,26 @@ class JsonPlugin(object):
             try:
                 data = callback(*args, **kwargs)
             # catch validation errors from the controller
-            except (ValidationError, ), e:
+            except (BaseError, ValidationError, ConnectionError), e:
                 # create a standardized error object
                 data = {
                     'opstat': 'error'
                 }
                 if e.message:
                     data['error'] = e.message
-                if isinstance(e.fields, dict):
+                if hasattr(e, 'fields') and isinstance(e.fields, dict):
                     data['fields'] = e.fields.keys()
                     data.update(e.fields)
+                if hasattr(e, 'returned') and isinstance(e.returned, dict):
+                    data['response'] = e.returned
+
+                if Config.get_instance().debug:
+                    print "Error tracked:\n==========="
+                    print e
+                    print "Message:", e.message
+                    print "Fields:", getattr(e, 'fields', None)
+                    print "Response:", getattr(e, 'response', None)
+
             
             response.set_header('Content-Type', 'application/json')
             return json.dumps(data)

@@ -24,7 +24,7 @@ original_args = []
 
 class Decanter(Daemon):
     def __init__(self, app, hostname='localhost',
-                 port=9000, pidfile='/var/run/decanter.pid'):
+                 port=9000, pidfile='/var/run/decanter.pid', development=False):
         self.app = app
         self.hostname = hostname
         self.port = int(port)
@@ -40,7 +40,7 @@ class Decanter(Daemon):
             stdout = os.popen('tty').read().strip()
             stderr = os.popen('tty').read().strip()
 
-        if not self.config.debug:
+        if not development:
             super(Decanter, self).__init__(pidfile, stdout=stdout, stderr=stderr)
 
     def install(self, plugins=[]):
@@ -187,7 +187,8 @@ if __name__ == '__main__':
     logfile = config.logger['filepath'].format(args.port, date.today())
     # initialize logger
     log = Log(logfile)
-    decanter = Decanter(app, args.hostname, args.port, pidfile)
+    decanter = Decanter(app, hostname=args.hostname, port=args.port, pidfile=pidfile, 
+                        development=args.command=='runserver')
 
     # execute command!!!
     {
