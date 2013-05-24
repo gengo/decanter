@@ -190,7 +190,7 @@ if __name__ == '__main__':
     decanter = Decanter(app, hostname=args.hostname, port=args.port, pidfile=pidfile, 
                         development=args.command=='runserver')
 
-    # execute command!!!
+    # execute command
     {
         'start': lambda: decanter.start(),
         'stop': lambda: decanter.stop(),
