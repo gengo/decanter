@@ -42,3 +42,35 @@ default = {
 
 # list of plugins names to install by default
 plugins = ['jinja2']
+
+# redis config settings
+redis = {
+    'db': 0,
+    'host': 'localhost',
+    'port': 6379,
+    'max_poolsize': 5,
+}
+
+# session settings
+session = {
+    # the cookie key
+    'name': 'DECANTERSESID',
+    # lifetime in seconds. use 0 to have the session last until the
+    # browser is closed or up to 24h
+    'lifetime': 0,
+}
+
+# cookie settings
+cookie = {
+    'path': '/',
+    # a valid cookie domain must start with a dot
+    # and must have at least one embedded dot
+    # .localhost is not a valid domain it does not
+    # have an embedded dot
+    # in development mode use None
+    'domain': None,
+    # only use the cookie over ssl
+    'secure': False,
+    # use only for http requests, i.e. no javascript
+    'httponly': False,
+}

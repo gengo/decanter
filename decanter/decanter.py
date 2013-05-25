@@ -13,6 +13,7 @@ from datetime import date
 from vendor.daemon import Daemon
 from lib.middleware import Dispatcher
 from lib.middleware import StripPath
+from lib.middleware import Session
 from lib.config import Config
 import lib.plugin
 from lib.logger import Log
@@ -76,8 +77,8 @@ class Decanter(Daemon):
             with open(self.pidfile, 'r') as fp:
                 pid = int(fp.read())
             os.kill(pid, 0)
-            print("Decanter is running, pidfile: {0}, process: {0}".format(
-                self.pidfile, pid))
+            print("Decanter is running, pidfile: {0}, process: {1}".format(self.pidfile, pid))
+
         except (OSError, IOError):
             print("Decanter is not running")
 
@@ -121,7 +122,8 @@ if __name__ == '__main__':
     args = parse_args()
 
     config = Config(args.config)
-    app = Dispatcher(StripPath(bottle.default_app()), config)
+    ses = Session(bottle.default_app())
+    app = Dispatcher(StripPath(ses), config)
     pidfile = config.pidfile.format(args.port)
 
     # make directory to put pid file

@@ -3,6 +3,55 @@
 
 import os
 import sys
+from bottle import request
+from bottle import response
+from lib.singleton import Singleton
+from lib.config import Config
+from lib.store import Redis
+
+class Session(Singleton):
+    def __init__(self, app):
+        if getattr(self, '__init', False):
+            # app must be a valid wsgi callable
+            assert hasattr(app, '__call__'), 'app must be a valid wsgi callable'
+            # the wsgi app
+            self.app = app
+            # get config
+            config = Config.get_instance();
+            # redis session storage
+            self.redis = Redis();
+            # name of session cookie
+            self.name = config.session.get('name', 'DECANTERSESID')
+            # session lifetime
+            self.lifetime = config.session.get('lifetime', 0)
+            # cookie path
+            self.path = config.cookie.get('path', '/')
+            # cookie domain
+            self.domain = config.cookie.get('domain', None)
+            # cookies secure over ssl only
+            self.secure = config.cookie.get('secure', False)
+            # cookie over http only i.e. no javascript
+            self.httponly = config.cookie.get('httponly', False)
+            # the session data
+            self.data = {}
+            # redis hash key
+            self.hkey = None
+
+
+    def read(self):
+        self.hkey = request.get_cookie(self.name)
+
+
+    def write(self):
+
+
+    def wsgi(self, environ, start_response):
+        res = self.app(environ, start_response)
+        return res
+
+    def __call__(self, environ, start_response):
+        res = self.wsgi(environ, start_response)
+        return res
 
 
 class Dispatcher(object):
