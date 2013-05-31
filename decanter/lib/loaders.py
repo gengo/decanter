@@ -9,28 +9,25 @@ import os
 import codecs
 from singleton import Singleton
 
+
 class BaseLoader(Singleton):
-    
+
     def __init__(self, config=None):
         """
         Uses the Singleton pattern, so that we can have subclasses
-        maintain their own state. 
+        maintain their own state.
         """
         if getattr(self, '__init', False):
             self.__data = self._load_state(config)
 
-
     def __getattr__(self, name):
         return self.__data.get(name, None)
-
 
     def __getitem__(self, name):
         return self.__data.get(name, None)
 
-
     def __contains__(self, name):
         return name in self.__data
-
 
     def _load_state(self, config):
         """
@@ -53,18 +50,19 @@ class JSONLoader(BaseLoader):
         folders = {}
         for root, dirs, files in os.walk(path):
             validations = filter(lambda f: f == 'validations', dirs)
-            folders.update(dict((f, []) for f in map(lambda f: os.path.join(root, f), validations)))
+            folders.update(dict((f, []) for f in map(
+                lambda f: os.path.join(root, f), validations)))
 
         # list all files in these folders
         for k, folder in folders.items():
             for root, dirs, files in os.walk(k):
                 files = filter(lambda f: f.endswith('.json'), files)
-                folder += map(lambda f: os.path.join(os.path.relpath(root, k), f), files)
+                folder += map(lambda f: os.path.join(
+                    os.path.relpath(root, k), f), files)
 
         data['directories'] = folders
 
         return data
-
 
     def load_template(self, path):
         rel_path = path

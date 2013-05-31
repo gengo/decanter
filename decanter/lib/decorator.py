@@ -12,6 +12,7 @@ import importlib
 
 from . import jsonvalidation
 
+
 def route(path=None, method='GET', func=None, name=None, apply=None, skip=None, **config):
     def decorator(callback):
         rpath = path
@@ -69,7 +70,7 @@ def delete(path=None, **kwargs):
 
 def validate_schema(schema, **kwargs):
     """
-    Validate input according to some JSON-schema file, 
+    Validate input according to some JSON-schema file,
     and return an error object if there is a problem.
     """
     def decorator(callback):
@@ -84,7 +85,7 @@ def validate_schema(schema, **kwargs):
                 if key not in d:
                     d[key] = value
                     if key in schema.get('properties') and not isinstance(value, list):
-                        if 'array' == schema['properties'][key].get('type'):
+                        if 'array' == schema['properties'][key].get('type') or 'array' in schema['properties'][key].get('type'):
                             d[key] = [value]
                 else:
                     if isinstance(d[key], list):
@@ -96,10 +97,13 @@ def validate_schema(schema, **kwargs):
         @wraps(callback)
         def wrapper(*args, **kwargs):
             instance = convert_to_dict(request.forms)
-            errors = jsonvalidation.get_error_dictionary(schema=schema, instance=instance)
-            if errors: 
-                raise ValidationError(message=_("There were errors validating your request."), 
-                                      fields=errors)
+            request.forms.as_dict = instance
+            errors = jsonvalidation.get_error_dictionary(
+                schema=schema, instance=instance)
+            if errors:
+                raise ValidationError(
+                    message=_("There were errors validating your request."),
+                    fields=errors)
             return callback(*args, **kwargs)
         return wrapper
     return decorator

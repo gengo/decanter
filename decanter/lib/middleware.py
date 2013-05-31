@@ -6,6 +6,7 @@ import sys
 
 from errors import ValidationError
 
+
 class Dispatcher(object):
 
     """
