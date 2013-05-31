@@ -38,7 +38,7 @@ class Decanter(Daemon):
         bottle.DEBUG = self.config.debug
         # install plugins
         self.install(plugins=self.config.plugins)
-        if self.config.debug:
+        if self.config.debug or not development:
             stdout = os.popen('tty').read().strip()
             stderr = os.popen('tty').read().strip()
 
