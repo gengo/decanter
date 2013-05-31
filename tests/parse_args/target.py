@@ -7,4 +7,3 @@ import decanter
 
 if __name__ == '__main__':
     decanter.parse_args()
-

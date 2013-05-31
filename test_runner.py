@@ -13,7 +13,8 @@ if __name__ == "__main__":
         for f in files:
             if f == 'tests.py':
                 current_path = os.path.join(root, f)
-                mod = imp.load_source(os.path.splitext(current_path)[0], current_path)
+                mod = imp.load_source(os.path.splitext(
+                    current_path)[0], current_path)
                 suite.addTest(loader.loadTestsFromModule(mod))
 
     unittest.TextTestRunner(verbosity=1).run(suite)

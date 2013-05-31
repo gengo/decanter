@@ -47,13 +47,13 @@ class TestCommand(Command):
         raise SystemExit(errno)
 
 setup(
-    name = "decanter",
-    version = "0.1.0",
-    packages = find_packages(),
-    scripts = ['decanter/decanter.py'],
+    name="decanter",
+    version="0.1.1",
+    packages=find_packages(),
+    scripts=['decanter/decanter.py'],
 
     # Required repositories
-    install_requires = [
+    install_requires=[
         'Jinja2==2.6',
         'MarkupSafe==0.15',
         'argparse==1.2.1',
@@ -67,7 +67,7 @@ setup(
         'mock',
     ],
 
-    package_data = {
+    package_data={
         # If any package contains *.txt, *.rst or *.md files, include them:
         '': ['*.txt', '*.rst', '*.md'],
     },

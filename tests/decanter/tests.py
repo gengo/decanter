@@ -7,6 +7,7 @@ import shlex
 
 
 class Tests(unittest.TestCase):
+
     def setUp(self):
         # . <- dir_of_original is here
         # ├── decanter
