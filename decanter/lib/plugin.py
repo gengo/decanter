@@ -11,10 +11,14 @@ from jinja2 import TemplateNotFound
 from jinja2 import BaseLoader
 from jinja2 import ChoiceLoader
 from config import Config
-from bottle import response
+from bottle import request, response
+from errors import BaseError, ValidationError, ConnectionError
+
+from logger import Log
 
 
 class DecanterLoader(BaseLoader):
+
     def __init__(self, path):
         self.path = path
 
@@ -108,7 +112,37 @@ class JsonPlugin(object):
             if self.name in route.skiplist:
                 return callback(*args, **kwargs)
 
-            data = callback(*args, **kwargs)
+            try:
+                data = callback(*args, **kwargs)
+            # catch validation errors from the controller
+            except (BaseError, ValidationError, ConnectionError), e:
+                # create a standardized error object
+                data = {
+                    'opstat': 'error'
+                }
+                if e.message:
+                    data['error'] = e.message
+                if hasattr(e, 'fields') and isinstance(e.fields, dict):
+                    data['fields'] = e.fields.keys()
+                    data.update(e.fields)
+                if hasattr(e, 'returned') and isinstance(e.returned, dict):
+                    data['response'] = e.returned
+
+                Log.get_instance().debug(
+                    "Error tracked: \Request: %s\nMessage: %s\nFields: %s\nResponse: %s\n" % (
+                        request,
+                        e.message,
+                        getattr(e, 'fields', None),
+                        getattr(e, 'response', None))
+                )
+
+                if Config.get_instance().debug:
+                    print "Error tracked:\n==========="
+                    print e
+                    print "Message:", e.message
+                    print "Fields:", getattr(e, 'fields', None)
+                    print "Response:", getattr(e, 'response', None)
+
             response.set_header('Content-Type', 'application/json')
             return json.dumps(data)
 

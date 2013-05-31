@@ -7,6 +7,7 @@ import shlex
 
 
 class Tests(unittest.TestCase):
+
     """
     How to perform the test the difference, because the program is to be
     terminated when it failed.

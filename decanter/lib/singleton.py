@@ -20,8 +20,8 @@ class Singleton(object):
             pass
 
     @classmethod
-    def get_instance(cls):
+    def get_instance(cls, *args, **kwargs):
         try:
             return cls.__instance[cls.__name__]
         except KeyError:
-            return cls()
+            return cls(*args, **kwargs)

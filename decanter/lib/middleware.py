@@ -4,8 +4,11 @@
 import os
 import sys
 
+from errors import ValidationError
+
 
 class Dispatcher(object):
+
     """
     dispatch a request to one of the bundles controllers
     """
@@ -77,6 +80,7 @@ class Dispatcher(object):
 
 
 class StripPath(object):
+
     def __init__(self, wsgi):
         self.app = wsgi
 

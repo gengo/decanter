@@ -5,23 +5,28 @@ import os
 import sys
 import pwd
 import grp
+import tempfile
+import time
+import subprocess
 from gevent import monkey
 monkey.patch_all()
 from gevent import pywsgi
 import bottle
 from datetime import date
 from vendor.daemon import Daemon
-from lib.middleware import Dispatcher
-from lib.middleware import StripPath
+from lib.middleware import Dispatcher, StripPath
 from lib.config import Config
 import lib.plugin
 from lib.logger import Log
 import argparse
 
+original_args = []
+
 
 class Decanter(Daemon):
+
     def __init__(self, app, hostname='localhost',
-                 port=9000, pidfile='/var/run/decanter.pid'):
+                 port=9000, pidfile='/var/run/decanter.pid', development=False):
         self.app = app
         self.hostname = hostname
         self.port = int(port)
@@ -37,16 +42,19 @@ class Decanter(Daemon):
             stdout = os.popen('tty').read().strip()
             stderr = os.popen('tty').read().strip()
 
-        super(Decanter, self).__init__(pidfile, stdout=stdout, stderr=stderr)
+        if not development:
+            super(Decanter, self).__init__(
+                pidfile, stdout=stdout, stderr=stderr)
 
     def install(self, plugins=[]):
         for plugin in plugins:
-            name = ''.join([plugin.lower().capitalize(), 'Plugin'])
+            name = ''.join([plugin.capitalize(), 'Plugin'])
             cls = getattr(lib.plugin, name)
             bottle.install(cls())
 
     def daemonize(self):
         haspid = os.path.isfile(self.pidfile)
+
         super(Decanter, self).daemonize()
 
         username = pwd.getpwuid(os.getuid()).pw_name
@@ -61,15 +69,60 @@ class Decanter(Daemon):
             print("Starting daemon with pidfile: {0}".format(self.pidfile))
 
     def run(self):
-        try:
-            # Such a message is noise during test.
-            # 127.0.0.1 - - [yyyy-MM-dd HH:mm:ss] ...
-            log = None if self.config.test else 'default'
-            server = pywsgi.WSGIServer((
-                self.hostname, self.port), self.app, log=log)
-            server.serve_forever()
-        except Exception as e:
-            print("Could not start server: {0}".format(e))
+        log = None if self.config.test else 'default'
+        server = pywsgi.WSGIServer((
+            self.hostname, self.port), self.app, log=log)
+        server.serve_forever()
+
+    def runserver(self):
+        """
+        Command to run for development environments.
+        """
+        self.run()
+        # interval = 1
+        # if self.config.debug and not os.environ.get('DECANTER_CHILD'):
+        #     try:
+        #         lockfile = None
+        #         fd, lockfile = tempfile.mkstemp(prefix='bottle.', suffix='.lock')
+        # os.close(fd) # We only need this file to exist. We never write to it
+        #         while os.path.exists(lockfile):
+        #             args = [sys.executable] + original_args[:]
+        #             environ = os.environ.copy()
+        #             environ['DECANTER_CHILD'] = 'true'
+        #             environ['DECANTER_LOCKFILE'] = lockfile
+
+        #             p = subprocess.Popen(args, env=environ)
+        # while p.poll() is None: # Busy wait...
+        # os.utime(lockfile, None) # I am alive!
+        #                 time.sleep(interval)
+        #             if p.poll() != 3:
+        #                 if os.path.exists(lockfile): os.unlink(lockfile)
+        #                 sys.exit(p.poll())
+        #     except KeyboardInterrupt:
+        #         pass
+        #     finally:
+        #         if os.path.exists(lockfile):
+        #             os.unlink(lockfile)
+        #     return
+        # try:
+        #     lockfile = os.environ.get('DECANTER_LOCKFILE')
+        #     bgcheck = bottle.FileCheckerThread(lockfile, interval)
+
+        #     with bgcheck:
+        #         print "Decanter server ready and waiting."
+        #         self.run()
+
+        # if a file changed,
+        #     print "check status"
+        #     if bgcheck.status == 'reload':
+        # sys.exit(3) # kill the thread
+        # except KeyboardInterrupt:
+        #     pass
+        # except (SystemExit, MemoryError):
+        #     raise
+        # except:
+        #     time.sleep(interval)
+        #     sys.exit(3)
 
     def status(self):
         try:
@@ -87,6 +140,9 @@ def parse_args(filepath=__file__, source=sys.argv):
     This function will parse command line arguments. To display help and exit
     if the argument is invalid. Will return command, hostname, port and config.
     """
+    global original_args
+    original_args = sys.argv[:]
+
     defaults = {
         'myself': source.pop(0),
         'hostname': 'localhost',
@@ -100,7 +156,7 @@ def parse_args(filepath=__file__, source=sys.argv):
                     '-p {port} -c config/devel.py start'.format(
                     **defaults), conflict_handler='resolve')
     parser.add_argument('command', choices=[
-                        'start', 'stop', 'restart', 'status'])
+                        'start', 'stop', 'restart', 'status', 'runserver'])
     parser.add_argument('-h', '--hostname', default=defaults['hostname'])
     parser.add_argument('-p', '--port', type=int, default=defaults['port'])
     parser.add_argument(
@@ -132,12 +188,15 @@ if __name__ == '__main__':
     logfile = config.logger['filepath'].format(args.port, date.today())
     # initialize logger
     log = Log(logfile)
-    decanter = Decanter(app, args.hostname, args.port, pidfile)
+    decanter = Decanter(
+        app, hostname=args.hostname, port=args.port, pidfile=pidfile,
+        development=args.command == 'runserver')
 
     # execute command
     {
         'start': lambda: decanter.start(),
         'stop': lambda: decanter.stop(),
         'status': lambda: decanter.status(),
-        'restart': lambda: decanter.restart()
+        'restart': lambda: decanter.restart(),
+        'runserver': lambda: decanter.runserver(),
     }[args.command]()
