@@ -19,7 +19,7 @@ class Tests(unittest.TestCase):
     def operationOfServer(cls, operation):
         args = {
             'decanter': Tests.assemble('decanter', 'decanter.py'),
-            'config': Tests.assemble('tests', 'lib', 'decorator','config.py'),
+            'config': Tests.assemble('tests', 'lib', 'decorator', 'config.py'),
             'operation': operation
         }
         command = 'python {decanter} -c {config} {operation}'.format(**args)
@@ -38,24 +38,32 @@ class Tests(unittest.TestCase):
 
     def test_method_get(self):
         payload = {'param': 'get_test'}
-        result = requests.get(Tests.BASE_PATH + '/method/path_of_get', params=payload).text
-        expected = { 'method': 'GET', 'path': 'path_of_get', 'param': 'get_test'}
+        result = requests.get(
+            Tests.BASE_PATH + '/method/path_of_get', params=payload).text
+        expected = {'method': 'GET', 'path':
+                    'path_of_get', 'param': 'get_test'}
         self.assertDictEqual(expected, json.loads(result))
 
     def test_method_post(self):
         payload = {'param': 'post_test'}
-        result = requests.post(Tests.BASE_PATH + '/method/path_of_post', data=payload).text
-        expected = { 'method': 'POST', 'path': 'path_of_post', 'param': 'post_test'}
+        result = requests.post(
+            Tests.BASE_PATH + '/method/path_of_post', data=payload).text
+        expected = {'method': 'POST', 'path':
+                    'path_of_post', 'param': 'post_test'}
         self.assertDictEqual(expected, json.loads(result))
 
     def test_method_put(self):
         payload = {'param': 'put_test'}
-        result = requests.put(Tests.BASE_PATH + '/method/path_of_put', data=payload).text
-        expected = { 'method': 'PUT', 'path': 'path_of_put', 'param': 'put_test'}
+        result = requests.put(
+            Tests.BASE_PATH + '/method/path_of_put', data=payload).text
+        expected = {'method': 'PUT', 'path':
+                    'path_of_put', 'param': 'put_test'}
         self.assertDictEqual(expected, json.loads(result))
 
     def test_method_delete(self):
         payload = {'param': 'delete_test'}
-        result = requests.delete(Tests.BASE_PATH + '/method/path_of_delete', params=payload).text
-        expected = { 'method': 'DELETE', 'path': 'path_of_delete', 'param': 'delete_test'}
+        result = requests.delete(
+            Tests.BASE_PATH + '/method/path_of_delete', params=payload).text
+        expected = {'method': 'DELETE', 'path':
+                    'path_of_delete', 'param': 'delete_test'}
         self.assertDictEqual(expected, json.loads(result))
