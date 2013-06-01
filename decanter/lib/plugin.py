@@ -61,7 +61,7 @@ class Jinja2Plugin(object):
             if 'views' in bundels:
                 views.append(os.path.join(basepath, 'views'))
 
-             # add app/views directory
+            # add app/views directory
             views.append(os.path.join(self.config.apppath, 'views'))
 
             self.env = Environment(
