@@ -25,8 +25,8 @@ original_args = []
 
 class Decanter(Daemon):
 
-    def __init__(self, app, hostname='localhost',
-                 port=9000, pidfile='/var/run/decanter.pid', development=False):
+    def __init__(self, app, hostname='localhost', port=9000,
+                 pidfile='/var/run/decanter.pid', development=False):
         self.app = app
         self.hostname = hostname
         self.port = int(port)
@@ -38,7 +38,7 @@ class Decanter(Daemon):
         bottle.DEBUG = self.config.debug
         # install plugins
         self.install(plugins=self.config.plugins)
-        if self.config.debug:
+        if self.config.debug or not development:
             stdout = os.popen('tty').read().strip()
             stderr = os.popen('tty').read().strip()
 
@@ -65,7 +65,8 @@ class Decanter(Daemon):
             os.setgid(gid)
             os.setuid(uid)
 
-        if not haspid and os.path.isfile(self.pidfile) and not self.config.test:
+        if not haspid and os.path.isfile(self.pidfile)\
+                and not self.config.test:
             print("Starting daemon with pidfile: {0}".format(self.pidfile))
 
     def run(self):
@@ -79,50 +80,6 @@ class Decanter(Daemon):
         Command to run for development environments.
         """
         self.run()
-        # interval = 1
-        # if self.config.debug and not os.environ.get('DECANTER_CHILD'):
-        #     try:
-        #         lockfile = None
-        #         fd, lockfile = tempfile.mkstemp(prefix='bottle.', suffix='.lock')
-        # os.close(fd) # We only need this file to exist. We never write to it
-        #         while os.path.exists(lockfile):
-        #             args = [sys.executable] + original_args[:]
-        #             environ = os.environ.copy()
-        #             environ['DECANTER_CHILD'] = 'true'
-        #             environ['DECANTER_LOCKFILE'] = lockfile
-
-        #             p = subprocess.Popen(args, env=environ)
-        # while p.poll() is None: # Busy wait...
-        # os.utime(lockfile, None) # I am alive!
-        #                 time.sleep(interval)
-        #             if p.poll() != 3:
-        #                 if os.path.exists(lockfile): os.unlink(lockfile)
-        #                 sys.exit(p.poll())
-        #     except KeyboardInterrupt:
-        #         pass
-        #     finally:
-        #         if os.path.exists(lockfile):
-        #             os.unlink(lockfile)
-        #     return
-        # try:
-        #     lockfile = os.environ.get('DECANTER_LOCKFILE')
-        #     bgcheck = bottle.FileCheckerThread(lockfile, interval)
-
-        #     with bgcheck:
-        #         print "Decanter server ready and waiting."
-        #         self.run()
-
-        # if a file changed,
-        #     print "check status"
-        #     if bgcheck.status == 'reload':
-        # sys.exit(3) # kill the thread
-        # except KeyboardInterrupt:
-        #     pass
-        # except (SystemExit, MemoryError):
-        #     raise
-        # except:
-        #     time.sleep(interval)
-        #     sys.exit(3)
 
     def status(self):
         try:
