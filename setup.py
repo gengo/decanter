@@ -43,7 +43,7 @@ class TestCommand(Command):
 
     def run(self):
         import subprocess
-        errno = subprocess.call(['nosetests', 'tests/unit'])
+        errno = subprocess.call(['nosetests'])
         raise SystemExit(errno)
 
 setup(
