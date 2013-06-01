@@ -12,18 +12,20 @@ from . import jsonvalidation
 
 def route(path=None, method='GET', func=None, name=None, apply=None, skip=None, **config):
     def decorator(callback):
-        rpath = path
         plugins = []
-        if isinstance(apply, str):
-            cls = ''.join([apply.lower().capitalize(), 'Plugin'])
+
+        def apply_plugin(plugin):
+            cls = ''.join([plugin.lower().capitalize(), 'Plugin'])
             cls = getattr(lib_plugin, cls)
             plugins.append(cls())
+
+        if isinstance(apply, str):
+            apply_plugin(apply)
         elif isinstance(apply, list):
             for plugin in apply:
-                cls = ''.join([plugin.lower().capitalize(), 'Plugin'])
-                cls = getattr(lib_plugin, cls)
-                plugins.append(cls())
+                apply_plugin(plugin)
 
+        rpath = path
         if rpath != '/':
             rpath = rpath.rstrip('/')
 

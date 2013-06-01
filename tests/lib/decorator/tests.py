@@ -67,3 +67,8 @@ class Tests(unittest.TestCase):
         expected = {'method': 'DELETE', 'path':
                     'path_of_delete', 'param': 'delete_test'}
         self.assertDictEqual(expected, json.loads(result))
+
+    def test_apply_list(self):
+        result = requests.get(Tests.BASE_PATH + '/apply_list').text
+        expected = {'apply': 'list'}
+        self.assertEqual(expected, json.loads(result))
