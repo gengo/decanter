@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import unittest
-import popen2
+from subprocess import Popen, PIPE
 import decanter.decanter as decanter
 import shlex
 
@@ -14,9 +14,12 @@ class Tests(unittest.TestCase):
     """
     def is_error_occurred(self, arg):
         command = 'python test_parse_args.py {0}'.format(arg)
-        stderr = popen2.popen3(command)[2]
+        options = {'stdout': PIPE, 'stderr': PIPE, 'close_fds': True}
 
-        return not len(stderr.readline()) == 0
+        process = Popen(shlex.split(command), **options)
+        process.wait()
+        return not process.returncode == 0
+
 
     def test_insufficient_arguments(self):
         self.assertTrue(self.is_error_occurred('-p 9000 -h localhost'))
