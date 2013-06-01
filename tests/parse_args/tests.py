@@ -30,16 +30,16 @@ class Tests(unittest.TestCase):
 
     def test_parse_result(self):
         # short ver
-        args = shlex.split('decanter -c test_runner.py \
+        args = shlex.split('decanter -c setup.py \
 -h example.com -p 8000 start')
         result = decanter.parse_args(source=args)
-        self.assertEqual(result.config, '../test_runner.py')
+        self.assertEqual(result.config, '../setup.py')
         self.assertEqual(result.hostname, 'example.com')
         self.assertEqual(result.port, 8000)
         self.assertEqual(result.command, 'start')
 
         # change arguments
-        args = shlex.split('decanter -c test_runner.py \
+        args = shlex.split('decanter -c setup.py \
 -h foo.bar -p 8080 stop')
         result = decanter.parse_args(source=args)
         self.assertEqual(result.hostname, 'foo.bar')
@@ -48,30 +48,30 @@ class Tests(unittest.TestCase):
 
         # change order
         args = shlex.split('decanter status -p 8080 \
--h foo.bar -c test_runner.py')
+-h foo.bar -c setup.py')
         result = decanter.parse_args(source=args)
         self.assertEqual(result.hostname, 'foo.bar')
         self.assertEqual(result.port, 8080)
         self.assertEqual(result.command, 'status')
 
         # omit arguments
-        args = shlex.split('decanter -c test_runner.py restart')
+        args = shlex.split('decanter -c setup.py restart')
         result = decanter.parse_args(source=args)
         self.assertEqual(result.hostname, 'localhost')
         self.assertEqual(result.port, 9000)
         self.assertEqual(result.command, 'restart')
 
         # long ver
-        args = shlex.split('decanter --config test_runner.py \
+        args = shlex.split('decanter --config setup.py \
 --hostname example.com --port 8000 start')
         result = decanter.parse_args(source=args)
-        self.assertEqual(result.config, '../test_runner.py')
+        self.assertEqual(result.config, '../setup.py')
         self.assertEqual(result.hostname, 'example.com')
         self.assertEqual(result.port, 8000)
         self.assertEqual(result.command, 'start')
 
         # change arguments
-        args = shlex.split('decanter --config test_runner.py \
+        args = shlex.split('decanter --config setup.py \
 --hostname foo.bar --port 8080 stop')
         result = decanter.parse_args(source=args)
         self.assertEqual(result.hostname, 'foo.bar')
@@ -80,24 +80,24 @@ class Tests(unittest.TestCase):
 
         # change order
         args = shlex.split('decanter status --port 8080 \
---hostname foo.bar --config test_runner.py')
+--hostname foo.bar --config setup.py')
         result = decanter.parse_args(source=args)
         self.assertEqual(result.hostname, 'foo.bar')
         self.assertEqual(result.port, 8080)
         self.assertEqual(result.command, 'status')
 
         # omit arguments
-        args = shlex.split('decanter --config test_runner.py restart')
+        args = shlex.split('decanter --config setup.py restart')
         result = decanter.parse_args(source=args)
         self.assertEqual(result.hostname, 'localhost')
         self.assertEqual(result.port, 9000)
         self.assertEqual(result.command, 'restart')
 
         # mix short and long
-        args = shlex.split('decanter -c test_runner.py \
+        args = shlex.split('decanter -c setup.py \
 --hostname example.com -p 8000 start')
         result = decanter.parse_args(source=args)
-        self.assertEqual(result.config, '../test_runner.py')
+        self.assertEqual(result.config, '../setup.py')
         self.assertEqual(result.hostname, 'example.com')
         self.assertEqual(result.port, 8000)
         self.assertEqual(result.command, 'start')
