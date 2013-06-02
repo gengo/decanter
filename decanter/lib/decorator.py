@@ -3,13 +3,10 @@
 
 from gettext import gettext as _
 from functools import wraps
-import json
 import bottle
 from bottle import request
 import plugin as lib_plugin
 from errors import ValidationError
-import importlib
-
 from . import jsonvalidation
 
 
