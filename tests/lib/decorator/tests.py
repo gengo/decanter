@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import unittest
-from subprocess import Popen, PIPE
+import subprocess
 import os
 import shlex
 import requests
@@ -30,10 +30,7 @@ class Tests(unittest.TestCase):
             'operation': operation
         }
         command = 'python {decanter} -c {config} -p {port} {operation}'.format(**args)
-        options = {'stdout': PIPE, 'stderr': PIPE, 'close_fds': True}
-
-        process = Popen(shlex.split(command), **options)
-        process.wait()
+        subprocess.call(shlex.split(command))
 
     def setUp(self):
         self.port = self.find_free_port()

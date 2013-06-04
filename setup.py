@@ -43,7 +43,7 @@ class TestCommand(Command):
 
     def run(self):
         import subprocess
-        errno = subprocess.call(['nosetests'])
+        errno = subprocess.call(['nosetests', '--debug=DEBUG', '-s'])
         raise SystemExit(errno)
 
 # Required repositories
