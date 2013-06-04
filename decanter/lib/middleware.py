@@ -53,8 +53,11 @@ class Session(Singleton):
         res = self.wsgi(environ, start_response)
         return res
 
+from errors import ValidationError
+
 
 class Dispatcher(object):
+
     """
     dispatch a request to one of the bundles controllers
     """
@@ -63,6 +66,8 @@ class Dispatcher(object):
         self.config = config
         self.bundle = None
         self.controller = None
+        if config.debug:
+            self.imported = {}
 
     def route(self, path):
         segs = []
@@ -92,6 +97,8 @@ class Dispatcher(object):
                     self.controller = self.config.default['controller']
 
     def dispatch(self):
+        def to_imported_key(name):
+            return self.controller + '-' + name
         try:
             paths = self.config.apppath.strip(os.path.sep).split(os.path.sep)
             app = paths.pop()
@@ -101,7 +108,11 @@ class Dispatcher(object):
                 appdir = os.sep.join(path for path in paths)
                 if appdir not in sys.path:
                     sys.path.insert(0, appdir)
-                __import__(name, fromlist=[self.controller])
+                module = __import__(name, fromlist=[self.controller])
+                if self.config.debug:
+                    self.imported[to_imported_key(name)] = module
+            elif self.config.debug:
+                reload(self.imported[to_imported_key(name)])
 
         except Exception as e:
             import traceback
@@ -126,6 +137,7 @@ class Dispatcher(object):
 
 
 class StripPath(object):
+
     def __init__(self, wsgi):
         self.app = wsgi
 
