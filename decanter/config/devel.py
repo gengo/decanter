@@ -74,3 +74,6 @@ cookie = {
     # use only for http requests, i.e. no javascript
     'httponly': False,
 }
+
+# encryption/descryption key, use to encrypt session cookie values
+key = 'e77989ed21758e78331b20e477fc5582'

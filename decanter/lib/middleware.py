@@ -3,11 +3,15 @@
 
 import os
 import sys
+import time
+import json
 from bottle import request
 from bottle import response
 from lib.singleton import Singleton
+from lib.config import Crypt
 from lib.config import Config
 from lib.store import Redis
+
 
 class Session(Singleton):
     def __init__(self, app):
@@ -18,6 +22,8 @@ class Session(Singleton):
             self.app = app
             # get config
             config = Config.get_instance();
+            # initialize crypt library
+            self.crypt = Crypt(config.key)
             # redis session storage
             self.redis = Redis();
             # name of session cookie
@@ -34,15 +40,26 @@ class Session(Singleton):
             self.httponly = config.cookie.get('httponly', False)
             # the session data
             self.data = {}
-            # redis hash key
-            self.hkey = None
+            # redis key
+            self.skey = None
 
 
     def read(self):
-        self.hkey = request.get_cookie(self.name)
+        value = request.get_cookie(self.name)
+        if value:
+            self.skey = self.crypt.decrypt(value)
+        if self.skey:
+            data = self.redis.get(self.skey)
+            if data:
+                self.data = json.loads(data)
 
 
-    def write(self):
+    def write(self, res):
+        max_age = self.lifetime if self.lifetime else None
+        expires = (time.strftime('%a, %d-%b-%Y %T GMT',
+                                 time.gmtime(time.time() + self.lifetime))) if self.lifetime else None
+        res.set_cookie(self.name, self.crypt.encrypt(self.skey), max_age=max_age, expires=expires, domain=self.domain,
+                       path=self.path, secure=self.secure, httponly=self.httponly)
 
 
     def wsgi(self, environ, start_response):
