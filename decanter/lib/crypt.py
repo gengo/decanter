@@ -8,6 +8,7 @@ from Crypto import Random
 
 
 class Crypt(object):
+
     """
     Class for simple encryption and decryption using AES cipher in ECB
     Mode
@@ -17,7 +18,6 @@ class Crypt(object):
         self.key = key
         self.padding = "\0"
         self.block_size = 16
-
 
     def encrypt(self, data, key=None):
         """ Encrypt the passed data
@@ -30,7 +30,6 @@ class Crypt(object):
         iv = Random.new().read(AES.block_size)
         cipher = AES.new(key, AES.MODE_ECB, iv)
         return base64.b64encode(iv + cipher.encrypt(self.pad((data))))
-
 
     def decrypt(self, data, key=None):
         """ Decrypt the passed data
@@ -46,18 +45,14 @@ class Crypt(object):
         cipher = AES.new(key, AES.MODE_ECB, iv)
         return cipher.decrypt(data).strip(self.padding)
 
-
     def pad(self, s):
         return s + (self.block_size - len(s) % self.block_size) * self.padding
-
 
     def set_padding(self, padding):
         self.padding = padding
 
-
     def set_block_size(self, block_size):
         self.block_size = block_size
-
 
     def get_key(self, key=None):
         if key:
@@ -66,9 +61,7 @@ class Crypt(object):
             raise Exception('Crypt class requires a key to perform encryption/decryption operations')
         return self.md5(self.key)
 
-
     def md5(self, data):
         m = hashlib.md5()
         m.update(data)
         return m.hexdigest()
-
