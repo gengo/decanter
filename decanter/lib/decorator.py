@@ -15,7 +15,7 @@ def route(path=None, method='GET', func=None, name=None, apply=None, skip=None, 
         plugins = []
 
         def apply_plugin(plugin):
-            cls = ''.join([plugin.lower().capitalize(), 'Plugin'])
+            cls = ''.join([plugin.capitalize(), 'Plugin'])
             cls = getattr(lib_plugin, cls)
             plugins.append(cls())
 
