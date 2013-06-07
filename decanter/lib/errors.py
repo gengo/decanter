@@ -7,11 +7,11 @@ class BaseError(Exception):
 
 class ValidationError(BaseError):
     def __init__(self, message, fields={}):
-        super(BaseError, self).__init__(self, message)
+        super(ValidationError, self).__init__(message)
         self.fields = fields
 
 
 class ConnectionError(BaseError):
     def __init__(self, message, returned={}):
-        super(BaseError, self).__init__(self, message)
+        super(ConnectionError, self).__init__(message)
         self.returned = returned

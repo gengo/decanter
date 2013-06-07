@@ -34,8 +34,6 @@ def get_error_dictionary(schema, instance):
     errors = v.iter_errors(instance)
     d = {}
 
-    print errors
-
     # iterate through the validation errors
     for error in errors:
         root = error.schema
