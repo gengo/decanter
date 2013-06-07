@@ -167,7 +167,7 @@ class Session(Singleton):
         return self.data.__str__()
 
 
-from .errors import ValidationError
+from errors import ValidationError
 
 
 class Dispatcher(object):
