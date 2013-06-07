@@ -6,7 +6,7 @@ A web framework based on [bottle](http://bottlepy.org/docs/stable/), see [requir
 
 
 ### To run it
-./decanter.py -h hostname -p port -c config.module start|stop|restart|status
+./decanter.py -h hostname -p port -c config.module start|stop|restart|status|runserver
 
 **config.module** must match the location of a module containing decanter required configuration items, i.e. config/devel.py but without the .py extension.
 

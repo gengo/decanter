@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import unittest
-import popen2
+from subprocess import Popen, PIPE
 import decanter.decanter as decanter
 import shlex
 
@@ -14,9 +14,12 @@ class Tests(unittest.TestCase):
     """
     def is_error_occurred(self, arg):
         command = 'python test_parse_args.py {0}'.format(arg)
-        stderr = popen2.popen3(command)[2]
+        options = {'stdout': PIPE, 'stderr': PIPE, 'close_fds': True}
 
-        return not len(stderr.readline()) == 0
+        process = Popen(shlex.split(command), **options)
+        process.wait()
+        return not process.returncode == 0
+
 
     def test_insufficient_arguments(self):
         self.assertTrue(self.is_error_occurred('-p 9000 -h localhost'))
@@ -30,16 +33,16 @@ class Tests(unittest.TestCase):
 
     def test_parse_result(self):
         # short ver
-        args = shlex.split('decanter -c test_runner.py \
+        args = shlex.split('decanter -c setup.py \
 -h example.com -p 8000 start')
         result = decanter.parse_args(source=args)
-        self.assertEqual(result.config, '../test_runner.py')
+        self.assertEqual(result.config, '../setup.py')
         self.assertEqual(result.hostname, 'example.com')
         self.assertEqual(result.port, 8000)
         self.assertEqual(result.command, 'start')
 
         # change arguments
-        args = shlex.split('decanter -c test_runner.py \
+        args = shlex.split('decanter -c setup.py \
 -h foo.bar -p 8080 stop')
         result = decanter.parse_args(source=args)
         self.assertEqual(result.hostname, 'foo.bar')
@@ -48,30 +51,30 @@ class Tests(unittest.TestCase):
 
         # change order
         args = shlex.split('decanter status -p 8080 \
--h foo.bar -c test_runner.py')
+-h foo.bar -c setup.py')
         result = decanter.parse_args(source=args)
         self.assertEqual(result.hostname, 'foo.bar')
         self.assertEqual(result.port, 8080)
         self.assertEqual(result.command, 'status')
 
         # omit arguments
-        args = shlex.split('decanter -c test_runner.py restart')
+        args = shlex.split('decanter -c setup.py restart')
         result = decanter.parse_args(source=args)
         self.assertEqual(result.hostname, 'localhost')
         self.assertEqual(result.port, 9000)
         self.assertEqual(result.command, 'restart')
 
         # long ver
-        args = shlex.split('decanter --config test_runner.py \
+        args = shlex.split('decanter --config setup.py \
 --hostname example.com --port 8000 start')
         result = decanter.parse_args(source=args)
-        self.assertEqual(result.config, '../test_runner.py')
+        self.assertEqual(result.config, '../setup.py')
         self.assertEqual(result.hostname, 'example.com')
         self.assertEqual(result.port, 8000)
         self.assertEqual(result.command, 'start')
 
         # change arguments
-        args = shlex.split('decanter --config test_runner.py \
+        args = shlex.split('decanter --config setup.py \
 --hostname foo.bar --port 8080 stop')
         result = decanter.parse_args(source=args)
         self.assertEqual(result.hostname, 'foo.bar')
@@ -80,24 +83,24 @@ class Tests(unittest.TestCase):
 
         # change order
         args = shlex.split('decanter status --port 8080 \
---hostname foo.bar --config test_runner.py')
+--hostname foo.bar --config setup.py')
         result = decanter.parse_args(source=args)
         self.assertEqual(result.hostname, 'foo.bar')
         self.assertEqual(result.port, 8080)
         self.assertEqual(result.command, 'status')
 
         # omit arguments
-        args = shlex.split('decanter --config test_runner.py restart')
+        args = shlex.split('decanter --config setup.py restart')
         result = decanter.parse_args(source=args)
         self.assertEqual(result.hostname, 'localhost')
         self.assertEqual(result.port, 9000)
         self.assertEqual(result.command, 'restart')
 
         # mix short and long
-        args = shlex.split('decanter -c test_runner.py \
+        args = shlex.split('decanter -c setup.py \
 --hostname example.com -p 8000 start')
         result = decanter.parse_args(source=args)
-        self.assertEqual(result.config, '../test_runner.py')
+        self.assertEqual(result.config, '../setup.py')
         self.assertEqual(result.hostname, 'example.com')
         self.assertEqual(result.port, 8000)
         self.assertEqual(result.command, 'start')

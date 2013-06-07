@@ -26,7 +26,7 @@ class Tests(unittest.TestCase):
 
         process = Popen(shlex.split(command), **options)
         process.wait()
-        return not len(process.communicate()[1]) == 0
+        return not process.returncode == 0
 
     def assemble(self, *source):
         # return 'path/to' if call assemble('path', 'to')
