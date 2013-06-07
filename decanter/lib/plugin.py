@@ -116,7 +116,6 @@ class JsonPlugin(object):
                 data = callback(*args, **kwargs)
             # catch validation errors from the controller
             except (BaseError, ValidationError, ConnectionError), e:
-                print dir(e)
                 # create a standardized error object
                 data = {
                     'opstat': 'error'
