@@ -19,9 +19,10 @@ from lib.store import Redis
 
 
 class Session(Singleton):
+
     """ Middleware class to handle Session
     """
-    one_day = 60*60*24
+    one_day = 60 * 60 * 24
 
     def __init__(self, app):
         if getattr(self, '__init', False):
@@ -32,11 +33,11 @@ class Session(Singleton):
             # initialize logger
             self.log = Log.get_instance()
             # get config
-            config = Config.get_instance();
+            config = Config.get_instance()
             # initialize crypt library
             self.crypt = Crypt(config.key)
             # redis session storage
-            self.redis = Redis();
+            self.redis = Redis()
             # name of session cookie
             self.name = config.session.get('name', 'DECANTERSESID')
             # session lifetime
@@ -56,7 +57,6 @@ class Session(Singleton):
                            'ip_address': None,
                            'user_agent': None,
                            'last_activity': None}
-
 
     def read(self):
         print(self.cookie)
@@ -93,7 +93,6 @@ class Session(Singleton):
             self.log.error("Error while reading session: {0}".format(e))
         """
 
-
     def write(self):
         if len(self.data):
             pass
@@ -114,10 +113,9 @@ class Session(Singleton):
 
             response.set_cookie(self.name, self.crypt.encrypt(self.skey), **params)
 
-
     def wsgi(self, environ, start_response):
         res = self.app(environ, start_response)
-        self.read();
+        self.read()
         return res
 
     def __call__(self, environ, start_response):
@@ -144,7 +142,6 @@ class Session(Singleton):
                             }
                     data = phpserialize.dumps(data)
 
-
         except Exception as e:
             self.log.error("Error while reading session: {0}".format(e))
 
@@ -170,7 +167,7 @@ class Session(Singleton):
         return self.data.__str__()
 
 
-from errors import ValidationError
+from .errors import ValidationError
 
 
 class Dispatcher(object):
@@ -178,6 +175,7 @@ class Dispatcher(object):
     """
     dispatch a request to one of the bundles controllers
     """
+
     def __init__(self, wsgi, config):
         self.app = wsgi
         self.config = config
