@@ -3,13 +3,13 @@
 
 from lib.decorator import get
 from lib.store import Redis
+from lib.middleware import Session
 
 
 @get('/', apply='json', skip='jinja2')
 def index():
-    redis = Redis()
-    redis.set('name', 'andrea')
-    redis.expire('name', 20)
+    ses = Session.get_instance()
+    ses['name'] = 'andrea'
     return {'word': 'Hello Decanter!'}
 
 

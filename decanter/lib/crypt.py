@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import base64
+import hashlib
 from Crypto.Cipher import AES
 from Crypto import Random
 
@@ -25,13 +26,9 @@ class Crypt(object):
 
         returns the base64 encrypted data
         """
-        if key:
-            self.key = key
-        if not self.key:
-            raise Exception("Missing encryption key")
-
+        key = self.get_key(key)
         iv = Random.new().read(AES.block_size)
-        cipher = AES.new(self.key, AES.MODE_ECB, iv)
+        cipher = AES.new(key, AES.MODE_ECB, iv)
         return base64.b64encode(iv + cipher.encrypt(self.pad((data))))
 
 
@@ -42,16 +39,12 @@ class Crypt(object):
 
         returns the decrypted data
         """
-        if key:
-            self.key = key
-        if not self.key:
-            raise Exception("Missing decryption key")
-
+        key = self.get_key(key)
         data = base64.b64decode(data)
         iv = data[0:AES.block_size]
         data = data[AES.block_size:]
-        cipher = AES.new(self.key, AES.MODE_ECB, iv)
-        return cipher.decrypt(data).strip(PADDING)
+        cipher = AES.new(key, AES.MODE_ECB, iv)
+        return cipher.decrypt(data).strip(self.padding)
 
 
     def pad(self, s):
@@ -64,3 +57,18 @@ class Crypt(object):
 
     def set_block_size(self, block_size):
         self.block_size = block_size
+
+
+    def get_key(self, key=None):
+        if key:
+            self.key = key
+        if not self.key:
+            raise Exception('Crypt class requires a key to perform encryption/decryption operations')
+        return self.md5(self.key)
+
+
+    def md5(self, data):
+        m = hashlib.md5()
+        m.update(data)
+        return m.hexdigest()
+

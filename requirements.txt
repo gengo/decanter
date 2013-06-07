@@ -10,3 +10,4 @@ nose
 pep8
 mock
 jsonschema
+phpserialize

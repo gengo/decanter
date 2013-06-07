@@ -54,10 +54,12 @@ redis = {
 # session settings
 session = {
     # the cookie key
-    'name': 'DECANTERSESID',
+    'name': 'dev_myGSession',
     # lifetime in seconds. use 0 to have the session last until the
     # browser is closed or up to 24h
     'lifetime': 0,
+    # domain under which this session is available
+    'domain': 'gengo.andrea',
 }
 
 # cookie settings
