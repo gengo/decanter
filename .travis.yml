@@ -13,7 +13,7 @@ before_script: python setup.py pep8
 script: nosetests --with-cover --cover-html --cover-package=decanter
 notifications:
   irc: irc.freenode.net#Gengo
-after_success: ./update-gh-pages.sh
+after_success: ./scripts/update-gh-pages.sh
 
 env:
   global:
