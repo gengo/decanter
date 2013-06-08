@@ -1,15 +1,14 @@
-
 import mock
 import unittest
 
-from decanter.decanter import Decanter
+from decanter import decanter
 from decanter import lib
 
 class DecanterTest(unittest.TestCase):
     @mock.patch('decanter.lib.config.Config.get_instance')
     def setUp(self, get_instance):
         app = mock.Mock()
-        self.decanter = Decanter(app)
+        self.decanter = decanter.Decanter(app)
         self.decanter.config.user = 'test_user'
 
     @mock.patch('bottle.install')
@@ -55,6 +54,28 @@ class DecanterTest(unittest.TestCase):
         self.decanter.daemonize()
         daemonize.assert_called_once()
         chown.assert_called_with('/var/run/decanter.pid', 1, 1)
+
+    @mock.patch.object(decanter.pywsgi.WSGIServer, 'serve_forever')
+    def test_run_calls_serve_forever(self, serve_forever):
+        self.decanter.run()
+
+        serve_forever.assert_called_once()
+
+    @mock.patch.object(decanter.pywsgi, 'WSGIServer')
+    def test_pywsgi_server_instantiated_with_right_args_with_config_test(self, WSGIServer):
+        self.decanter.run()
+
+        WSGIServer.assert_called_with((self.decanter.hostname, self.decanter.port),
+                                       self.decanter.app, log=None)
+
+
+    @mock.patch.object(decanter.pywsgi, 'WSGIServer')
+    def test_pywsgi_server_instantiated_with_right_args_config_test_None(self, WSGIServer):
+        self.decanter.config.test = None
+        self.decanter.run()
+
+        WSGIServer.assert_called_with((self.decanter.hostname, self.decanter.port),
+                                       self.decanter.app, log='default')
 
 if __name__ == '__main__':
     unittest.main()
