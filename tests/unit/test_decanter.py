@@ -1,4 +1,5 @@
 import mock
+import sys
 import unittest
 
 from decanter import decanter
@@ -82,6 +83,40 @@ class DecanterTest(unittest.TestCase):
         self.decanter.runserver()
 
         run.assert_called_once()
+
+    # TODO: I don't know why the mock_filehandler returns 1 when when
+    # int(fp.read()) gets called. Would be better to figure out how to
+    # mock it to return something that we set ourselves.
+    @mock.patch('__builtin__.open', create=True)
+    @mock.patch('os.kill')
+    def test_runserver_calls_os_kill(self, os_kill, mock_open):
+        mock_filehandler = mock.MagicMock(spec=file)
+        mock_open.return_value = mock_filehandler
+
+        self.decanter.status()
+
+        os_kill.assert_called_with(1, 0)
+
+    @mock.patch('__builtin__.open', create=True)
+    @mock.patch('os.kill')
+    def test_runserver_print(self, os_kill, mock_open):
+        mock_filehandler = mock.MagicMock(spec=file)
+        mock_open.return_value = mock_filehandler
+
+        self.decanter.status()
+        output = sys.stdout.getvalue().strip()
+
+        self.assertEquals(output, 'Decanter is running, pidfile: /var/run/decanter.pid, process: 1')
+
+    @mock.patch('__builtin__.open', create=True)
+    def test_runserver_print_not_running(self, mock_open):
+        mock_open.side_effect = IOError
+
+        self.decanter.status()
+        output = sys.stdout.getvalue().strip()
+
+        self.assertEquals(output, 'Decanter is not running')
+
 
 if __name__ == '__main__':
     unittest.main()
