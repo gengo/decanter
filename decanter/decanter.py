@@ -6,9 +6,6 @@ import os
 import sys
 import pwd
 import grp
-import tempfile
-import time
-import subprocess
 from gevent import monkey
 monkey.patch_all()
 from gevent import pywsgi

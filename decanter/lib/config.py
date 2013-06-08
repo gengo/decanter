@@ -3,7 +3,6 @@
 
 import os
 from singleton import Singleton
-import re
 import sys
 
 
@@ -19,7 +18,6 @@ class Config(Singleton):
             self.__data = self._load(config)
 
     def _load(self, config):
-        config = re.sub(r'^(\.\/)+', '', config)
         parent_count = 0
         while config.startswith('../'):
             config = config[3:]
