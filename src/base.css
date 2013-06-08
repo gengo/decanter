@@ -1,0 +1,37 @@
+body {
+    background: #e8e8e8;
+}
+
+.main {
+    margin-top: 40px;
+}
+
+.header {
+    text-align: center;
+}
+
+.header h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 5em;
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+}
+
+.header h3.tagline {
+    font-family: 'Open Sans', FreeSans, Arial, Verdana;
+    font-weight: normal;
+    font-size: 1.2em;
+}
+
+.header img {
+    max-width: 80%;
+}
+
+.content h3, .content p, .content li {
+    font-family: 'Open Sans', FreeSans, Arial, Verdana;
+    font-weight: normal;
+}
+.content p, .content h3 {
+    line-height: 1.75em;
+}
