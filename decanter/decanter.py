@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import os
 import sys
 import pwd
@@ -86,7 +87,7 @@ class Decanter(Daemon):
             with open(self.pidfile, 'r') as fp:
                 pid = int(fp.read())
             os.kill(pid, 0)
-            print("Decanter is running, pidfile: {0}, process: {0}".format(
+            print("Decanter is running, pidfile: {0}, process: {1}".format(
                 self.pidfile, pid))
         except (OSError, IOError):
             print("Decanter is not running")
