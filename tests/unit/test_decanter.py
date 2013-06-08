@@ -77,5 +77,11 @@ class DecanterTest(unittest.TestCase):
         WSGIServer.assert_called_with((self.decanter.hostname, self.decanter.port),
                                        self.decanter.app, log='default')
 
+    @mock.patch.object(decanter.Decanter, 'run')
+    def test_runserver(self, run):
+        self.decanter.runserver()
+
+        run.assert_called_once()
+
 if __name__ == '__main__':
     unittest.main()
