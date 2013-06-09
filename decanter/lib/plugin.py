@@ -2,19 +2,20 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import json
 import gettext
 from functools import wraps
+from jinja2 import BaseLoader
 from jinja2 import Environment
+from jinja2 import ChoiceLoader
 from jinja2 import FileSystemLoader
 from jinja2 import TemplateNotFound
-from jinja2 import BaseLoader
-from jinja2 import ChoiceLoader
-from config import Config
 from bottle import request, response
-from errors import BaseError, ValidationError, ConnectionError
-
 from logger import Log
+from config import Config
+from session import Session
+from errors import BaseError, ValidationError, ConnectionError
 
 
 class DecanterLoader(BaseLoader):
@@ -146,6 +147,39 @@ class JsonPlugin(object):
             response.set_header('Content-Type', 'application/json')
             return json.dumps(data)
 
+        return wrapper
+
+    def setup(self, app):
+        pass
+
+    def close(self):
+        pass
+
+
+class SessionPlugin(object):
+    __state = {}
+    name = 'session'
+    api = 2
+
+    def __init__(self):
+        """ Borg Pattern """
+        self.__dict__ = self.__state
+        if 'ses' not in self.__dict__:
+            config = Config.get_instance()
+            name = ''.join([config.session.get('type').title(), 'Session'])
+            if 'lib.session' not in sys.modules:
+                module = __import__('lib.session', fromlist=[name])
+            else:
+                module = sys.modules['lib.session']
+            self.ses = Session(getattr(module, name)())
+
+    def apply(self, callback, route):
+        @wraps(callback)
+        def wrapper(*args, **kwargs):
+            self.ses.read()
+            data = callback(*args, **kwargs)
+            self.ses.write()
+            return data
         return wrapper
 
     def setup(self, app):

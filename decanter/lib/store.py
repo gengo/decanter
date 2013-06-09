@@ -6,7 +6,6 @@ from config import Config
 
 
 class Redis(object):
-
     """
     Borg Pattern
     """

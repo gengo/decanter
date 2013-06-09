@@ -14,7 +14,7 @@ from gevent import pywsgi
 import bottle
 from datetime import date
 from vendor.daemon import Daemon
-from lib.middleware import Dispatcher, StripPath, Session
+from lib.middleware import Dispatcher, StripPath
 from lib.config import Config
 import lib.plugin
 from lib.logger import Log
@@ -32,6 +32,9 @@ class Decanter(Daemon):
         self.port = int(port)
         self.pidfile = pidfile
         self.config = Config.get_instance()
+
+        if 'timezone' in self.config:
+            os.environ['TZ'] = self.config.timezone
 
         # remove all default bottle plugins
         bottle.uninstall(True)
@@ -132,19 +135,22 @@ def parse_args(filepath=__file__, source=sys.argv):
 if __name__ == '__main__':
     args = parse_args()
 
+    # initialize Config
     config = Config(args.config)
-    ses = Session(bottle.default_app())
-    app = Dispatcher(StripPath(ses), config)
+    # the log file
+    logfile = config.logger['filepath'].format(args.port, date.today())
+    # the pid fle
     pidfile = config.pidfile.format(args.port)
+    # initialize logger
+    log = Log(logfile)
 
     # make directory to put pid file
     piddir = os.path.dirname(pidfile)
     if not os.path.isdir(piddir):
         os.makedirs(piddir)
 
-    logfile = config.logger['filepath'].format(args.port, date.today())
-    # initialize logger
-    log = Log(logfile)
+    # the app
+    app = Dispatcher(StripPath(bottle.app()), config)
     decanter = Decanter(
         app, hostname=args.hostname, port=args.port, pidfile=pidfile,
         development=args.command == 'runserver')
