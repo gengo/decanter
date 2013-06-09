@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import os
 import sys
 import pwd
 import grp
-import tempfile
-import time
-import subprocess
 from gevent import monkey
 monkey.patch_all()
 from gevent import pywsgi
@@ -89,7 +87,6 @@ class Decanter(Daemon):
                 pid = int(fp.read())
             os.kill(pid, 0)
             print("Decanter is running, pidfile: {0}, process: {1}".format(self.pidfile, pid))
-
         except (OSError, IOError):
             print("Decanter is not running")
 

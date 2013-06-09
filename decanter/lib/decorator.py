@@ -12,18 +12,20 @@ from . import jsonvalidation
 
 def route(path=None, method='GET', func=None, name=None, apply=None, skip=None, **config):
     def decorator(callback):
-        rpath = path
         plugins = []
-        if isinstance(apply, str):
-            cls = ''.join([apply.lower().capitalize(), 'Plugin'])
+
+        def apply_plugin(plugin):
+            cls = ''.join([plugin.capitalize(), 'Plugin'])
             cls = getattr(lib_plugin, cls)
             plugins.append(cls())
+
+        if isinstance(apply, str):
+            apply_plugin(apply)
         elif isinstance(apply, list):
             for plugin in apply:
-                cls = ''.join([plugin.lower().capitalize(), 'Plugin'])
-                cls = getattr(lib_plugin, cls)
-                plugins.append(cls())
+                apply_plugin(plugin)
 
+        rpath = path
         if rpath != '/':
             rpath = rpath.rstrip('/')
 
@@ -38,31 +40,20 @@ def route(path=None, method='GET', func=None, name=None, apply=None, skip=None, 
     return decorator
 
 
-def _wrap(path, method, **kwargs):
-    def decorator(callback):
-        callback = route(path=path, method=method, **kwargs)(callback)
-
-        @wraps(callback)
-        def wrapper(*args, **kwargs):
-            return callback(*args, **kwargs)
-        return wrapper
-    return decorator
-
-
 def get(path=None, **kwargs):
-    return _wrap(path=path, method='GET', **kwargs)
+    return route(path=path, method='GET', **kwargs)
 
 
 def post(path=None, **kwargs):
-    return _wrap(path=path, method='POST', **kwargs)
+    return route(path=path, method='POST', **kwargs)
 
 
 def put(path=None, **kwargs):
-    return _wrap(path=path, method='PUT', **kwargs)
+    return route(path=path, method='PUT', **kwargs)
 
 
 def delete(path=None, **kwargs):
-    return _wrap(path=path, method='DELETE', **kwargs)
+    return route(path=path, method='DELETE', **kwargs)
 
 
 def validate_schema(schema, **kwargs):

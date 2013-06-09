@@ -43,29 +43,19 @@ class TestCommand(Command):
 
     def run(self):
         import subprocess
-        errno = subprocess.call(['nosetests'])
+        errno = subprocess.call(['nosetests', '--debug=DEBUG', '-s'])
         raise SystemExit(errno)
+
+# Required repositories
+with open(os.path.join(os.path.dirname(__file__),'requirements.txt')) as f:
+    install_requires = f.read().splitlines()
 
 setup(
     name="decanter",
-    version="0.1.1",
+    version="0.1.2",
     packages=find_packages(),
     scripts=['decanter/decanter.py'],
-
-    # Required repositories
-    install_requires=[
-        'Jinja2==2.6',
-        'MarkupSafe==0.15',
-        'argparse==1.2.1',
-        'bottle==0.11.6',
-        'gevent==0.13.8',
-        'greenlet==0.4.0',
-        'requests==1.2.0',
-        'wsgiref==0.1.2',
-        'nose',
-        'pep8',
-        'mock',
-    ],
+    install_requires=install_requires,
 
     package_data={
         # If any package contains *.txt, *.rst or *.md files, include them:
