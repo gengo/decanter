@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from lib.decorator import get
-from lib.store import Redis
 from lib.session import Session
 
 
