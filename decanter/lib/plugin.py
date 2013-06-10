@@ -167,10 +167,10 @@ class SessionPlugin(object):
         if 'ses' not in self.__dict__:
             config = Config.get_instance()
             self.name = ''.join([config.session.get('type').title(), 'Session'])
-            if 'lib.session' not in sys.modules:
-                self.module = __import__('lib.session', fromlist=[name])
+            if 'decanter.lib.session' not in sys.modules:
+                self.module = __import__('decanter.lib.session', fromlist=[name])
             else:
-                self.module = sys.modules['lib.session']
+                self.module = sys.modules['decanter.lib.session']
 
     def apply(self, callback, route):
         @wraps(callback)
