@@ -1,0 +1,5 @@
+# _config.yml
+#
+title: Decanter Docs
+source: ./src
+destination: ./site
