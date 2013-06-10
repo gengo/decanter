@@ -1,0 +1,162 @@
+# Japanese translations for decanter package.
+# Copyright (C) 2013, Motoki Naruse
+# This file is distributed under the same license as the decanter package.
+# Automatically generated, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: decanter 0.1.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-05-20 23:29\n"
+"PO-Revision-Date: 2013-05-18 00:30\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+# 548b91ffc6bf436bab94db6fb84bab7b
+#: ../../source/intro/install.rst:6
+msgid "Quick install guide"
+msgstr "インストールガイド"
+
+# c9910ca7d0e744f4a7c783b31aff9b23
+#: ../../source/intro/install.rst:8
+msgid "Before you can use decanter, you'll need to get it installed."
+msgstr "decanterを使用するにはインストールの必要があります。"
+
+# d24c363f453144a5809a948ee81af521
+#: ../../source/intro/install.rst:11
+msgid "Install decanter"
+msgstr "decanterのインストール"
+
+# 54290ddcfeea4cba8e2e070e34df0c6a
+#: ../../source/intro/install.rst:13
+msgid "You've got two easy options to install decanter:"
+msgstr "decanterをインストールするには、2つの簡単な方法があります。"
+
+# 47aa921dc01a4f989f3e8cb64dc06b1b
+#: ../../source/intro/install.rst:15
+msgid "Install an `official release`_"
+msgstr "`公式リリース`_ からのインストール"
+
+# c0d855725c304f53a6a83b7309aa4fc3
+#: ../../source/intro/install.rst:16
+msgid "Install the latest `development version`_"
+msgstr "`開発版`_ のインストール"
+
+# 2f149882905b4de78c1a926e78c69f59
+#: ../../source/intro/install.rst:20
+msgid "Official release"
+msgstr "公式リリース"
+
+# 33709c35fd4a410f9b374be1babd581e
+#: ../../source/intro/install.rst:21
+msgid "`Please wait <https://github.com/gengo/decanter/issues/19>`_"
+msgstr "`少々お待ちください <https://github.com/gengo/decanter/issues/19>`_"
+
+# 2eecaffade7d47c5bb6556f2ac685148
+#: ../../source/intro/install.rst:24
+msgid "Development version"
+msgstr "開発版"
+
+# 11c6ad1dab674d6c9aa7b721da45ddca
+#: ../../source/intro/install.rst:26
+msgid "You have the option to use Git or Zip"
+msgstr "GitとZipを選択することができます。"
+
+# c630d37b1d2f4356999adf5271ea10a7
+#: ../../source/intro/install.rst:28
+msgid "Use git"
+msgstr "Gitを使用する場合"
+
+# e96ffeaafd0d432dae081874514b37cf
+#: ../../source/intro/install.rst:34
+msgid "Download zip"
+msgstr "Zipをダウンロードする場合"
+
+# b1839161c05749b993d17e7c92d50699
+#: ../../source/intro/install.rst:40
+msgid "You should end up with a directory structure like this:"
+msgstr "このようなディレクトリ構造になったと思います。"
+
+# ad6a0c07b4854d63abcedc8341bde23d
+#: ../../source/intro/install.rst:55
+msgid ""
+"These files are used in the development of decanter itself, and should be "
+"removed:"
+msgstr ""
+"decanter自体を開発するためのファイルが含まれているので、それらを削除します。"
+
+# b1839161c05749b993d17e7c92d50699
+#: ../../source/intro/install.rst:61
+msgid ""
+"You should end up with a directory structure like this. Congratulations!"
+msgstr "このようなディレクトリ構造になったと思います。おめでとうございます！"
+
+# 114210e94472440990031717ab93e79e
+#: ../../source/intro/install.rst:1
+msgid "install"
+msgstr "インストール"
+
+# 0b9dab3899c94de89fb60c2c6d076afc
+#: ../../source/intro/tutorial01.rst:6
+msgid "Hello World"
+msgstr "Hello World"
+
+# d24c363f453144a5809a948ee81af521
+#: ../../source/intro/tutorial01.rst:9
+msgid "Start decanter"
+msgstr "decanterの起動"
+
+# 42c32850dc2c4a9b8c1440fe132b88e5
+#: ../../source/intro/tutorial01.rst:11
+msgid "Execute this command."
+msgstr "このコマンドを実行します。"
+
+# 3452f60a5f9948d8bb870a5cfb82353e
+#: ../../source/intro/tutorial01.rst:17
+msgid "If successful, it should output this message:"
+msgstr "このメッセージが表示されれば成功です。"
+
+# 708bd0dc8ba24272b487d36f2714cb03
+#: ../../source/intro/tutorial01.rst:24
+msgid "Access in browser"
+msgstr "ブラウザでアクセス"
+
+# b4c3869672244139a8372a062b1e7323
+#: ../../source/intro/tutorial01.rst:26
+msgid ""
+"Try to access http://localhost:9000/ in your favorite browser. Did you see "
+"this message?"
+msgstr ""
+"http://localhost:9000/にお気に入りのブラウザでアクセスしてください。このメッ"
+"セージが表示されましたか？"
+
+# d24c363f453144a5809a948ee81af521
+#: ../../source/intro/tutorial01.rst:36
+msgid "Stop decanter"
+msgstr "decanterの停止"
+
+# 42c32850dc2c4a9b8c1440fe132b88e5
+#: ../../source/intro/tutorial01.rst:38
+msgid "To stop decanter, run this command:"
+msgstr "decanterを停止するにはこのコマンドを実行します。"
+
+# 3378667d8afa4bf186a22749d2055b15
+#: ../../source/intro/tutorial01.rst:44
+msgid "Because the decanter stopped, can not access in browser."
+msgstr ""
+"decanterが停止したため、ブラウザでアクセスすることができなくなりました。"
+
+# 652395078f54448a960a17c2a824916c
+#: ../../source/intro/tutorial01.rst:46
+msgid "And of course, to start decanter again, you can run this command again:"
+msgstr "もちろん、再度このコマンドを実行するとdecanterが起動します。"
+
+# 8a8a54314e0b4534a42b5752dfc88e4f
+#: ../../source/intro/tutorial01.rst:1
+msgid "HelloWorld"
+msgstr "HelloWorld"
