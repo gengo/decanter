@@ -40,7 +40,9 @@ class CryptTest(unittest.TestCase):
     def test_get_key_without_keys_raises_exception(self):
         self.crypt.key = None
 
-        self.assertRaisesRegexp(Exception, 'Crypt class requires a key to perform encryption/decryption operations', self.crypt.get_key)
+        with self.assertRaises(Exception) as e:
+            self.crypt.get_key()
+        self.assertEqual(e.exception.message, 'Crypt class requires a key to perform encryption/decryption operations')
 
     def test_md5_returns_hexdigest(self):
         m = hashlib.md5()
