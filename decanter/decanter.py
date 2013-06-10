@@ -31,6 +31,9 @@ class Decanter(Daemon):
         self.pidfile = pidfile
         self.config = Config.get_instance()
 
+        if 'timezone' in self.config:
+            os.environ['TZ'] = self.config.timezone
+
         # remove all default bottle plugins
         bottle.uninstall(True)
         bottle.DEBUG = self.config.debug
@@ -69,8 +72,7 @@ class Decanter(Daemon):
 
     def run(self):
         log = None if self.config.test else 'default'
-        server = pywsgi.WSGIServer((
-            self.hostname, self.port), self.app, log=log)
+        server = pywsgi.WSGIServer((self.hostname, self.port), self.app, log=log)
         server.serve_forever()
 
     def runserver(self):
@@ -84,8 +86,7 @@ class Decanter(Daemon):
             with open(self.pidfile, 'r') as fp:
                 pid = int(fp.read())
             os.kill(pid, 0)
-            print("Decanter is running, pidfile: {0}, process: {1}".format(
-                self.pidfile, pid))
+            print("Decanter is running, pidfile: {0}, process: {1}".format(self.pidfile, pid))
         except (OSError, IOError):
             print("Decanter is not running")
 
@@ -131,18 +132,22 @@ def parse_args(filepath=__file__, source=sys.argv):
 if __name__ == '__main__':
     args = parse_args()
 
+    # initialize Config
     config = Config(args.config)
-    app = Dispatcher(StripPath(bottle.default_app()), config)
+    # the log file
+    logfile = config.logger['filepath'].format(args.port, date.today())
+    # the pid fle
     pidfile = config.pidfile.format(args.port)
+    # initialize logger
+    log = Log(logfile)
 
     # make directory to put pid file
     piddir = os.path.dirname(pidfile)
     if not os.path.isdir(piddir):
         os.makedirs(piddir)
 
-    logfile = config.logger['filepath'].format(args.port, date.today())
-    # initialize logger
-    log = Log(logfile)
+    # the app
+    app = Dispatcher(StripPath(bottle.app()), config)
     decanter = Decanter(
         app, hostname=args.hostname, port=args.port, pidfile=pidfile,
         development=args.command == 'runserver')
