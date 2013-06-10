@@ -3,15 +3,16 @@
 
 import os
 import sys
-
+from logger import Log
+from config import Config
 from errors import ValidationError
 
 
 class Dispatcher(object):
-
     """
     dispatch a request to one of the bundles controllers
     """
+
     def __init__(self, wsgi, config):
         self.app = wsgi
         self.config = config
@@ -81,10 +82,13 @@ class Dispatcher(object):
                             '.'.join([controller, 'py']))
         return os.path.isfile(path)
 
-    def __call__(self, environ, start_response):
+    def wsgi(self, environ, start_response):
         self.route(environ['PATH_INFO'])
         self.dispatch()
-        return self.app(environ, start_response)
+        return self.app
+
+    def __call__(self, environ, start_response):
+        return self.wsgi(environ, start_response)(environ, start_response)
 
 
 class StripPath(object):
@@ -92,7 +96,10 @@ class StripPath(object):
     def __init__(self, wsgi):
         self.app = wsgi
 
-    def __call__(self, environ, start_response):
+    def wsgi(self, environ, start_response):
         if environ['PATH_INFO'] != '/':
             environ['PATH_INFO'] = environ['PATH_INFO'].rstrip('/')
-        return self.app(environ, start_response)
+        return self.app
+
+    def __call__(self, environ, start_response):
+        return self.wsgi(environ, start_response)(environ, start_response)
