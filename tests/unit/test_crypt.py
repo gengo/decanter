@@ -1,6 +1,6 @@
 import hashlib
 import mock
-import unittest
+import unittest2 as unittest
 
 from decanter import decanter
 from decanter.lib import crypt
@@ -40,9 +40,10 @@ class CryptTest(unittest.TestCase):
     def test_get_key_without_keys_raises_exception(self):
         self.crypt.key = None
 
-        with self.assertRaises(Exception) as e:
+        with self.assertRaises(Exception) as cm:
             self.crypt.get_key()
-        self.assertEqual(e.exception.message, 'Crypt class requires a key to perform encryption/decryption operations')
+
+        self.assertEqual(cm.exception.message, 'Crypt class requires a key to perform encryption/decryption operations')
 
     def test_md5_returns_hexdigest(self):
         m = hashlib.md5()
