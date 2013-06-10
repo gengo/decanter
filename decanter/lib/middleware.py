@@ -3,8 +3,8 @@
 
 import os
 import sys
-from lib.logger import Log
-from lib.config import Config
+from logger import Log
+from config import Config
 from errors import ValidationError
 
 

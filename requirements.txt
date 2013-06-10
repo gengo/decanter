@@ -11,3 +11,5 @@ pep8
 mock
 jsonschema
 phpserialize
+pycrypto
+redis
