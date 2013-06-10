@@ -26,15 +26,15 @@ This will start the decanter server on port 9000. Point your browser to `http://
 
 The app directory path is set in the configuration file, while the directory structure uses the following convention:
 
-* app
-    - bundles
-        - home
-            - controllers
-            - views
-        - admin
-            - controllers
-            - views
-    - views
+    *  app
+        -   bundles
+            +   home
+                -   controllers
+                -   views
+            +   admin
+                -   controllers
+                -   views
+        -   views
 
 This skeleton structure is automatically created when you call the `decanter create [projectname]` command.
 
