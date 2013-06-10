@@ -153,9 +153,6 @@ class ExpressSession(SessionAbstract):
             self.log.error("Error while reading session: {0}".format(e))
 
     def write(self):
-        if not len(self.data):
-            return
-
         if self.cookie['session_id']:
             self.save()
         else:
