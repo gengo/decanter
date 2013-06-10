@@ -9,15 +9,16 @@ import calendar
 import phpserialize
 from bottle import request
 from bottle import response
-from logger import Log
-from crypt import Crypt
-from store import Redis
-from config import Config
-from singleton import Singleton
+from .logger import Log
+from .crypt import Crypt
+from .store import Redis
+from .config import Config
+from .singleton import Singleton
 
 
 class Session(Singleton):
-    def __init__(self, session = None):
+
+    def __init__(self, session=None):
         if getattr(self, '__init', False):
             self.session = session
 
@@ -118,8 +119,8 @@ class SessionAbstract(object):
         return self.data.__str__()
 
 
-
 class ExpressSession(SessionAbstract):
+
     def __init__(self):
         super(ExpressSession, self).__init__()
         # initialize crypt library
@@ -151,7 +152,6 @@ class ExpressSession(SessionAbstract):
             print("Error while reading session: {0}".format(e))
             self.log.error("Error while reading session: {0}".format(e))
 
-
     def write(self):
         if not len(self.data):
             return
@@ -181,7 +181,6 @@ class ExpressSession(SessionAbstract):
         data = phpserialize.dumps(self.data, object_hook=phpserialize.phpobject)
         self.redis.set(self.cookie['session_id'], data)
         response.set_cookie(self.name, self.crypt.encrypt(phpserialize.dumps(self.cookie)), **params)
-
 
     def create(self):
         timestamp = calendar.timegm(time.gmtime())
@@ -213,4 +212,3 @@ class ExpressSession(SessionAbstract):
 
     def __str__(self):
         return ':'.join([self.cookie['session_id'] if self.cookie['session_id'] else '', self.data.__str__()])
-
