@@ -2,4 +2,4 @@
 #
 title: Decanter Docs
 source: ./src
-destination: ./site
+destination: ./_site
