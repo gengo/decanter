@@ -7,19 +7,17 @@ before_install:
 - sudo apt-get update
 - sudo apt-get install libevent-dev
 install:
-    - pip install -r requirements.txt --use-mirrors
-    - pip install coverage
+- pip install -r requirements.txt --use-mirrors
+- pip install coverage
 before_script: python setup.py pep8
 script: nosetests --with-cover --cover-html --cover-package=decanter
 notifications:
   irc: irc.freenode.net#Gengo
 after_success: ./scripts/update-gh-pages.sh
-
 env:
   global:
-    secure: ! 'Q31R6Btx/xygBKDwYrMhGSV9vnbZ5hwSsS0+txtAZIRmsygA9SApQU4z81xq
+    secure: ! 'jGsBSX8Rex1AzZ9KXHufy/4gUSz/ExiavvnJ+YlpO079m7JRPpE95xAo9CWo
 
-      AfQsfjQq20sTCrea1VCeI5vnn/ZvehGIC2pqt/9cFu7vcTLIK+c8Wyyr+o57
+      RgSL6T++CkUfRgMsaUTQ+j/yNJLOL69mvtkG/j6RUD7TzA/MYjDPonqnV5BD
 
-      5mk6hUvnVLk22j+KWWwhf4XaiE/I/Fov40S+d1InEtIkD6ReJ38='
-
+      6oreMX8KB1ubqOSW0AVrfifG7aGxJm4j8xZugqn5tRE2EKm8iP8='
