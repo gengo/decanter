@@ -166,19 +166,20 @@ class SessionPlugin(object):
         self.__dict__ = self.__state
         if 'ses' not in self.__dict__:
             config = Config.get_instance()
-            name = ''.join([config.session.get('type').title(), 'Session'])
+            self.name = ''.join([config.session.get('type').title(), 'Session'])
             if 'lib.session' not in sys.modules:
-                module = __import__('lib.session', fromlist=[name])
+                self.module = __import__('lib.session', fromlist=[name])
             else:
-                module = sys.modules['lib.session']
-            self.ses = Session(getattr(module, name)())
+                self.module = sys.modules['lib.session']
+
 
     def apply(self, callback, route):
         @wraps(callback)
         def wrapper(*args, **kwargs):
-            self.ses.read()
+            ses = Session(getattr(self.module, self.name)())
+            ses.read()
             data = callback(*args, **kwargs)
-            self.ses.write()
+            ses.write()
             return data
         return wrapper
 
