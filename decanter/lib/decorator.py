@@ -84,8 +84,13 @@ def validate_schema(schema, **kwargs):
 
         @wraps(callback)
         def wrapper(*args, **kwargs):
-            instance = convert_to_dict(request.forms)
-            request.forms.as_dict = instance
+            if request.headers.get("Content-Type") in ("application/json", "application/javascript", "text/javascript"):
+                data = request.json
+                instance = data
+            else:
+                data = request.forms
+                instance = convert_to_dict(data)
+                data.as_dict = instance
             errors = jsonvalidation.get_error_dictionary(
                 schema=schema, instance=instance)
             if errors:
