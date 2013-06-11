@@ -8,6 +8,7 @@ from lib.session import Session
 @get('/', apply='json', skip='jinja2')
 def index():
     ses = Session.get_instance()
+    print ses
     ses['name'] = 'Decanter!'
     if ses.has('decanter'):
         return {'word': ses['decanter']}
