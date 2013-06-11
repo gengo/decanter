@@ -90,7 +90,7 @@ def validate_schema(schema, **kwargs):
             else:
                 data = request.forms
                 instance = convert_to_dict(data)
-                data.as_dict = instance
+            request.cleaned_data = instance
             errors = jsonvalidation.get_error_dictionary(
                 schema=schema, instance=instance)
             if errors:
