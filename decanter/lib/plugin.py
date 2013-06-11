@@ -12,10 +12,10 @@ from jinja2 import ChoiceLoader
 from jinja2 import FileSystemLoader
 from jinja2 import TemplateNotFound
 from bottle import request, response
-from logger import Log
-from config import Config
-from session import Session
-from errors import BaseError, ValidationError, ConnectionError
+from .logger import Log
+from .config import Config
+from .session import Session
+from .errors import BaseError, ValidationError, ConnectionError
 
 
 class DecanterLoader(BaseLoader):
@@ -116,7 +116,7 @@ class JsonPlugin(object):
             try:
                 data = callback(*args, **kwargs)
             # catch validation errors from the controller
-            except (BaseError, ValidationError, ConnectionError), e:
+            except (BaseError, ValidationError, ConnectionError) as e:
                 # create a standardized error object
                 data = {
                     'opstat': 'error'
@@ -166,19 +166,19 @@ class SessionPlugin(object):
         self.__dict__ = self.__state
         if 'ses' not in self.__dict__:
             config = Config.get_instance()
-            name = ''.join([config.session.get('type').title(), 'Session'])
-            if 'lib.session' not in sys.modules:
-                module = __import__('lib.session', fromlist=[name])
+            self.name = ''.join([config.session.get('type').title(), 'Session'])
+            if 'decanter.lib.session' not in sys.modules:
+                self.module = __import__('decanter.lib.session', fromlist=[name])
             else:
-                module = sys.modules['lib.session']
-            self.ses = Session(getattr(module, name)())
+                self.module = sys.modules['decanter.lib.session']
 
     def apply(self, callback, route):
         @wraps(callback)
         def wrapper(*args, **kwargs):
-            self.ses.read()
+            ses = Session(getattr(self.module, self.name)())
+            ses.read()
             data = callback(*args, **kwargs)
-            self.ses.write()
+            ses.write()
             return data
         return wrapper
 

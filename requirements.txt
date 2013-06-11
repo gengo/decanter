@@ -13,3 +13,4 @@ jsonschema
 phpserialize
 pycrypto
 redis
+unittest2
