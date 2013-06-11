@@ -168,7 +168,7 @@ class SessionPlugin(object):
             config = Config.get_instance()
             self.name = ''.join([config.session.get('type').title(), 'Session'])
             if 'decanter.lib.session' not in sys.modules:
-                self.module = __import__('decanter.lib.session', fromlist=[name])
+                self.module = __import__('lib.session', fromlist=[self.name])
             else:
                 self.module = sys.modules['decanter.lib.session']
 
