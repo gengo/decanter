@@ -10,7 +10,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
   git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/gengo/decanter.git gh-pages > /dev/null
   #go into diractory and copy data we're interested in to that directory
   cd gh-pages
-  cp -Rf $HOME/cover .
+  cp -Rf $HOME/cover ./cover
   #add, commit and push files
   git add -f .
   git commit -m "Travis build $TRAVIS_BUILD_NUMBER pushed to gh-pages"
