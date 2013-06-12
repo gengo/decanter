@@ -1,2 +1,2 @@
 recursive-exclude tests *
-include LICENSE.txt README.md
+include requirements.txt LICENSE.txt README.md
