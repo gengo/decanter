@@ -176,8 +176,9 @@ class ExpressSession(SessionAbstract):
             params['httponly'] = self.httponly
 
         data = phpserialize.dumps(self.data, object_hook=phpserialize.phpobject)
+        print("About to save: {0} -> {1}".format(self.cookie['session_id'], data))
         self.redis.set(self.cookie['session_id'], data)
-        response.set_cookie(self.name, self.crypt.encrypt(phpserialize.dumps(self.cookie)), **params)
+        response.set_cookie(self.name, urllib.quote_plus(self.crypt.encrypt(phpserialize.dumps(self.cookie))), **params)
 
     def create(self):
         timestamp = calendar.timegm(time.gmtime())
