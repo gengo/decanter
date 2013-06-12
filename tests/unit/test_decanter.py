@@ -1,6 +1,7 @@
 import mock
 import sys
 import unittest
+import StringIO
 
 from decanter import decanter
 from decanter import lib
@@ -103,8 +104,10 @@ class DecanterTest(unittest.TestCase):
         mock_filehandler = mock.MagicMock(spec=file)
         mock_open.return_value = mock_filehandler
 
+        capturer = StringIO.StringIO()
+        sys.stdout = capturer
         self.decanter.status()
-        output = sys.stdout.getvalue().strip()
+        output = capturer.getvalue().strip()
 
         self.assertEquals(output, 'Decanter is running, pidfile: /var/run/decanter.pid, process: 1')
 
@@ -112,8 +115,10 @@ class DecanterTest(unittest.TestCase):
     def test_runserver_print_not_running(self, mock_open):
         mock_open.side_effect = IOError
 
+        capturer = StringIO.StringIO()
+        sys.stdout = capturer
         self.decanter.status()
-        output = sys.stdout.getvalue().strip()
+        output = capturer.getvalue().strip()
 
         self.assertEquals(output, 'Decanter is not running')
 
