@@ -79,7 +79,7 @@ class Decanter(Daemon):
         """
         Command to run for development environments.
         """
-        print("{1}\nWelcome to Decanter!\nYou're ready to go! Server running on port {0}\nCheck out http://localhost:{0}\n{1}".format(self.port, '='*50))
+        print("{1}\nWelcome to Decanter!\nYou're ready to go! Server running on port {0}\nCheck out http://localhost:{0}\n{1}".format(self.port, '=' * 50))
         self.run()
 
     def status(self):
