@@ -4,6 +4,7 @@
 from __future__ import print_function
 import os
 import sys
+import textwrap
 import pwd
 import grp
 from gevent import monkey
@@ -79,7 +80,12 @@ class Decanter(Daemon):
         """
         Command to run for development environments.
         """
-        print("{1}\nWelcome to Decanter!\nYou're ready to go! Server running on port {0}\nCheck out http://localhost:{0}\n{1}".format(self.port, '=' * 50))
+        print(textwrap.dedent("""
+            {2}
+            Welcome to Decanter!
+            You're ready to go!
+            Server running on http://{1}:{0}
+            {2}""".format(self.port, self.hostname, '=' * 50)))
         self.run()
 
     def status(self):
