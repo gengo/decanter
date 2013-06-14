@@ -138,11 +138,11 @@ class JsonPlugin(object):
                 )
 
                 if Config.get_instance().debug:
-                    print "Error tracked:\n==========="
-                    print e
-                    print "Message:", e.message
-                    print "Fields:", getattr(e, 'fields', None)
-                    print "Response:", getattr(e, 'response', None)
+                    print("Error tracked:\n===========")
+                    print(e)
+                    print("Message:", e.message)
+                    print("Fields:", getattr(e, 'fields', None))
+                    print("Response:", getattr(e, 'response', None))
 
             response.set_header('Content-Type', 'application/json')
             return json.dumps(data)
@@ -175,6 +175,8 @@ class SessionPlugin(object):
     def apply(self, callback, route):
         @wraps(callback)
         def wrapper(*args, **kwargs):
+            if self.name in route.skiplist:
+                return callback(*args, **kwargs)
             ses = Session(getattr(self.module, self.name)())
             ses.read()
             data = callback(*args, **kwargs)
