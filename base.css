@@ -35,3 +35,7 @@ body {
 .content p, .content h3 {
     line-height: 1.75em;
 }
+.content li {
+    line-height: 1.75em;
+    margin: 1em 0;
+}
