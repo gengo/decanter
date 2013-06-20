@@ -58,7 +58,8 @@ class Crypt(object):
         if key:
             self.key = key
         if not self.key:
-            raise Exception('Crypt class requires a key to perform encryption/decryption operations')
+            raise Exception(
+                'Crypt class requires a key to perform encryption/decryption operations')
         return self.md5(self.key)
 
     def md5(self, data):

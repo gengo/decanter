@@ -29,7 +29,8 @@ class Tests(unittest.TestCase):
             'port': self.port,
             'operation': operation
         }
-        command = 'python {decanter} -c {config} -p {port} {operation}'.format(**args)
+        command = 'python {decanter} -c {config} -p {port} {operation}'.format(
+            **args)
         subprocess.call(shlex.split(command))
 
     def setUp(self):

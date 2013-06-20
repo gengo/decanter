@@ -13,14 +13,15 @@ which creates a base project called `myproject` to start working in.
 import os
 import argparse
 
+
 def create_project(args):
     print "Creating your project..."
     project_name = args.name
     create_dirs = [
-        project_name, 
+        project_name,
         os.path.join(project_name, 'app/bundles'),
         os.path.join(project_name, 'app/config')
-        ]
+    ]
     for d in create_dirs:
         try:
             os.makedirs(d)
@@ -37,13 +38,14 @@ def create_project(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        prog='decanter-admin', 
+        prog='decanter-admin',
         usage='%(prog)s command [options]',
         description="Manage your Decanter project")
     subparsers = parser.add_subparsers()
 
     # create a sub-parser for the "create" command
-    parser_create = subparsers.add_parser('create', help='create a new Decanter project')
+    parser_create = subparsers.add_parser(
+        'create', help='create a new Decanter project')
     parser_create.add_argument('name', type=str, help='name parameter')
     parser_create.set_defaults(func=create_project)
 

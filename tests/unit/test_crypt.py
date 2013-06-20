@@ -5,7 +5,9 @@ import unittest2 as unittest
 from decanter import decanter
 from decanter.lib import crypt
 
+
 class CryptTest(unittest.TestCase):
+
     def setUp(self):
         self.crypt = crypt.Crypt()
         self.crypt.key = 'test_key'
@@ -15,7 +17,8 @@ class CryptTest(unittest.TestCase):
     def test_pad(self):
         s = 'something'
         p = self.crypt.pad(s)
-        expected = s + (self.crypt.block_size - len(s) % self.crypt.block_size) * self.crypt.padding
+        expected = s + (self.crypt.block_size - len(
+            s) % self.crypt.block_size) * self.crypt.padding
         self.assertEqual(p, expected)
 
     def test_set_padding(self):
@@ -43,7 +46,8 @@ class CryptTest(unittest.TestCase):
         with self.assertRaises(Exception) as cm:
             self.crypt.get_key()
 
-        self.assertEqual(cm.exception.message, 'Crypt class requires a key to perform encryption/decryption operations')
+        self.assertEqual(
+            cm.exception.message, 'Crypt class requires a key to perform encryption/decryption operations')
 
     def test_md5_returns_hexdigest(self):
         m = hashlib.md5()

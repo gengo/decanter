@@ -9,6 +9,7 @@ from errors import ValidationError
 
 
 class Dispatcher(object):
+
     """
     dispatch a request to one of the bundles controllers
     """

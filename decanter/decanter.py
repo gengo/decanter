@@ -73,7 +73,8 @@ class Decanter(Daemon):
 
     def run(self):
         log = None if self.config.test else 'default'
-        server = pywsgi.WSGIServer((self.hostname, self.port), self.app, log=log)
+        server = pywsgi.WSGIServer((
+            self.hostname, self.port), self.app, log=log)
         server.serve_forever()
 
     def runserver(self):
@@ -93,7 +94,8 @@ class Decanter(Daemon):
             with open(self.pidfile, 'r') as fp:
                 pid = int(fp.read())
             os.kill(pid, 0)
-            print("Decanter is running, pidfile: {0}, process: {1}".format(self.pidfile, pid))
+            print("Decanter is running, pidfile: {0}, process: {1}".format(
+                self.pidfile, pid))
         except (OSError, IOError):
             print("Decanter is not running")
 
