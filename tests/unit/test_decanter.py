@@ -6,7 +6,9 @@ import StringIO
 from decanter import decanter
 from decanter import lib
 
+
 class DecanterTest(unittest.TestCase):
+
     @mock.patch('decanter.lib.config.Config.get_instance')
     def setUp(self, get_instance):
         app = mock.Mock()
@@ -67,17 +69,18 @@ class DecanterTest(unittest.TestCase):
     def test_pywsgi_server_instantiated_with_right_args_with_config_test(self, WSGIServer):
         self.decanter.run()
 
-        WSGIServer.assert_called_with((self.decanter.hostname, self.decanter.port),
-                                       self.decanter.app, log=None)
-
+        WSGIServer.assert_called_with(
+            (self.decanter.hostname, self.decanter.port),
+            self.decanter.app, log=None)
 
     @mock.patch.object(decanter.pywsgi, 'WSGIServer')
     def test_pywsgi_server_instantiated_with_right_args_config_test_None(self, WSGIServer):
         self.decanter.config.test = None
         self.decanter.run()
 
-        WSGIServer.assert_called_with((self.decanter.hostname, self.decanter.port),
-                                       self.decanter.app, log='default')
+        WSGIServer.assert_called_with(
+            (self.decanter.hostname, self.decanter.port),
+            self.decanter.app, log='default')
 
     @mock.patch.object(decanter.Decanter, 'run')
     def test_runserver(self, run):
@@ -109,7 +112,8 @@ class DecanterTest(unittest.TestCase):
         self.decanter.status()
         output = capturer.getvalue().strip()
 
-        self.assertEquals(output, 'Decanter is running, pidfile: /var/run/decanter.pid, process: 1')
+        self.assertEquals(
+            output, 'Decanter is running, pidfile: /var/run/decanter.pid, process: 1')
 
     @mock.patch('__builtin__.open', create=True)
     def test_runserver_print_not_running(self, mock_open):

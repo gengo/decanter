@@ -20,7 +20,6 @@ class Tests(unittest.TestCase):
         process.wait()
         return not process.returncode == 0
 
-
     def test_insufficient_arguments(self):
         self.assertTrue(self.is_error_occurred('-p 9000 -h localhost'))
 
