@@ -54,7 +54,7 @@ setup(
     name="decanter",
     version="0.1.5.3",
     packages=find_packages(),
-    scripts=['decanter/decanter.py'],
+    scripts=['decanter/decanter-admin.py'],
     install_requires=install_requires,
 
     package_data={
