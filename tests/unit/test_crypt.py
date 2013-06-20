@@ -1,9 +1,8 @@
 import hashlib
-import mock
 import unittest2 as unittest
 
-from decanter import decanter
 from decanter.lib import crypt
+
 
 class CryptTest(unittest.TestCase):
     def setUp(self):
