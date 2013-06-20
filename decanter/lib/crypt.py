@@ -55,12 +55,11 @@ class Crypt(object):
         self.block_size = block_size
 
     def get_key(self, key=None):
-        if key:
-            self.key = key
-        if not self.key:
+        current_key = key if key else self.key
+        if not current_key:
             raise Exception(
                 'Crypt class requires a key to perform encryption/decryption operations')
-        return self.md5(self.key)
+        return self.md5(current_key)
 
     def md5(self, data):
         m = hashlib.md5()
