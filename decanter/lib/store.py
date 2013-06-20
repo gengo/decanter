@@ -6,6 +6,7 @@ from config import Config
 
 
 class Redis(object):
+
     """
     Borg Pattern
     """
@@ -17,7 +18,8 @@ class Redis(object):
             config = Config.get_instance()
 
             pool = redis.ConnectionPool(db=config.redis.get('db', 0),
-                                        host=config.redis.get('host', 'localhost'),
+                                        host=config.redis.get(
+                                            'host', 'localhost'),
                                         port=config.redis.get('port', 6379),
                                         max_connections=config.redis.get('max_poolsize', 5))
             self._redis = redis.StrictRedis(connection_pool=pool)

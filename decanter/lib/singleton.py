@@ -7,7 +7,8 @@ class Singleton(object):
 
     def __new__(cls, *args, **kwargs):
         if cls.__name__ not in cls.__instance:
-            cls.__instance[cls.__name__] = super(cls.__class__, cls).__new__(cls, *args, **kwargs)
+            cls.__instance[cls.__name__] = super(
+                cls.__class__, cls).__new__(cls, *args, **kwargs)
             setattr(cls.__instance[cls.__name__], '__init', True)
         else:
             setattr(cls.__instance[cls.__name__], '__init', False)

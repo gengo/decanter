@@ -28,8 +28,10 @@ class Pep8Command(Command):
             sys.exit(1)
 
         cwd = os.getcwd()
-        retcode = call(("pep8 %s/decanter/ --exclude=vendor --ignore=E501" % (cwd)).split(' '))
+        retcode = call(("pep8 %s/decanter/ --exclude=vendor --ignore=E501" % (
+            cwd)).split(' '))
         sys.exit(retcode)
+
 
 class TestCommand(Command):
     description = "Run tests"
@@ -47,14 +49,14 @@ class TestCommand(Command):
         raise SystemExit(errno)
 
 # Required repositories
-with open(os.path.join(os.path.dirname(__file__),'requirements.txt')) as f:
+with open(os.path.join(os.path.dirname(__file__), 'requirements.txt')) as f:
     install_requires = f.read().splitlines()
 
 setup(
     name="decanter",
-    version="0.1.5.3",
+    version="0.1.5.5",
     packages=find_packages(),
-    scripts=['decanter/decanter.py'],
+    scripts=['decanter/decanter-admin.py'],
     install_requires=install_requires,
 
     package_data={
@@ -63,17 +65,18 @@ setup(
     },
 
     # metadata for upload to PyPI
-    author = "Gengo",
-    author_email = "",
-    description = "A humble web framework based on bottle",
-    long_description=open(os.path.join(os.path.dirname(__file__), 'README.md')).read(),
+    author="Gengo",
+    author_email="",
+    description="A humble web framework based on bottle",
+    long_description=open(os.path.join(
+        os.path.dirname(__file__), 'README.md')).read(),
     cmdclass={
         'pep8': Pep8Command,
         'test': TestCommand,
     },
-    license = "BSD",
-    keywords = "web framework bottle gengo",
-    url = "https://github.com/gengo/decanter",   # project home page, if any
+    license="BSD",
+    keywords="web framework bottle gengo",
+    url="https://github.com/gengo/decanter",   # project home page, if any
 
     # could also include long_description, download_url, classifiers, etc.
     classifiers=[

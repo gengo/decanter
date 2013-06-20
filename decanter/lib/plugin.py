@@ -166,7 +166,8 @@ class SessionPlugin(object):
         self.__dict__ = self.__state
         if 'ses' not in self.__dict__:
             config = Config.get_instance()
-            self.name = ''.join([config.session.get('type').title(), 'Session'])
+            self.name = ''.join([config.session.get(
+                'type').title(), 'Session'])
             if 'decanter.lib.session' not in sys.modules:
                 self.module = __import__('lib.session', fromlist=[self.name])
             else:
