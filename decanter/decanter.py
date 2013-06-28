@@ -111,7 +111,8 @@ def parse_args(filepath=__file__, source=sys.argv):
     defaults = {
         'myself': source.pop(0),
         'hostname': 'localhost',
-        'port': 9000
+        'port': 9000,
+        'conf': 'app/config/settings.py'
     }
     if len(source) == 0:
         source.append(defaults['myself'])
@@ -125,9 +126,9 @@ def parse_args(filepath=__file__, source=sys.argv):
     parser.add_argument('-h', '--hostname', default=defaults['hostname'])
     parser.add_argument('-p', '--port', type=int, default=defaults['port'])
     parser.add_argument(
-        '-c', '--config', required=True, type=argparse.FileType(),
+        '-c', '--config', required=False, default=defaults['conf'], type=argparse.FileType(),
         help='config must match the location of a module containing' +
-             'decanter required configuration items, i.e. config/devel.py')
+             'decanter required configuration items, i.e. app/config/settings.py')
     args = parser.parse_args(source)
 
     # 'type=argparse.FileType()' will confirm the existence of a file.
