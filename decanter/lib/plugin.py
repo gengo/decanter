@@ -124,8 +124,7 @@ class JsonPlugin(object):
                 if e.message:
                     data['error'] = e.message
                 if hasattr(e, 'fields') and isinstance(e.fields, dict):
-                    data['fields'] = e.fields.keys()
-                    data.update(e.fields)
+                    data['fields'] = e.fields
                 if hasattr(e, 'returned') and isinstance(e.returned, dict):
                     data['response'] = e.returned
 
