@@ -11,6 +11,7 @@ class DecanterTest(unittest.TestCase):
 
     @mock.patch('decanter.lib.config.Config.get_instance')
     def setUp(self, get_instance):
+        get_instance.return_value.apppath = 'apppath'
         app = mock.Mock()
         self.decanter = decanter.Decanter(app)
         self.decanter.config.user = 'test_user'
