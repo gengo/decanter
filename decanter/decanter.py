@@ -120,7 +120,7 @@ class Decanter(Daemon):
             print("Decanter is not running")
 
 
-def parse_args(filepath=__file__, source=sys.argv):
+def parse_args(filepath=__file__, source=sys.argv, custom_commands=[]):
     """
     This function will parse command line arguments. To display help and exit
     if the argument is invalid. Will return command, hostname, port and config.
@@ -142,7 +142,7 @@ def parse_args(filepath=__file__, source=sys.argv):
                     '-p {port} -c config/devel.py start'.format(
                     **defaults), conflict_handler='resolve')
     parser.add_argument('command', choices=[
-                        'start', 'stop', 'restart', 'status', 'runserver'])
+                        'start', 'stop', 'restart', 'status', 'runserver'] + custom_commands)
     parser.add_argument('-h', '--hostname', default=defaults['hostname'])
     parser.add_argument('-p', '--port', type=int, default=defaults['port'])
     parser.add_argument(
