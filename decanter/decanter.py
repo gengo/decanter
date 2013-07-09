@@ -49,10 +49,10 @@ class Decanter(Daemon):
                 pidfile, stdout=stdout, stderr=stderr)
 
     def install(self, plugins=[]):
-        third_party_plugin_dir = '/'.join([self.config.apppath, 'plugin'])
+        third_party_plugin_dir = '/'.join([self.config.apppath, 'plugins'])
         third_party_plugin_module = '.'.join([
             self.config.apppath.strip(os.path.sep).split(os.path.sep).pop(),
-            'plugin'])
+            'plugins'])
         for plugin in plugins:
             name = ''.join([plugin.capitalize(), 'Plugin'])
             cls = getattr(lib.plugin, name, None)
