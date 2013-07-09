@@ -5,7 +5,6 @@ import os
 import sys
 from logger import Log
 from config import Config
-from errors import ValidationError
 
 
 class Dispatcher(object):
