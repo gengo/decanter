@@ -4,6 +4,7 @@
 import os
 import sys
 import json
+import traceback
 import gettext
 import re
 from functools import wraps
@@ -247,38 +248,42 @@ class JsonPlugin(object):
     def apply(self, callback, route):
         @wraps(callback)
         def wrapper(*args, **kwargs):
+            config = Config.get_instance()
             if self.name in route.skiplist:
                 return callback(*args, **kwargs)
 
             try:
                 data = callback(*args, **kwargs)
             # catch validation errors from the controller
-            except (BaseError, ValidationError, ConnectionError) as e:
+            except (BaseError, ValidationError, ConnectionError, Exception) as e:
                 # create a standardized error object
                 data = {
                     'opstat': 'error'
                 }
-                if e.message:
+                if hasattr(e, 'message') and e.message:
                     data['error'] = e.message
+                elif hasattr(e, 'msg') and e.msg:
+                    data['error'] = e.msg
+                else:
+                    data['error'] = unicode(e)
                 if hasattr(e, 'fields') and isinstance(e.fields, dict):
                     data['fields'] = e.fields
                 if hasattr(e, 'returned') and isinstance(e.returned, dict):
                     data['response'] = e.returned
 
-                Log.get_instance().debug(
-                    "Error tracked: \Request: %s\nMessage: %s\nFields: %s\nResponse: %s\n" % (
-                        request,
-                        e.message,
-                        getattr(e, 'fields', None),
-                        getattr(e, 'response', None))
-                )
+                if not isinstance(e, ValidationError):
+                    Log.get_instance().error(
+                        "Error tracked: \Request: %s\nMessage: %s\nFields: %s\nResponse: %s\n\nTraceback: %s" % (
+                            request,
+                            e.message,
+                            getattr(e, 'fields', None),
+                            getattr(e, 'response', None),
+                            traceback.format_exc()
+                        )
+                    )
 
-                if Config.get_instance().debug:
-                    print("Error tracked:\n===========")
-                    print(e)
-                    print("Message:", e.message)
-                    print("Fields:", getattr(e, 'fields', None))
-                    print("Response:", getattr(e, 'response', None))
+                if config.debug is True:
+                    data['traceback'] = traceback.format_exc()
 
             response.set_header('Content-Type', 'application/json')
             return json.dumps(data)
