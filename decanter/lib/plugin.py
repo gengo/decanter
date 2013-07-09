@@ -26,7 +26,6 @@ REQUEST_ACCEPT_LANGUAGE_RE = re.compile(r'''
         ''', re.VERBOSE)
 
 
-
 class DecanterLoader(BaseLoader):
 
     def __init__(self, path):
@@ -78,9 +77,9 @@ class Jinja2Plugin(object):
                 loader=ChoiceLoader([FileSystemLoader(views, encoding='utf-8'),
                                      DecanterLoader(
                                      basepath)]))
-                #extensions=['jinja2.ext.i18n'])
+                # extensions=['jinja2.ext.i18n'])
 
-            #self.env.install_gettext_translations(gettext.NullTranslations())
+            # self.env.install_gettext_translations(gettext.NullTranslations())
 
     def apply(self, callback, route):
         @wraps(callback)
@@ -127,15 +126,16 @@ class Jinja2i18nPlugin(Jinja2Plugin):
         lang_code = getattr(config, 'lang_code', 'en')
 
         if locale_dir is None:
-            locale_dir = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'locale'))
+            locale_dir = os.path.normpath(os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), 'locale'))
         if not os.path.exists(locale_dir):
-            raise PluginError('No locale directory found, please assign a right one.')
+            raise PluginError(
+                'No locale directory found, please assign a right one.')
         self.locale_dir = locale_dir
         self.lang_code = lang_code
         self.prepared = {}
         self.app = None
         self.trans = None
-
 
     def setup(self, app):
         self.app = app
@@ -143,16 +143,16 @@ class Jinja2i18nPlugin(Jinja2Plugin):
         self.app.set_lang = self.prepare
         self.app.hooks.add('before_request', self.prepare)
 
-
     def extra_client_expected_langs(self):
         """Return language list from http.request.header.Accept-Language, ordered by 'q'."""
         result = []
-        pieces = REQUEST_ACCEPT_LANGUAGE_RE.split(request.headers.get('Accept-Language', ''))
+        pieces = REQUEST_ACCEPT_LANGUAGE_RE.split(
+            request.headers.get('Accept-Language', ''))
         if pieces[-1]:
             return []
-        for i in range(0, len(pieces)-1, 3):
-            first, lang, priority = pieces[i : i + 3]
-            if lang == '*': #TODO: support default language
+        for i in range(0, len(pieces) - 1, 3):
+            first, lang, priority = pieces[i: i + 3]
+            if lang == '*':  # TODO: support default language
                 return []
             if first:
                 return []
@@ -160,13 +160,12 @@ class Jinja2i18nPlugin(Jinja2Plugin):
             result.append((lang, priority))
         result.sort(key=lambda k: k[1], reverse=True)
         return result
-   
-        
+
     def get_language_list(self):
         expected_langs = self.extra_client_expected_langs()
 
         lang_codes = []
-        
+
         for lang, priority in expected_langs:
             lang_country = lang.split('-')
             if len(lang_country) == 1:
@@ -180,7 +179,6 @@ class Jinja2i18nPlugin(Jinja2Plugin):
             lang_codes += [self.lang_code]
 
         return lang_codes
- 
 
     def prepare(self, langs=None):
         if langs is None:
@@ -198,7 +196,8 @@ class Jinja2i18nPlugin(Jinja2Plugin):
             return
 
         try:
-            trans = gettext.translation(self.domain, self.locale_dir, languages=langs)
+            trans = gettext.translation(
+                self.domain, self.locale_dir, languages=langs)
             trans.install(True)
             self.app._ = trans.ugettext
             self.prepared[prepared_key] = trans
@@ -230,7 +229,7 @@ class Jinja2i18nPlugin(Jinja2Plugin):
             except TemplateNotFound:
                 template = os.path.join(controller, '.'.join([action, 'html']))
                 tpl = self.env.get_template(template)
-            
+
             # add i18n variables
             data = callback(*args, **kwargs)
             data['_'] = self.app._
