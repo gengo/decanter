@@ -4,6 +4,7 @@
 import os
 import sys
 import json
+import traceback
 import gettext
 import re
 from functools import wraps
@@ -247,13 +248,14 @@ class JsonPlugin(object):
     def apply(self, callback, route):
         @wraps(callback)
         def wrapper(*args, **kwargs):
+            config = Config.get_instance()
             if self.name in route.skiplist:
                 return callback(*args, **kwargs)
 
             try:
                 data = callback(*args, **kwargs)
             # catch validation errors from the controller
-            except (Exception,) as e:
+            except (BaseError, ValidationError, ConnectionError, Exception) as e:
                 # create a standardized error object
                 data = {
                     'opstat': 'error'
@@ -269,13 +271,19 @@ class JsonPlugin(object):
                 if hasattr(e, 'returned') and isinstance(e.returned, dict):
                     data['response'] = e.returned
 
-                Log.get_instance().debug(
-                    "Error tracked: \Request: %s\nMessage: %s\nFields: %s\nResponse: %s\n" % (
-                        request,
-                        e.message,
-                        getattr(e, 'fields', None),
-                        getattr(e, 'response', None))
-                )
+                if not isinstance(e, ValidationError):
+                    Log.get_instance().error(
+                        "Error tracked: \Request: %s\nMessage: %s\nFields: %s\nResponse: %s\n\nTraceback: %s" % (
+                            request,
+                            e.message,
+                            getattr(e, 'fields', None),
+                            getattr(e, 'response', None),
+                            traceback.format_exc()
+                        )
+                    )
+                    
+                if config.debug is True:
+                    data['traceback'] = traceback.format_exc()
 
             response.set_header('Content-Type', 'application/json')
             return json.dumps(data)
