@@ -253,13 +253,17 @@ class JsonPlugin(object):
             try:
                 data = callback(*args, **kwargs)
             # catch validation errors from the controller
-            except (BaseError, ValidationError, ConnectionError) as e:
+            except (Exception,) as e:
                 # create a standardized error object
                 data = {
                     'opstat': 'error'
                 }
-                if e.message:
+                if hasattr(e, 'message') and e.message:
                     data['error'] = e.message
+                elif hasattr(e, 'msg') and e.msg:
+                    data['error'] = e.msg
+                else:
+                    data['error'] = unicode(e)
                 if hasattr(e, 'fields') and isinstance(e.fields, dict):
                     data['fields'] = e.fields
                 if hasattr(e, 'returned') and isinstance(e.returned, dict):
@@ -272,13 +276,6 @@ class JsonPlugin(object):
                         getattr(e, 'fields', None),
                         getattr(e, 'response', None))
                 )
-
-                if Config.get_instance().debug:
-                    print("Error tracked:\n===========")
-                    print(e)
-                    print("Message:", e.message)
-                    print("Fields:", getattr(e, 'fields', None))
-                    print("Response:", getattr(e, 'response', None))
 
             response.set_header('Content-Type', 'application/json')
             return json.dumps(data)
