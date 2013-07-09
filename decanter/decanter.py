@@ -132,7 +132,7 @@ def parse_args(filepath=__file__, source=sys.argv, custom_commands=[]):
         'myself': source.pop(0),
         'hostname': 'localhost',
         'port': 9000,
-        'conf': os.path.dirname(os.path.abspath(__file__)) + '/app/config/settings.py'
+        'conf': 'app/config/settings.py'
     }
     if len(source) == 0:
         source.append(defaults['myself'])
