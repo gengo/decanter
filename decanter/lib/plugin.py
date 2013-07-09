@@ -281,7 +281,7 @@ class JsonPlugin(object):
                             traceback.format_exc()
                         )
                     )
-                    
+
                 if config.debug is True:
                     data['traceback'] = traceback.format_exc()
 
