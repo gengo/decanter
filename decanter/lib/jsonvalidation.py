@@ -36,7 +36,9 @@ def get_error_dictionary(schema, instance):
 
     # iterate through the validation errors
     for error in errors:
+        print error.schema_path, error
         root = error.schema
+        print root
         # todo: add $ref handling
         if error.schema_path[0] == 'properties':
             # traverse the tree
@@ -52,7 +54,12 @@ def get_error_dictionary(schema, instance):
                 d[error.schema_path[1]] = _("Error when validating")
         else:
             # special case when error is not on a specific property
-            message = root.get("errors", {}).get(error.schema_path[0])
-            d[error.schema_path[1]] = _replace_vars(root, message)
+            root_err = root.get("errors", {})
+            default = root_err.get("default")
+            message = root_err.get(error.schema_path[0])
+            if message:
+                d[error.schema_path[0]] = _replace_vars(root, message)
+            else:
+                d[error.schema_path[0]] = "There was a problem"
 
     return d
