@@ -24,6 +24,11 @@ For example the app directory path is set in the configuration file, while the s
         - admin
             - controllers
             - views
+    - config
+        - environment
+            - devel.py
+            - live.py
+        - settings.py
     - views
 
 #### Bundles, controllers and the url path
