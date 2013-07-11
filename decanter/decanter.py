@@ -132,7 +132,7 @@ def parse_args(filepath=__file__, source=sys.argv, custom_commands=[]):
         'myself': source.pop(0),
         'hostname': 'localhost',
         'port': 9000,
-        'conf': 'app/config/settings.py'
+        'conf': os.path.dirname(os.path.abspath(__file__)) + '/app/config/settings.py'
     }
     if len(source) == 0:
         source.append(defaults['myself'])
@@ -154,8 +154,9 @@ def parse_args(filepath=__file__, source=sys.argv, custom_commands=[]):
     # 'type=argparse.FileType()' will confirm the existence of a file.
     # but it open file.
     args.config.close()
-    args.config = os.path.relpath(os.path.realpath(args.config.name),
-                                  os.path.dirname(os.path.realpath(filepath)))
+    config_path = os.path.realpath(args.config.name)
+    sys.path.append(os.path.dirname(config_path))
+    args.config = os.path.basename(config_path)
 
     return args
 
