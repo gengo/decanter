@@ -138,9 +138,7 @@ def parse_args(filepath=__file__, source=sys.argv, custom_commands=[]):
         source.append(defaults['myself'])
 
     parser = argparse.ArgumentParser(
-        description='Example: {myself} -h {hostname}' +
-                    '-p {port} -c app/config/settings.py start'.format(
-                    **defaults), conflict_handler='resolve')
+        description='Example: {myself} -h {hostname} -p {port} -c app/config/settings.py start'.format(**defaults), conflict_handler='resolve')
     parser.add_argument('command', choices=[
                         'start', 'stop', 'restart', 'status', 'runserver'] + custom_commands)
     parser.add_argument('-h', '--hostname', default=defaults['hostname'])
