@@ -69,6 +69,7 @@ def validate_schema(schema, **kwargs):
             created where appropriate, according to the JSON schema.
             """
             d = {}
+
             def build_dict(key, value):
                 if key not in d:
                     d[key] = value
@@ -84,7 +85,7 @@ def validate_schema(schema, **kwargs):
             # handle POST-parameters
             for key, value in bottle_form.iterallitems():
                 build_dict(key, value)
-                
+
             # handle GET-parameters
             for key, value in bottle.request.query.decode().items():
                 build_dict(key, value)
