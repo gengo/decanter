@@ -69,7 +69,7 @@ def validate_schema(schema, **kwargs):
             created where appropriate, according to the JSON schema.
             """
             d = {}
-            for key, value in bottle_form.iterallitems():
+            def build_dict(key, value):
                 if key not in d:
                     d[key] = value
                     if key in schema.get('properties') and not isinstance(value, list):
@@ -80,6 +80,15 @@ def validate_schema(schema, **kwargs):
                         d[key] += [value]
                     else:
                         d[key] = [d.get(key)] + [value]
+
+            # handle POST-parameters
+            for key, value in bottle_form.iterallitems():
+                build_dict(key, value)
+                
+            # handle GET-parameters
+            for key, value in bottle.request.query.decode().items():
+                build_dict(key, value)
+
             return d
 
         @wraps(callback)
