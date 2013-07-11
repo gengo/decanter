@@ -35,7 +35,7 @@ class Tests(unittest.TestCase):
         args = shlex.split('decanter -c setup.py \
 -h example.com -p 8000 start')
         result = decanter.parse_args(source=args)
-        self.assertEqual(result.config, '../setup.py')
+        self.assertEqual(result.config, 'setup.py')
         self.assertEqual(result.hostname, 'example.com')
         self.assertEqual(result.port, 8000)
         self.assertEqual(result.command, 'start')
@@ -67,7 +67,7 @@ class Tests(unittest.TestCase):
         args = shlex.split('decanter --config setup.py \
 --hostname example.com --port 8000 start')
         result = decanter.parse_args(source=args)
-        self.assertEqual(result.config, '../setup.py')
+        self.assertEqual(result.config, 'setup.py')
         self.assertEqual(result.hostname, 'example.com')
         self.assertEqual(result.port, 8000)
         self.assertEqual(result.command, 'start')
@@ -99,7 +99,7 @@ class Tests(unittest.TestCase):
         args = shlex.split('decanter -c setup.py \
 --hostname example.com -p 8000 start')
         result = decanter.parse_args(source=args)
-        self.assertEqual(result.config, '../setup.py')
+        self.assertEqual(result.config, 'setup.py')
         self.assertEqual(result.hostname, 'example.com')
         self.assertEqual(result.port, 8000)
         self.assertEqual(result.command, 'start')
