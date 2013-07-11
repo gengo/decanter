@@ -4,12 +4,12 @@ python:
 - '2.6'
 - '2.7'
 before_install:
+- python setup.py pep8
 - sudo apt-get update
 - sudo apt-get install libevent-dev
 install:
 - pip install -r requirements.txt --use-mirrors
 - pip install coverage
-before_script: python setup.py pep8
 script: nosetests --with-cover --cover-html --cover-package=decanter
 notifications:
   irc: irc.freenode.net#Gengo
