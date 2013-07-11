@@ -132,14 +132,14 @@ def parse_args(filepath=__file__, source=sys.argv, custom_commands=[]):
         'myself': source.pop(0),
         'hostname': 'localhost',
         'port': 9000,
-        'conf': os.path.dirname(os.path.abspath(__file__)) + '/app/config/settings.py'
+        'conf': os.path.dirname(os.path.abspath(filepath)) + '/app/config/settings.py'
     }
     if len(source) == 0:
         source.append(defaults['myself'])
 
     parser = argparse.ArgumentParser(
         description='Example: {myself} -h {hostname}' +
-                    '-p {port} -c config/devel.py start'.format(
+                    '-p {port} -c app/config/settings.py start'.format(
                     **defaults), conflict_handler='resolve')
     parser.add_argument('command', choices=[
                         'start', 'stop', 'restart', 'status', 'runserver'] + custom_commands)
