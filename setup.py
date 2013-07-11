@@ -45,8 +45,25 @@ class TestCommand(Command):
 
     def run(self):
         import subprocess
-        errno = subprocess.call(['nosetests', '--debug=DEBUG', '-s'])
+        errno = subprocess.call(['nosetests', '--debug=DEBUG', '-s', 'tests/unit'])
         raise SystemExit(errno)
+
+
+class TestCommandWithCoverage(Command):
+    description = "Run tests and generate coverage report"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        import subprocess
+        errno = subprocess.call(['nosetests', '--with-cover', '--cover-html', '--cover-package=decanter', 'tests/unit'])
+        raise SystemExit(errno)
+
 
 # Required repositories
 with open(os.path.join(os.path.dirname(__file__), 'requirements.txt')) as f:
@@ -73,6 +90,7 @@ setup(
     cmdclass={
         'pep8': Pep8Command,
         'test': TestCommand,
+        'coverage': TestCommandWithCoverage,
     },
     license="BSD",
     keywords="web framework bottle gengo",
