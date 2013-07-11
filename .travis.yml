@@ -11,7 +11,7 @@ before_install:
 install:
 - pip install -r requirements.txt --use-mirrors
 - pip install coverage
-script: nosetests --with-cover --cover-html --cover-package=decanter
+script: python setup.py coverage
 notifications:
   irc: irc.freenode.net#Gengo
 after_success: ./scripts/update-gh-pages.sh
