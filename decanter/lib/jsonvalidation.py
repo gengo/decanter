@@ -36,9 +36,7 @@ def get_error_dictionary(schema, instance):
 
     # iterate through the validation errors
     for error in errors:
-        print error.schema_path, error
         root = error.schema
-        print root
         # todo: add $ref handling
         if error.schema_path[0] == 'properties':
             # traverse the tree
