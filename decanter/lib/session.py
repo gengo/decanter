@@ -187,8 +187,7 @@ class ExpressSession(SessionAbstract):
 
         self.cookie['session_id'] = self.crypt.md5(uuid.uuid4().get_bytes())
         self.cookie['ip_address'] = request.remote_addr
-        self.cookie['user_agent'] = request.environ.get(
-            'HTTP_USER_AGENT')[0:50]
+        self.cookie['user_agent'] = request.environ.get('HTTP_USER_AGENT', '')[0:50]
         self.cookie['last_activity'] = timestamp
 
         max_age = self.lifetime if self.lifetime else self.one_day
