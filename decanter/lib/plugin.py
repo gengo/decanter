@@ -75,7 +75,9 @@ class Jinja2Plugin(object):
             views.append(os.path.join(self.config.apppath, 'views'))
 
             self.env = Environment(
-                loader=ChoiceLoader([FileSystemLoader(views, encoding='utf-8'), DecanterLoader(basepath)]))
+                loader=ChoiceLoader([FileSystemLoader(views, encoding='utf-8'),
+                                     DecanterLoader(
+                                     basepath)]))
                 # extensions=['jinja2.ext.i18n'])
 
             # self.env.install_gettext_translations(gettext.NullTranslations())
@@ -201,6 +203,8 @@ class Jinja2i18nPlugin(Jinja2Plugin):
             self.app._ = trans.ugettext
             self.prepared[prepared_key] = trans
         except Exception, e:
+            Log.get_instance().error("No locale folder found for translations or problems with importing it.")
+            trans = None
             self.app._ = lambda s: s
             self.prepared[prepared_key] = None
 
