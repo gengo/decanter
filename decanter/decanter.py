@@ -107,7 +107,11 @@ class Decanter(Daemon):
             You're ready to go!
             Server running on http://{1}:{0}
             {2}""".format(self.port, self.hostname, '=' * 50)))
-        self.run()
+        try:
+            self.run()
+        except KeyboardInterrupt:
+            # Don't show traceback when sending ^C during runserver
+            print('\nGood-bye!')
 
     def status(self):
         try:
