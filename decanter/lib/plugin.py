@@ -211,6 +211,7 @@ class Jinja2i18nPlugin(Jinja2Plugin):
         self.trans = trans
 
     def apply(self, callback, route):
+        
         @wraps(callback)
         def wrapper(*args, **kwargs):
             if self.name in route.skiplist:
