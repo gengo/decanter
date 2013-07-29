@@ -19,7 +19,7 @@ from .singleton import Singleton
 class Session(Singleton):
 
     def __init__(self, session=None):
-        if getattr(self, '__init', False):
+        if session:
             self.session = session
 
     def __getattr__(self, name):
