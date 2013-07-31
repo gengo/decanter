@@ -42,7 +42,7 @@ default = {
 }
 
 # list of plugins names to install by default
-plugins = ['jinja2', 'session']
+plugins = ['jinja2']
 
 # redis config settings
 redis = {
