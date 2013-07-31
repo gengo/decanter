@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import time
-import json
 import uuid
 import urllib
 import calendar
@@ -13,7 +12,6 @@ from .logger import Log
 from .crypt import Crypt
 from .store import Redis
 from .config import Config
-from .singleton import Singleton
 
 
 class Session(object):
