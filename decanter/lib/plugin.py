@@ -202,7 +202,7 @@ class Jinja2i18nPlugin(Jinja2Plugin):
             trans.install(True)
             self.app._ = trans.ugettext
             self.prepared[prepared_key] = trans
-        except Exception, e:
+        except Exception as e:
             Log.get_instance().error("No locale folder found for translations or problems with importing it.")
             trans = None
             self.app._ = lambda s: s
