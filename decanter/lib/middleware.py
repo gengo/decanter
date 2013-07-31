@@ -6,8 +6,6 @@ import sys
 from Cookie import SimpleCookie
 from session import Session
 from session import ExpressSession
-from logger import Log
-from config import Config
 
 
 class Dispatcher(object):
