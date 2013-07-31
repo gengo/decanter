@@ -52,12 +52,10 @@ def get_error_dictionary(schema, instance):
                 d[error.schema_path[1]] = _("Error when validating")
         else:
             # special case when error is not on a specific property
-            root_err = root.get("errors", {})
-            default = root_err.get("default")
-            message = root_err.get(error.schema_path[0])
-            if message:
+            message = root.get("errors", {}).get(error.schema_path[0])
+            try:
+                d[error.schema_path[1]] = _replace_vars(root, message)
+            except IndexError as e:
                 d[error.schema_path[0]] = _replace_vars(root, message)
-            else:
-                d[error.schema_path[0]] = "There was a problem"
 
     return d

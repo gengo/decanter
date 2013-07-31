@@ -16,11 +16,10 @@ from .config import Config
 from .singleton import Singleton
 
 
-class Session(Singleton):
+class Session(object):
 
     def __init__(self, session=None):
-        if session:
-            self.session = session
+        self.session = session
 
     def __getattr__(self, name):
         return getattr(self.session, name)
@@ -121,8 +120,10 @@ class SessionAbstract(object):
 
 class ExpressSession(SessionAbstract):
 
-    def __init__(self):
+    def __init__(self, cookies):
         super(ExpressSession, self).__init__()
+        # SimpleCookie object
+        self.cookies = cookies
         # initialize crypt library
         self.crypt = Crypt(self.config.key)
         # redis session storage
@@ -134,7 +135,9 @@ class ExpressSession(SessionAbstract):
                        'last_activity': None}
 
     def read(self):
-        cookie = request.get_cookie(self.name)
+        cookie = False
+        if self.name in self.cookies:
+            cookie = self.cookies[self.name].value
         try:
             if cookie:
                 cookie = urllib.unquote(cookie)
