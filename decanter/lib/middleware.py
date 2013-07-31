@@ -109,6 +109,7 @@ class StripPath(object):
 
 
 class SessionWsgi(object):
+
     def __init__(self, wsgi):
         self.app = wsgi
 

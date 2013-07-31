@@ -76,11 +76,7 @@ class Jinja2Plugin(object):
 
             self.env = Environment(
                 loader=ChoiceLoader([FileSystemLoader(views, encoding='utf-8'),
-                                     DecanterLoader(
-                                     basepath)]))
-                # extensions=['jinja2.ext.i18n'])
-
-            # self.env.install_gettext_translations(gettext.NullTranslations())
+                                     DecanterLoader(basepath)]))
 
     def apply(self, callback, route):
         @wraps(callback)

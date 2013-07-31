@@ -27,7 +27,7 @@ class Log(object):
                     os.path.dirname(self.filepath))
                 if not os.path.exists(parent_path):
                     # try to create the logs directory
-                    os.makedirs(parent_path, mode=0755)
+                    os.makedirs(parent_path, mode=0o755)
                 # and try again
                 handler = logging.handlers.TimedRotatingFileHandler(
                     self.filepath, 'midnight', 1, 10, 'UTF-8')

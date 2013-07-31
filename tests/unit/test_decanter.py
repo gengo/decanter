@@ -44,7 +44,7 @@ class DecanterTest(unittest.TestCase):
     @mock.patch('grp.getgrnam')
     @mock.patch.multiple('pwd', getpwuid=mock.DEFAULT, getpwnam=mock.DEFAULT)
     @mock.patch.multiple('os', chown=mock.DEFAULT, setgid=mock.DEFAULT, setuid=mock.DEFAULT)
-    def test_daemonize_username_doesnt_match_config_user(self, getgrnam,  daemonize, isfile, getpwuid, getpwnam, chown, setgid, setuid):
+    def test_daemonize_username_doesnt_match_config_user(self, getgrnam, daemonize, isfile, getpwuid, getpwnam, chown, setgid, setuid):
         getpwuid_m = mock.Mock()
         getpwuid_m.pw_name = 'doesnt_match'
 
