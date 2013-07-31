@@ -202,7 +202,7 @@ class Jinja2i18nPlugin(Jinja2Plugin):
             trans.install(True)
             self.app._ = trans.ugettext
             self.prepared[prepared_key] = trans
-        except Exception, e:
+        except Exception as e:
             Log.get_instance().error("No locale folder found for translations or problems with importing it.")
             trans = None
             self.app._ = lambda s: s
@@ -211,7 +211,6 @@ class Jinja2i18nPlugin(Jinja2Plugin):
         self.trans = trans
 
     def apply(self, callback, route):
-        
         @wraps(callback)
         def wrapper(*args, **kwargs):
             if self.name in route.skiplist:
@@ -293,42 +292,6 @@ class JsonPlugin(object):
             response.set_header('Content-Type', 'application/json')
             return json.dumps(data)
 
-        return wrapper
-
-    def setup(self, app):
-        pass
-
-    def close(self):
-        pass
-
-
-class SessionPlugin(object):
-    __state = {}
-    name = 'session'
-    api = 2
-
-    def __init__(self):
-        """ Borg Pattern """
-        self.__dict__ = self.__state
-        if 'ses' not in self.__dict__:
-            config = Config.get_instance()
-            self.name = ''.join([config.session.get(
-                'type').title(), 'Session'])
-            if 'decanter.lib.session' not in sys.modules:
-                self.module = __import__('lib.session', fromlist=[self.name])
-            else:
-                self.module = sys.modules['decanter.lib.session']
-
-    def apply(self, callback, route):
-        @wraps(callback)
-        def wrapper(*args, **kwargs):
-            if self.name in route.skiplist:
-                return callback(*args, **kwargs)
-            ses = Session(getattr(self.module, self.name)())
-            ses.read()
-            data = callback(*args, **kwargs)
-            ses.write()
-            return data
         return wrapper
 
     def setup(self, app):
