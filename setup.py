@@ -71,7 +71,7 @@ with open(os.path.join(os.path.dirname(__file__), 'requirements.txt')) as f:
 
 setup(
     name="decanter",
-    version="0.1.6.3",
+    version="0.1.6.4",
     packages=find_packages(),
     scripts=['decanter/decanter-admin.py'],
     install_requires=install_requires,
