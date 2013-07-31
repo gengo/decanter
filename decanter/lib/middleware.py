@@ -3,6 +3,9 @@
 
 import os
 import sys
+from Cookie import SimpleCookie
+from session import Session
+from session import ExpressSession
 from logger import Log
 from config import Config
 
@@ -99,6 +102,23 @@ class StripPath(object):
     def wsgi(self, environ, start_response):
         if environ['PATH_INFO'] != '/':
             environ['PATH_INFO'] = environ['PATH_INFO'].rstrip('/')
+        return self.app
+
+    def __call__(self, environ, start_response):
+        return self.wsgi(environ, start_response)(environ, start_response)
+
+
+class SessionWsgi(object):
+    def __init__(self, wsgi):
+        self.app = wsgi
+
+    def wsgi(self, environ, start_response):
+        sc = SimpleCookie()
+        if 'HTTP_COOKIE' in environ:
+            sc.load(environ.get('HTTP_COOKIE'))
+        ses = Session(ExpressSession(sc))
+        ses.read()
+        environ['express.session'] = ses
         return self.app
 
     def __call__(self, environ, start_response):
