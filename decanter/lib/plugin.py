@@ -16,8 +16,8 @@ from jinja2 import TemplateNotFound
 from bottle import request, response, PluginError, hook
 from .logger import Log
 from .config import Config
-from .session import Session
 from .errors import BaseError, ValidationError, ConnectionError
+
 # Format of http.request.header.Accept-Language.
 # refs: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
 REQUEST_ACCEPT_LANGUAGE_RE = re.compile(r'''

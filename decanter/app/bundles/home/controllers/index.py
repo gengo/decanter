@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from bottle import request
 from lib.decorator import get
-from lib.session import Session
 
 
 @get('/', apply='json', skip='jinja2')
 def index():
-    ses = Session.get_instance()
+    ses = request.environ.get('express.session', {})
     print ses
-    ses['name'] = 'Decanter!'
-    if ses.has('decanter'):
-        return {'word': ses['decanter']}
+    ses['name'] = 'World!'
+    if ses.has('name'):
+        return {'word': ses['name']}
     return {'word': 'Hello Decanter!'}
 
 
