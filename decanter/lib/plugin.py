@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import os
-import json
-import traceback
-import gettext
 import re
+import json
+import gettext
+import traceback
+from bottle import request
 from functools import wraps
 from jinja2 import BaseLoader
 from jinja2 import Environment
@@ -287,6 +288,31 @@ class JsonPlugin(object):
             response.set_header('Content-Type', 'application/json')
             return json.dumps(data)
 
+        return wrapper
+
+    def setup(self, app):
+        pass
+
+    def close(self):
+        pass
+
+
+class SessionPlugin(object):
+    name = 'session'
+    api = 2
+
+    def __init__(self):
+        pass
+
+    def apply(self, callback, route):
+        @wraps(callback)
+        def wrapper(*args, **kwargs):
+            if self.name in route.skiplist:
+                return callback(*args, **kwargs)
+            data = callback(*args, **kwargs)
+            if 'express.session' in request.environ:
+                request.environ['express.session'].write()
+            return data
         return wrapper
 
     def setup(self, app):
