@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 import json
 import traceback
 import gettext
@@ -13,7 +12,7 @@ from jinja2 import Environment
 from jinja2 import ChoiceLoader
 from jinja2 import FileSystemLoader
 from jinja2 import TemplateNotFound
-from bottle import request, response, PluginError, hook
+from bottle import request, response, PluginError
 from .logger import Log
 from .config import Config
 from .errors import BaseError, ValidationError, ConnectionError
@@ -198,7 +197,7 @@ class Jinja2i18nPlugin(Jinja2Plugin):
             trans.install(True)
             self.app._ = trans.ugettext
             self.prepared[prepared_key] = trans
-        except Exception as e:
+        except Exception:
             Log.get_instance().error("No locale folder found for translations or problems with importing it.")
             trans = None
             self.app._ = lambda s: s

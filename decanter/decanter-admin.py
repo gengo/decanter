@@ -12,6 +12,7 @@ which creates a base project called `myproject` to start working in.
 
 import os
 import argparse
+import errno
 
 
 def create_project(args):

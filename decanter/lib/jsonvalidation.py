@@ -1,11 +1,7 @@
 import re
-import json
-import jsonschema
-import pprint
 from gettext import gettext as _
+from jsonschema import Draft4Validator
 
-from jsonschema import validate, Draft4Validator, ErrorTree
-from jsonschema import ValidationError as JSONValidationError
 
 template_search = re.compile(r'{{[\s]?([\w]+)[\s]?}}')
 template_replacement = '({{[\s]?%s[\s]?}})'
@@ -55,7 +51,7 @@ def get_error_dictionary(schema, instance):
             message = root.get("errors", {}).get(error.schema_path[0])
             try:
                 d[error.schema_path[1]] = _replace_vars(root, message)
-            except IndexError as e:
+            except IndexError:
                 d[error.schema_path[0]] = _replace_vars(root, message)
 
     return d

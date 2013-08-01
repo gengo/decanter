@@ -71,7 +71,7 @@ class Decanter(Daemon):
                         break
 
             if not cls:
-                raise ImportWarning(name + ' is not faund.')
+                raise ImportWarning(name + ' is not found.')
             bottle.install(cls())
 
     def daemonize(self):
