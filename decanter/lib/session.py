@@ -150,6 +150,7 @@ class ExpressSession(SessionAbstract):
                         self.data = {}
                         for key in self.cookie:
                             self.cookie[key] = None
+
         except Exception as e:
             print("Error while reading session: {0}".format(e))
             self.log.error("Error while reading session: {0}".format(e))
