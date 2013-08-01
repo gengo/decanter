@@ -119,6 +119,4 @@ class SessionWsgi(object):
         ses = Session(ExpressSession(sc))
         ses.read()
         environ['express.session'] = ses
-        res = self.app(environ, start_response)
-        ses.write()
-        return res
+        return self.app(environ, start_response)
