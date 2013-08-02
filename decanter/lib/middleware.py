@@ -112,6 +112,9 @@ class SessionWsgi(object):
     def __init__(self, wsgi):
         self.app = wsgi
 
+    def wsgi(self, environ, start_response):
+        return self.app
+
     def __call__(self, environ, start_response):
         sc = SimpleCookie()
         if 'HTTP_COOKIE' in environ:

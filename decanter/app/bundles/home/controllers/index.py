@@ -3,6 +3,7 @@
 
 from lib.decorator import get
 
+
 @get('/', apply='json', skip='jinja2')
 def index():
     return {'word': 'Hello Decanter!'}
