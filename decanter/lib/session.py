@@ -211,8 +211,8 @@ class ExpressSession(SessionAbstract):
             self.data, object_hook=phpserialize.phpobject)
         self.redis.set(self.cookie['session_id'], data)
         self.redis.expire(self.cookie['session_id'], max_age)
-        response.set_cookie(self.name, self.crypt.encrypt(
-            phpserialize.dumps(self.cookie)), **params)
+        response.set_cookie(self.name, urllib.quote_plus(
+            self.crypt.encrypt(phpserialize.dumps(self.cookie))), **params)
 
     def __str__(self):
         return ':'.join([self.cookie['session_id'] if self.cookie['session_id'] else '', self.data.__str__()])
