@@ -2,26 +2,24 @@
 # -*- coding: utf-8 -*-
 
 
-class Singleton(object):
-    __instance = {}
+class BaseSingleton(type):
+    """
+    Need to write this because supports both Python 2.x and 3.x.
 
-    def __new__(cls, *args, **kwargs):
-        if cls.__name__ not in cls.__instance:
-            cls.__instance[cls.__name__] = super(
-                cls.__class__, cls).__new__(cls, *args, **kwargs)
-            setattr(cls.__instance[cls.__name__], '__init', True)
-        else:
-            setattr(cls.__instance[cls.__name__], '__init', False)
-        return cls.__instance[cls.__name__]
+    class SubClass(with_metaclass('SubClass', Singleton)):
+        pass
+    """
+    __instances = {}
 
-    def __init__(self, *args, **kwargs):
-        if getattr(self, '__init', False):
-            # do initialization here
-            pass
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls.__instances:
+            cls.__instances[cls] = super(BaseSingleton, cls).__call__(*args, **kwargs)
+        return cls.__instances[cls]
 
-    @classmethod
-    def get_instance(cls, *args, **kwargs):
-        try:
-            return cls.__instance[cls.__name__]
-        except KeyError:
-            return cls(*args, **kwargs)
+
+# Hide how to write a complex inheritance
+class Singleton(BaseSingleton('Singleton', (object, ), {})):
+    """
+    It becomes Singleton When class inherit this.
+    """
+    pass

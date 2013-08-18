@@ -17,7 +17,7 @@ class Log(object):
         self.__dict__ = self.__state
         if '_log' not in self.__dict__:
             self.filepath = filepath
-            config = Config.get_instance()
+            config = Config()
             try:
                 handler = logging.handlers.TimedRotatingFileHandler(
                     self.filepath, 'midnight', 1, 10, 'UTF-8')

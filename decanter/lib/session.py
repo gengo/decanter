@@ -48,7 +48,7 @@ class SessionAbstract(object):
         # initialize logger
         self.log = Log.get_instance()
         # get config
-        self.config = Config.get_instance()
+        self.config = Config()
         # name of session cookie
         self.name = self.config.session.get('name', 'DECANTERSESID')
         # session lifetime

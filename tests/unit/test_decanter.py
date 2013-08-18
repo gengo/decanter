@@ -9,12 +9,15 @@ from decanter import lib
 
 class DecanterTest(unittest.TestCase):
 
-    @mock.patch('decanter.lib.config.Config.get_instance')
-    def setUp(self, get_instance):
-        get_instance.return_value.apppath = 'apppath'
+    @mock.patch('decanter.lib.config.Config')
+    @mock.patch('decanter.lib.config.Config._load')
+    def setUp(self, config, load):
+        config.return_value.apppath = 'apppath'
+        config.return_value.timezone = 'Asia/Tokyo'
         app = mock.Mock()
         self.decanter = decanter.Decanter(app)
         self.decanter.config.user = 'test_user'
+        self.decanter.config.test = True
 
     @mock.patch('bottle.install')
     def test_install(self, bottle_install):
