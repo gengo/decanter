@@ -8,7 +8,7 @@ from lib.config import Config
 
 @bottle.error(500)
 def error_500(error):
-    config = Config.get_instance()
+    config = Config()
     accept = bottle.request.headers.get('accept', False)
     is_json = accept and 'json' in accept
     if config.debug and is_json:

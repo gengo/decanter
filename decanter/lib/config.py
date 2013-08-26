@@ -7,15 +7,12 @@ import sys
 
 
 class Config(Singleton):
-
     def __init__(self, config=None):
         """
-        module (str): name of a python module or path to the file containing
+        config (str): name of a python module or path to the file containing
         configuration parameters
         """
-        if getattr(self, '__init', False):
-            # do initialization here
-            self.__data = self._load(config)
+        self.__data = self._load(config)
 
     def _load(self, config):
         parent_count = 0

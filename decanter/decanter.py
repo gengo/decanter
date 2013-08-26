@@ -30,7 +30,7 @@ class Decanter(Daemon):
         self.hostname = hostname
         self.port = int(port)
         self.pidfile = pidfile
-        self.config = Config.get_instance()
+        self.config = Config()
 
         if 'timezone' in self.config:
             os.environ['TZ'] = self.config.timezone
@@ -168,6 +168,7 @@ if __name__ == '__main__':
 
     # initialize Config
     config = Config(args.config)
+
     # the log file
     logfile = config.logger['filepath'].format(args.port, date.today())
     # the pid fle
