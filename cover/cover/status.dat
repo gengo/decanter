@@ -37,7 +37,7 @@ p19
 I0
 sS'n_statements'
 p20
-I33
+I32
 sS'n_excluded'
 p21
 I0
@@ -46,13 +46,13 @@ p22
 I0
 sS'n_missing'
 p23
-I24
+I20
 sS'n_missing_branches'
 p24
 I0
 sbssS'hash'
 p25
-S'4\x81\x02\x18Bg\xda\x1f\xe0\x84\xc5|\xf7\xe7uK'
+S'\x96W\xdb\xc1\xa9&\x83\xb5\xbcAK\xc1\xe1\nh\x87'
 p26
 ssS'decanter_lib_plugin'
 p27
@@ -86,7 +86,7 @@ I170
 sg24
 I0
 sbssg25
-S'=\xabR\xd8Yi5\xb1\xd6\xff\xa6\xe1\xca\xf5\x0b\x94'
+S'\r]W\xf3\x9cC\xea\xf9\x87\xb4\xe8 \xdf\xa9\xc9\xd0'
 p34
 ssS'decanter_lib_singleton'
 p35
@@ -110,17 +110,17 @@ I1
 sg19
 I0
 sg20
-I16
+I12
 sg21
 I0
 sg22
 I0
 sg23
-I11
+I0
 sg24
 I0
 sbssg25
-S'\x15q\x10n\x9d\x0eO\x1e/\x8b\x05DX\xf6c\x1e'
+S"\x90zi\x188\xc2\x92S.H'\x11\xa0w\xc4w"
 p42
 ssS'decanter_lib_crypt'
 p43
@@ -188,7 +188,7 @@ I19
 sg24
 I0
 sbssg25
-S'\xfd[\xd7\x8b\xa8\x9dJ(Yy\xa1^\xc4\xaa\xbe\xca'
+S'F\xb4~na\x7f\xe3\x1f\t\xaf\xaa\x156\x91C\xab'
 p58
 ssS'decanter_lib'
 p59
@@ -286,11 +286,11 @@ I0
 sg22
 I0
 sg23
-I36
+I35
 sg24
 I0
 sbssg25
-S'}\x0b?\xafIT\xb1\xd5\x167\x0e\x02H\x04\xe5\x00'
+S'6\xce\xd1\xa0\x84p\xdf\x81AZ|\xa4>s!\xf7'
 p82
 ssS'decanter_lib_errors'
 p83
@@ -459,7 +459,7 @@ I106
 sg24
 I0
 sbssg25
-S'\x03}G\x0c\xb9\x89\x94\xa8\xd5\x1d\x96J\xe5!\xcd\n'
+S')\xc3\n\xa5\xd5<L\xecK\xc8\xe1\xe9s\x85\x96\xd9'
 p121
 ssS'decanter_lib_store'
 p122
@@ -493,7 +493,7 @@ I6
 sg24
 I0
 sbssg25
-S'\xec\x17\xf0\xf1\xc5S\x8f\xffS\x17\x8bL\xc7\x19\x8f\xdb'
+S'~\x88A\x92\xe6\xdd@\xac7\xf8/ni\x12\xba@'
 p129
 sssS'version'
 p130
