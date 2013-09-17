@@ -55,7 +55,7 @@ class Jinja2Plugin(object):
         """ Borg Pattern """
         self.__dict__ = self.__state
         if 'env' not in self.__dict__:
-            self.config = Config.get_instance()
+            self.config = Config()
             basepath = os.path.join(self.config.apppath, 'bundles')
             bundels = [name for name in os.listdir(
                 basepath) if os.path.isdir(os.path.join(basepath, name))]
@@ -117,7 +117,7 @@ class Jinja2i18nPlugin(Jinja2Plugin):
     def __init__(self):
         super(Jinja2i18nPlugin, self).__init__()
 
-        config = Config.get_instance()
+        config = Config()
         self.domain = getattr(config, 'domain', 'locale')
         locale_dir = getattr(config, 'locale_dir')
         lang_code = getattr(config, 'lang_code', 'en')
@@ -246,7 +246,7 @@ class JsonPlugin(object):
     def apply(self, callback, route):
         @wraps(callback)
         def wrapper(*args, **kwargs):
-            config = Config.get_instance()
+            config = Config()
             if self.name in route.skiplist:
                 return callback(*args, **kwargs)
 

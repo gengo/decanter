@@ -15,7 +15,7 @@ class Redis(object):
     def __init__(self):
         self.__dict__ = self.__state
         if '_redis' not in self.__dict__:
-            config = Config.get_instance()
+            config = Config()
 
             pool = redis.ConnectionPool(db=config.redis.get('db', 0),
                                         host=config.redis.get(
