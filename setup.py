@@ -4,9 +4,6 @@ import sys
 from setuptools import setup, find_packages
 from subprocess import call
 
-# Command based on Libcloud setup.py:
-# https://github.com/apache/libcloud/blob/trunk/setup.py
-
 
 class Pep8Command(Command):
     description = "Run pep8 script"
@@ -23,8 +20,8 @@ class Pep8Command(Command):
             import pep8
             pep8
         except ImportError:
-            print ('Missing "pep8" library. You can install it using pip: '
-                   'pip install pep8')
+            print('Missing "pep8" library. You can install it using pip: '
+                  'pip install pep8')
             sys.exit(1)
 
         cwd = os.getcwd()
@@ -71,7 +68,7 @@ with open(os.path.join(os.path.dirname(__file__), 'requirements.txt')) as f:
 
 setup(
     name="decanter",
-    version="0.1.6.5",
+    version=open('decanter/_version.py').readlines()[-1].split()[-1].strip("\"'"),
     packages=find_packages(),
     scripts=['decanter/decanter-admin.py'],
     install_requires=install_requires,

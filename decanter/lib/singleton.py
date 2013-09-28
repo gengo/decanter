@@ -4,6 +4,7 @@ import bottle
 
 
 class BaseSingleton(type):
+
     """
     Need to write this because supports both Python 2.x and 3.x.
 
@@ -24,6 +25,7 @@ class BaseSingleton(type):
 
 # Hide how to write a complex inheritance
 class Singleton(BaseSingleton('Singleton', (object, ), {})):
+
     """
     It becomes Singleton When class inherit this.
     """

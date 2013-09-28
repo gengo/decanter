@@ -7,6 +7,7 @@ import sys
 
 
 class Config(Singleton):
+
     def __init__(self, config=None):
         """
         config (str): name of a python module or path to the file containing
