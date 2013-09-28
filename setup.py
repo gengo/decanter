@@ -67,7 +67,7 @@ with open(os.path.join(os.path.dirname(__file__), 'requirements.txt')) as f:
     install_requires = f.read().splitlines()
 
 setup(
-    name="Decanter",
+    name="decanter",
     version=open('decanter/_version.py').readlines()[-1].split()[-1].strip("\"'"),
     packages=find_packages(),
     scripts=['decanter/decanter-admin.py'],
