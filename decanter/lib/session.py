@@ -70,6 +70,9 @@ class SessionAbstract(object):
     def read(self):
         raise NotImplementedError("read method not implemented")
 
+    def close(self):
+        raise NotImplementedError("close method not implemented")
+
     def get(self, key, default=None):
         return self.data.get(key, default)
 
@@ -213,6 +216,13 @@ class ExpressSession(SessionAbstract):
         self.redis.expire(self.cookie['session_id'], max_age)
         response.set_cookie(self.name, urllib.quote_plus(
             self.crypt.encrypt(phpserialize.dumps(self.cookie))), **params)
+
+    def close(self):
+        try:
+            self.redis.close()
+        except Exception as e:
+            print("Error closing redis connection: {0}".format(e))
+            self.log.error("Error closing redis connection: {0}".format(e))
 
     def __str__(self):
         return ':'.join([self.cookie['session_id'] if self.cookie['session_id'] else '', self.data.__str__()])
