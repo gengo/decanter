@@ -6,6 +6,7 @@ from config import Config
 
 
 class Redis(object):
+
     """ Borg Pattern
     one state many objects useful in this case as we
     want one pool but many objects
