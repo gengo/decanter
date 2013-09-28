@@ -41,6 +41,7 @@ run
 
 # decanter generated
 gen
+cover
 
 *.swp
 _site
