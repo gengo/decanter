@@ -52,7 +52,7 @@ p24
 I0
 sbssS'hash'
 p25
-S'\x96W\xdb\xc1\xa9&\x83\xb5\xbcAK\xc1\xe1\nh\x87'
+S'~3\x0f\x88\xf4\xcb\xe4J\x0b\x8e\x1ao\x1c\x04\x97\xd6'
 p26
 ssS'decanter_lib_plugin'
 p27
@@ -120,7 +120,7 @@ I0
 sg24
 I0
 sbssg25
-S"\x90zi\x188\xc2\x92S.H'\x11\xa0w\xc4w"
+S'\xd6\x9c\xc3n\x97q+\xb3P7Q,\x0b/\x0c\x0c'
 p42
 ssS'decanter_lib_crypt'
 p43
@@ -360,13 +360,13 @@ I0
 sbssg25
 S'\xd8\xe2\x0e>}\x7fr\xb4\x04+Q\x11A\\\xab\x95'
 p98
-ssS'decanter'
+ssS'Decanter'
 p99
 (dp100
 g6
 (dp101
 g8
-S'decanter.html'
+S'Decanter.html'
 p102
 sg10
 g99
@@ -381,7 +381,7 @@ I1
 sg19
 I0
 sg20
-I1
+I3
 sg21
 I0
 sg22
@@ -391,7 +391,7 @@ I0
 sg24
 I0
 sbssg25
-S'\x1d)"\xc0\xce\x0e\x85\x17\xda&\xe2\x0c\xb1\x96\xc7\xda'
+S'\xd1{\x94\xe6\x8fc\xcf\xd2B2\xf4f\xb2\xc3,\xd1'
 p105
 ssS'decanter_vendor'
 p106
@@ -493,7 +493,7 @@ I6
 sg24
 I0
 sbssg25
-S'\xa78d\x8ezP\x044\xf2}nW\x82\xa2\xac\x1e'
+S'b\xa0\xcf\xab|\xd7\xe8\xa7\x96\n\x19\xcb>\xde%c'
 p129
 sssS'version'
 p130
