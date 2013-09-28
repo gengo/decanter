@@ -70,6 +70,9 @@ class SessionAbstract(object):
     def read(self):
         raise NotImplementedError("read method not implemented")
 
+    def close(self):
+        raise NotImplementedError("close method not implemented")
+
     def get(self, key, default=None):
         return self.data.get(key, default)
 
