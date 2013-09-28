@@ -25,9 +25,9 @@
         </h1>
         <img id='keyboard_icon' src='keybd_closed.png'>
         <h2 class='stats'>
-            150 statements &nbsp;
-            <span class='run hide_run shortkey_r button_toggle_run'>44 run</span>
-            <span class='mis shortkey_m button_toggle_mis'>106 missing</span>
+            156 statements &nbsp;
+            <span class='run hide_run shortkey_r button_toggle_run'>45 run</span>
+            <span class='mis shortkey_m button_toggle_mis'>111 missing</span>
             <span class='exc shortkey_x button_toggle_exc'>0 excluded</span>
             
         </h2>
@@ -279,6 +279,13 @@
 <p id='n216' class='pln'><a href='#n216'>216</a></p>
 <p id='n217' class='stm run hide_run'><a href='#n217'>217</a></p>
 <p id='n218' class='stm mis'><a href='#n218'>218</a></p>
+<p id='n219' class='stm mis'><a href='#n219'>219</a></p>
+<p id='n220' class='stm mis'><a href='#n220'>220</a></p>
+<p id='n221' class='stm mis'><a href='#n221'>221</a></p>
+<p id='n222' class='stm mis'><a href='#n222'>222</a></p>
+<p id='n223' class='pln'><a href='#n223'>223</a></p>
+<p id='n224' class='stm run hide_run'><a href='#n224'>224</a></p>
+<p id='n225' class='stm mis'><a href='#n225'>225</a></p>
                 
             </td>
             <td class='text' valign='top'>
@@ -498,8 +505,15 @@
 <p id='t214' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>response</span><span class='op'>.</span><span class='nam'>set_cookie</span><span class='op'>(</span><span class='nam'>self</span><span class='op'>.</span><span class='nam'>name</span><span class='op'>,</span> <span class='nam'>urllib</span><span class='op'>.</span><span class='nam'>quote_plus</span><span class='op'>(</span><span class='strut'>&nbsp;</span></p>
 <p id='t215' class='pln'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>self</span><span class='op'>.</span><span class='nam'>crypt</span><span class='op'>.</span><span class='nam'>encrypt</span><span class='op'>(</span><span class='nam'>phpserialize</span><span class='op'>.</span><span class='nam'>dumps</span><span class='op'>(</span><span class='nam'>self</span><span class='op'>.</span><span class='nam'>cookie</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>,</span> <span class='op'>**</span><span class='nam'>params</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t216' class='pln'><span class='strut'>&nbsp;</span></p>
-<p id='t217' class='stm run hide_run'>&nbsp; &nbsp; <span class='key'>def</span> <span class='nam'>__str__</span><span class='op'>(</span><span class='nam'>self</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
-<p id='t218' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='key'>return</span> <span class='str'>&#39;:&#39;</span><span class='op'>.</span><span class='nam'>join</span><span class='op'>(</span><span class='op'>[</span><span class='nam'>self</span><span class='op'>.</span><span class='nam'>cookie</span><span class='op'>[</span><span class='str'>&#39;session_id&#39;</span><span class='op'>]</span> <span class='key'>if</span> <span class='nam'>self</span><span class='op'>.</span><span class='nam'>cookie</span><span class='op'>[</span><span class='str'>&#39;session_id&#39;</span><span class='op'>]</span> <span class='key'>else</span> <span class='str'>&#39;&#39;</span><span class='op'>,</span> <span class='nam'>self</span><span class='op'>.</span><span class='nam'>data</span><span class='op'>.</span><span class='nam'>__str__</span><span class='op'>(</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t217' class='stm run hide_run'>&nbsp; &nbsp; <span class='key'>def</span> <span class='nam'>close</span><span class='op'>(</span><span class='nam'>self</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
+<p id='t218' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='key'>try</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
+<p id='t219' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>self</span><span class='op'>.</span><span class='nam'>redis</span><span class='op'>.</span><span class='nam'>close</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t220' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='key'>except</span> <span class='nam'>Exception</span> <span class='key'>as</span> <span class='nam'>e</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
+<p id='t221' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='key'>print</span><span class='op'>(</span><span class='str'>&quot;Error closing redis connection: {0}&quot;</span><span class='op'>.</span><span class='nam'>format</span><span class='op'>(</span><span class='nam'>e</span><span class='op'>)</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t222' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>self</span><span class='op'>.</span><span class='nam'>log</span><span class='op'>.</span><span class='nam'>error</span><span class='op'>(</span><span class='str'>&quot;Error closing redis connection: {0}&quot;</span><span class='op'>.</span><span class='nam'>format</span><span class='op'>(</span><span class='nam'>e</span><span class='op'>)</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t223' class='pln'><span class='strut'>&nbsp;</span></p>
+<p id='t224' class='stm run hide_run'>&nbsp; &nbsp; <span class='key'>def</span> <span class='nam'>__str__</span><span class='op'>(</span><span class='nam'>self</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
+<p id='t225' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='key'>return</span> <span class='str'>&#39;:&#39;</span><span class='op'>.</span><span class='nam'>join</span><span class='op'>(</span><span class='op'>[</span><span class='nam'>self</span><span class='op'>.</span><span class='nam'>cookie</span><span class='op'>[</span><span class='str'>&#39;session_id&#39;</span><span class='op'>]</span> <span class='key'>if</span> <span class='nam'>self</span><span class='op'>.</span><span class='nam'>cookie</span><span class='op'>[</span><span class='str'>&#39;session_id&#39;</span><span class='op'>]</span> <span class='key'>else</span> <span class='str'>&#39;&#39;</span><span class='op'>,</span> <span class='nam'>self</span><span class='op'>.</span><span class='nam'>data</span><span class='op'>.</span><span class='nam'>__str__</span><span class='op'>(</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
                 
             </td>
         </tr>
