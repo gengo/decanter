@@ -13,7 +13,6 @@ class SingletonTest(unittest.TestCase):
         self.assertTrue(TestSingleton.get_instance() is TestSingleton.get_instance())
         self.assertTrue(TestSingleton() is TestSingleton.get_instance())
 
-
     def test_hold_value(self):
         singletonA = TestSingleton()
         singletonA.value = "This is value."

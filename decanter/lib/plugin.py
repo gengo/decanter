@@ -6,7 +6,6 @@ import re
 import json
 import gettext
 import traceback
-from bottle import request
 from functools import wraps
 from jinja2 import BaseLoader
 from jinja2 import Environment
@@ -312,6 +311,7 @@ class SessionPlugin(object):
             data = callback(*args, **kwargs)
             if 'express.session' in request.environ:
                 request.environ['express.session'].write()
+                request.environ['express.session'].close()
             return data
         return wrapper
 
