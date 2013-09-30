@@ -47,5 +47,20 @@ class Log(object):
     def get_instance(self):
         return self()
 
+    def critical(self, msg, *args, **kwargs):
+        self._log.critical(msg, *args, **kwargs)
+
+    def debug(self, msg, *args, **kwargs):
+        self._log.debug(msg, *args, **kwargs)
+
+    def error(self, msg, *args, **kwargs):
+        self._log.error(msg, *args, **kwargs)
+
+    def exception(self, msg, *args):
+        self._log.exception(msg, *args)
+
+    def info(self, msg, *args, **kwargs):
+        self._log.info(msg, *args, **kwargs)
+
     def __getattr__(self, name):
         return getattr(self._log, name)
