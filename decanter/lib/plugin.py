@@ -311,7 +311,8 @@ class SessionPlugin(object):
             data = callback(*args, **kwargs)
             if 'express.session' in request.environ:
                 request.environ['express.session'].write()
-                request.environ['express.session'].close()
+                # session does not need to be close or released as
+                # StrictRedis releases the connection after each operation
             return data
         return wrapper
 
