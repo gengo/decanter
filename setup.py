@@ -71,7 +71,25 @@ setup(
     version=open('decanter/_version.py').readlines()[-1].split()[-1].strip("\"'"),
     packages=find_packages(),
     scripts=['decanter/decanter-admin.py'],
-    install_requires=install_requires,
+    install_requires=(
+        "Jinja2==2.6",
+        "MarkupSafe==0.15",
+        "argparse==1.2.1",
+        "bottle==0.11.6",
+        "gevent==0.13.8",
+        "greenlet==0.4.0",
+        "jsonschema==1.3.0",
+        "mock==1.0.1",
+        "nose==1.3.0",
+        "pep8==1.4.5",
+        "phpserialize",
+        "pika==0.9.13",
+        "pycrypto==2.6",
+        "redis==2.7.5",
+        "requests==1.2.0",
+        "unittest2==0.5.1",
+        "wsgiref==0.1.2",
+    ),
 
     package_data={
         # If any package contains *.txt, *.rst or *.md files, include them:
