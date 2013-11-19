@@ -105,7 +105,7 @@ def validate_schema(schema, **kwargs):
 
 def login_required(login_url=None, login_id='user_id'):
     '''
-    Checks if 'login_id' attribute is present in the session, 
+    Checks if 'login_id' attribute is present in the session,
     and redirects to 'login_url' if it's not.
     '''
     def decorator(callback):

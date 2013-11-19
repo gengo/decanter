@@ -25,10 +25,10 @@ class Redis(object):
             max_connections = 10
 
             if 'redis' in config:
-                db=config.redis.get('db', db)
-                host=config.redis.get('host', host)
-                port=config.redis.get('port', port)
-                max_connections=config.redis.get('max_poolsize', max_connections)
+                db = config.redis.get('db', db)
+                host = config.redis.get('host', host)
+                port = config.redis.get('port', port)
+                max_connections = config.redis.get('max_poolsize', max_connections)
 
             # we only need one pool per app
             self._pool = redis.ConnectionPool(db=db, host=host, port=port,
