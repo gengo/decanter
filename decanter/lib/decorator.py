@@ -4,7 +4,7 @@
 from gettext import gettext as _
 from functools import wraps
 import bottle
-from bottle import request
+from bottle import request, redirect
 import plugin as lib_plugin
 from errors import ValidationError
 from . import jsonvalidation
@@ -98,6 +98,26 @@ def validate_schema(schema, **kwargs):
                 raise ValidationError(
                     message=_("There were errors validating your request."),
                     fields=errors)
+            return callback(*args, **kwargs)
+        return wrapper
+    return decorator
+
+
+def login_required(login_url=None, login_id='user_id'):
+    '''
+    Checks if 'login_id' attribute is present in the session, 
+    and redirects to 'login_url' if it's not.
+    '''
+    def decorator(callback):
+        @wraps(callback)
+        def wrapper(*args, **kwargs):
+            session = request.environ['express.session']
+            if login_id not in session:
+                if login_url:
+                    redirect(login_url)
+                else:
+                    raise Exception('Login Required')
+                return {}
             return callback(*args, **kwargs)
         return wrapper
     return decorator

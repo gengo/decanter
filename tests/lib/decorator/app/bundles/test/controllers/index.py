@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from lib.decorator import get, post, put, delete, route
+from lib.decorator import get, post, put, delete, route, login_required
 from bottle import request
 
 
@@ -11,6 +11,15 @@ def _format(path):
         'param': request.params.get('param')
     }
 
+
+@get('/login', apply='json')
+def login():
+    return {'login': 'success'}
+
+@get('/secret')
+@login_required(login_url='/login')
+def authenticated():
+    return 'Authentication failed'
 
 @get('/method/<path>', apply='json')
 def get(path):

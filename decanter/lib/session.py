@@ -49,18 +49,31 @@ class SessionAbstract(object):
         self.log = Log.get_instance()
         # get config
         self.config = Config()
-        # name of session cookie
-        self.name = self.config.session.get('name', 'DECANTERSESID')
-        # session lifetime
-        self.lifetime = self.config.session.get('lifetime', 0)
-        # cookie path
-        self.path = self.config.cookie.get('path', '/')
-        # cookie domain
-        self.domain = self.config.cookie.get('domain', None)
-        # cookies secure over ssl only
-        self.secure = self.config.cookie.get('secure', False)
-        # cookie over http only i.e. no javascript
-        self.httponly = self.config.cookie.get('httponly', False)
+
+        # set session defaults
+        self.name = 'DECANTERSESID'
+        self.lifetime = 0
+        if 'session' in self.config:
+            # name of session cookie
+            self.name = self.config.session.get('name', self.name)
+            # session lifetime
+            self.lifetime = self.config.session.get('lifetime', self.lifetime)
+
+        # set cookie defaults
+        self.path = '/'
+        self.domain = None
+        self.secure = False
+        self.httponly = False
+        if 'cookie' in self.config:
+            # cookie path
+            self.path = self.config.cookie.get('path', self.path)
+            # cookie domain
+            self.domain = self.config.cookie.get('domain', self.domain)
+            # cookies secure over ssl only
+            self.secure = self.config.cookie.get('secure', self.secure)
+            # cookie over http only i.e. no javascript
+            self.httponly = self.config.cookie.get('httponly', self.httponly)
+
         # the session data
         self.data = {}
 
