@@ -16,8 +16,11 @@ class Log(object):
         """ Borg pattern """
         self.__dict__ = self.__state
         if '_log' not in self.__dict__:
-            self.filepath = filepath
             config = Config()
+            if 'filepath' in config.logger:
+                self.filepath = config.logger['filepath']
+            else:
+                self.filepath = filepath
             try:
                 handler = logging.handlers.TimedRotatingFileHandler(
                     self.filepath, 'midnight', 1, 10, 'UTF-8')

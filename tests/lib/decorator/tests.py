@@ -77,3 +77,8 @@ class Tests(unittest.TestCase):
         result = requests.get(self.base_path + '/apply_list').text
         expected = {'apply': 'list'}
         self.assertEqual(expected, json.loads(result))
+
+    def tests_login_required(self):
+        response = requests.get(self.base_path + '/secret').text
+        expected = {'login': 'success'}
+        self.assertEqual(expected, json.loads(response))
