@@ -45,3 +45,4 @@ cover
 
 *.swp
 _site
+.DS_Store
