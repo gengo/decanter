@@ -37,9 +37,7 @@ class Decanter(Daemon):
 
         # remove all default bottle plugins
         bottle.uninstall(True)
-
-        if self.config.debug:
-            bottle.debug(True)
+        bottle.debug(self.config.debug)
 
         # install plugins
         self.install(plugins=self.config.plugins)
