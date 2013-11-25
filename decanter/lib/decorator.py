@@ -14,11 +14,6 @@ def route(path=None, method='GET', func=None, name=None, apply=None, skip=None, 
     def decorator(callback):
         plugins = []
 
-        def apply_plugin(plugin):
-            cls = ''.join([plugin.capitalize(), 'Plugin'])
-            cls = getattr(lib_plugin, cls)
-            plugins.append(cls())
-
         if isinstance(apply, str):
             plugins = [apply]
         elif isinstance(apply, list):
