@@ -27,7 +27,7 @@ class DecanterTest(unittest.TestCase):
         lib.plugin.JsonPlugin = json_plugin
         lib.plugin.XmlPlugin = xml_plugin
 
-        lib.plugin.install_plugins(['json', 'xml'])
+        lib.plugin.install_plugins(plugins=['json', 'xml'])
         bottle_install.assert_any_call(json_plugin())
         bottle_install.assert_any_call(xml_plugin())
 
