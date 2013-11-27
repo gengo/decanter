@@ -12,15 +12,18 @@ class Log(object):
     """
     simple logging.Logger wrapper
     """
-    def __init__(self, filepath='/var/log/decanter.log'):
+    def __init__(self, filepath=None):
         """ Borg pattern """
         self.__dict__ = self.__state
         if '_log' not in self.__dict__:
             config = Config()
-            if 'filepath' in config.logger:
+            if filepath:
+                self.filepath = filepath
+            elif 'filepath' in config.logger:
                 self.filepath = config.logger['filepath']
             else:
-                self.filepath = filepath
+                self.filepath = '/var/log/decanter.log'
+
             try:
                 handler = logging.handlers.TimedRotatingFileHandler(
                     self.filepath, 'midnight', 1, 10, 'UTF-8')
