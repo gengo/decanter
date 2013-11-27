@@ -23,6 +23,11 @@ genpath = os.path.join(decanterpath, 'gen')
 # pid file
 pidfile = os.path.join(genpath, 'run', 'decanter_{0}.py')
 
+# @see: http://bottlepy.org/docs/0.11/api.html#bottle.BaseRequest.MEMFILE_MAX
+# Maximum size of memory buffer for body in bytes.
+# 20 megabytes
+memfile_max = 20971520
+
 # logging
 logger = {
     # log directory path, first {0} is the port number and second {1] is the

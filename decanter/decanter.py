@@ -35,6 +35,9 @@ class Decanter(Daemon):
         if 'timezone' in self.config:
             os.environ['TZ'] = self.config.timezone
 
+        if 'memfile_max' in self.config:
+            bottle.Request.MEMFILE_MAX = self.config.memfile_max
+
         # remove all default bottle plugins
         bottle.uninstall(True)
         bottle.debug(self.config.debug)
