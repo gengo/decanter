@@ -229,7 +229,6 @@ class Jinja2i18nPlugin(Jinja2Plugin):
                 tpl = self.env.get_template(template)
 
             # add i18n variables
-            data = callback(*args, **kwargs)
             data['_'] = self.app._
             data['ngettext'] = self.trans.ungettext
 
@@ -269,13 +268,12 @@ class JsonPlugin(object):
                     data['response'] = e.returned
 
                 if not isinstance(e, ValidationError):
-                    Log.get_instance().error(
-                        "Error tracked: \Request: %s\nMessage: %s\nFields: %s\nResponse: %s\n\nTraceback: %s" % (
+                    Log.get_instance().exception(
+                        "Error tracked: \Request: %s\nMessage: %s\nFields: %s\nResponse: %s" % (
                             request,
                             e.message,
                             getattr(e, 'fields', None),
-                            getattr(e, 'response', None),
-                            traceback.format_exc()
+                            getattr(e, 'response', None)
                         )
                     )
                     # return server error response
