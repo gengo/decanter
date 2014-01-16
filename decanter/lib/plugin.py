@@ -4,7 +4,6 @@
 import os
 import re
 import json
-import gettext
 import traceback
 from functools import wraps
 from jinja2 import BaseLoader
@@ -16,6 +15,7 @@ from bottle import request, response, PluginError
 from .logger import Log
 from .config import Config
 from .errors import BaseError, ValidationError, ConnectionError
+from .i18n import get_translations, gettext, ngettext
 
 # Format of http.request.header.Accept-Language.
 # refs: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
@@ -46,36 +46,32 @@ class DecanterLoader(BaseLoader):
 
 
 class Jinja2Plugin(object):
-    __state = {}
     name = 'jinja2'
     api = 2
 
     def __init__(self):
-        """ Borg Pattern """
-        self.__dict__ = self.__state
-        if 'env' not in self.__dict__:
-            self.config = Config()
-            basepath = os.path.join(self.config.apppath, 'bundles')
-            bundels = [name for name in os.listdir(
-                basepath) if os.path.isdir(os.path.join(basepath, name))]
-            views = []
+        self.config = Config()
+        basepath = os.path.join(self.config.apppath, 'bundles')
+        bundels = [name for name in os.listdir(
+            basepath) if os.path.isdir(os.path.join(basepath, name))]
+        views = []
 
-            for bundle in bundels:
-                if bundle != 'views':
-                    baseViews = os.path.join(basepath, bundle, 'views')
-                    if os.path.isdir(baseViews):
-                        views.append(baseViews)
+        for bundle in bundels:
+            if bundle != 'views':
+                baseViews = os.path.join(basepath, bundle, 'views')
+                if os.path.isdir(baseViews):
+                    views.append(baseViews)
 
-            # add views directory in bundle
-            if 'views' in bundels:
-                views.append(os.path.join(basepath, 'views'))
+        # add views directory in bundle
+        if 'views' in bundels:
+            views.append(os.path.join(basepath, 'views'))
 
-            # add app/views directory
-            views.append(os.path.join(self.config.apppath, 'views'))
+        # add app/views directory
+        views.append(os.path.join(self.config.apppath, 'views'))
 
-            self.env = Environment(
-                loader=ChoiceLoader([FileSystemLoader(views, encoding='utf-8'),
-                                     DecanterLoader(basepath)]))
+        self.env = Environment(
+            loader=ChoiceLoader([FileSystemLoader(views, encoding='utf-8'),
+                                 DecanterLoader(basepath)]))
 
     def apply(self, callback, route):
         @wraps(callback)
@@ -133,6 +129,13 @@ class Jinja2i18nPlugin(Jinja2Plugin):
         self.app = None
         self.trans = None
 
+        self.env.add_extension('jinja2.ext.i18n')
+        self.env.install_gettext_callables(
+            lambda x: get_translations().ugettext(x),
+            lambda s, p, n: get_translations().ungettext(s, p, n),
+            newstyle=False
+        )
+
     def setup(self, app):
         self.app = app
         self.app._ = lambda s: s
@@ -177,33 +180,7 @@ class Jinja2i18nPlugin(Jinja2Plugin):
         return lang_codes
 
     def prepare(self, langs=None):
-        if langs is None:
-            langs = self.get_language_list()
-        prepared_key = tuple(langs)
-        if prepared_key in self.prepared:
-            trans = self.prepared.get(prepared_key)
-            if trans:
-                trans.install(True)
-                self.app._ = trans.ugettext
-            else:
-                self.app._ = lambda s: s
-
-            self.trans = trans
-            return
-
-        try:
-            trans = gettext.translation(
-                self.domain, self.locale_dir, languages=langs)
-            trans.install(True)
-            self.app._ = trans.ugettext
-            self.prepared[prepared_key] = trans
-        except Exception:
-            Log.get_instance().error("No locale folder found for translations or problems with importing it.")
-            trans = None
-            self.app._ = lambda s: s
-            self.prepared[prepared_key] = None
-
-        self.trans = trans
+        self.app._ = gettext
 
     def apply(self, callback, route):
         @wraps(callback)
@@ -227,10 +204,6 @@ class Jinja2i18nPlugin(Jinja2Plugin):
             except TemplateNotFound:
                 template = os.path.join(controller, '.'.join([action, 'html']))
                 tpl = self.env.get_template(template)
-
-            # add i18n variables
-            data['_'] = self.app._
-            data['ngettext'] = self.trans.ungettext
 
             return tpl.render(data)
 

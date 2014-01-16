@@ -61,6 +61,7 @@ def get_language_list():
 
 def locale_selector_func():
     lc_list = get_language_list()
+    print "Language List is", lc_list
     if lc_list:
         return lc_list[0]
     return 'en'
@@ -78,7 +79,7 @@ def get_translations():
 
     translations = request.environ.get('babel_translations', None)
     if translations is None:
-        translations = support.Translations.load(locale_dir, [get_locale()])
+        translations = support.Translations.load(locale_dir, [get_locale()], domain=domain)
         request.environ['babel_translations'] = translations
     return translations
 
@@ -110,9 +111,13 @@ def gettext(string, **variables):
         gettext(u'Hello %(name)s!', name='World')
     """
     t = get_translations()
+    if variables:
+        if t is None:
+            return string % variables
+        return t.ugettext(string) % variables
     if t is None:
-        return string % variables
-    return t.ugettext(string) % variables
+        return string
+    return t.ugettext(string)
 
 _ = gettext
 
@@ -122,27 +127,30 @@ def ngettext(singular, plural, num, **variables):
     given keyword arguments as mapping to a string formatting string.
     The `num` parameter is used to dispatch between singular and various
     plural forms of the message.  It is available in the format string
-    as ``%(num)d`` or ``%(num)s``.  The source language should be
-    English or a similar language which only has one plural form.
-
-    ::
-
-        ngettext(u'%(num)d Apple', u'%(num)d Apples', num=len(apples))
+    as ``%(num)d`` or ``%(num)s``.
     """
     variables.setdefault('num', num)
     t = get_translations()
+    if variables:
+        if t is None:
+            return (singular if num == 1 else plural) % variables
+        return t.ungettext(singular, plural, num) % variables
     if t is None:
-        return (singular if num == 1 else plural) % variables
-    return t.ungettext(singular, plural, num) % variables
+        return (singular if num == 1 else plural)
+    return t.ungettext(singular, plural, num)
 
 
 def pgettext(context, string, **variables):
     """Like :func:`gettext` but with a context.
     """
     t = get_translations()
+    if variables:
+        if t is None:
+            return string % variables
+        return t.upgettext(context, string) % variables
     if t is None:
-        return string % variables
-    return t.upgettext(context, string) % variables
+        return string
+    return t.upgettext(context, string)
 
 
 def npgettext(context, singular, plural, num, **variables):
@@ -150,6 +158,10 @@ def npgettext(context, singular, plural, num, **variables):
     """
     variables.setdefault('num', num)
     t = get_translations()
+    if variables:
+        if t is None:
+            return (singular if num == 1 else plural) % variables
+        return t.unpgettext(context, singular, plural, num) % variables
     if t is None:
-        return (singular if num == 1 else plural) % variables
-    return t.unpgettext(context, singular, plural, num) % variables
+        return (singular if num == 1 else plural)
+    return t.unpgettext(context, singular, plural, num)
