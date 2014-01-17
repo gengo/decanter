@@ -11,11 +11,13 @@ class Tests(unittest.TestCase):
         requestMock = mock.Mock()
         requestMock.environ = {}
         requestMock.headers = {}
+        requestMock.url = 'http://gengo.com'
         self.request = patch.object(i18n, 'request', requestMock)
         self.request.start()
 
         config = mock.Mock()
         config.locale_dir = 'locale'
+        config.supported_languages = ['en', 'ja']
         self.config = patch.object(i18n, 'Config', lambda: config)
         self.config.start()
 
