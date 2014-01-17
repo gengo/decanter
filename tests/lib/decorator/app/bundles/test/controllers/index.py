@@ -16,10 +16,12 @@ def _format(path):
 def login():
     return {'login': 'success'}
 
+
 @get('/secret')
 @login_required(login_url='/login')
 def authenticated():
     return 'Authentication failed'
+
 
 @get('/method/<path>', apply='json')
 def get(path):
