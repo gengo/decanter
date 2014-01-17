@@ -13,6 +13,7 @@ REQUEST_ACCEPT_LANGUAGE_RE = re.compile(r'''
         (?:\s*,\s*|$)                           # Multiple accepts per header.
         ''', re.VERBOSE)
 
+
 def extra_client_expected_langs():
     """Return language list from http.request.header.Accept-Language,
     ordered by 'q'."""

@@ -6,7 +6,9 @@ from mock import patch
 
 from decanter.lib import i18n
 
+
 class Tests(unittest.TestCase):
+
     def setUp(self):
         requestMock = mock.Mock()
         requestMock.environ = {}
