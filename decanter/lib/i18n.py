@@ -33,6 +33,28 @@ def extra_client_expected_langs():
     return result
 
 
+def get_ui_lc():
+    """Get language code as defined by domain or session 'lc' variable.
+    TODO: generalize and make more flexible.
+
+    Returns None if no suitable setting was found.
+    """
+    config = Config()
+    domain_lc = request.url.split('://')[1].split('.')[0]
+    if not domain_lc in config.supported_languages:
+        domain_lc = None
+
+    ui_lc = domain_lc
+
+    # if using the express session plugin, override setting with the domain
+    # being used: (should be generalized)
+    session = request.environ.get('express.session', {})
+    if not domain_lc and session.get('lc', None):
+        ui_lc = session.get('lc', None)
+
+    return ui_lc
+
+
 def get_language_list():
     """Return a sorted list of language code-formatted languages in
     descending order of priority.
@@ -56,12 +78,15 @@ def get_language_list():
     if not lang_code is None:
         lang_codes += [lang_code]
 
+    ui_lc = get_ui_lc()
+    if not ui_lc is None:
+        lang_codes = [ui_lc] + lang_codes
+
     return lang_codes
 
 
 def locale_selector_func():
     lc_list = get_language_list()
-    print "Language List is", lc_list
     if lc_list:
         return lc_list[0]
     return 'en'
