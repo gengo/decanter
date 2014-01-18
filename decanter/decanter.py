@@ -15,7 +15,7 @@ from datetime import date
 from vendor.daemon import Daemon
 from lib.middleware import Dispatcher, StripPath, SessionWsgi
 from lib.config import Config
-import lib.plugin
+import lib.plugin as plugin
 from lib.logger import Log
 import argparse
 
@@ -43,7 +43,7 @@ class Decanter(Daemon):
         bottle.debug(self.config.debug)
 
         # install plugins
-        self.install(plugins=self.config.plugins)
+        plugin.install_plugins(plugins=self.config.plugins)
         if self.config.debug or not development:
             stdout = os.popen('tty').read().strip()
             stderr = os.popen('tty').read().strip()
@@ -51,32 +51,6 @@ class Decanter(Daemon):
         if not development:
             super(Decanter, self).__init__(
                 pidfile, stdout=stdout, stderr=stderr)
-
-    def install(self, plugins=[]):
-        third_party_plugin_dir = '/'.join([self.config.apppath, 'plugins'])
-        third_party_plugin_module = '.'.join([
-            self.config.apppath.strip(os.path.sep).split(os.path.sep).pop(),
-            'plugins'])
-        for plugin in plugins:
-            name = ''.join([plugin.capitalize(), 'Plugin'])
-            cls = getattr(lib.plugin, name, None)
-
-            if not cls and os.path.isdir(third_party_plugin_dir):
-                for plugin_file in os.listdir(third_party_plugin_dir):
-                    if not plugin_file.endswith('.py'):
-                        continue
-                    module = __import__(
-                        '.'.join([
-                            third_party_plugin_module,
-                            os.path.splitext(plugin_file)[0]]),
-                        fromlist=[name])
-                    cls = getattr(module, name, None)
-                    if cls:
-                        break
-
-            if not cls:
-                raise ImportWarning(name + ' is not found.')
-            bottle.install(cls())
 
     def daemonize(self):
         haspid = os.path.isfile(self.pidfile)

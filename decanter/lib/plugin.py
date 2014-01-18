@@ -5,6 +5,7 @@ import os
 import re
 import json
 import traceback
+import bottle
 from functools import wraps
 from jinja2 import BaseLoader
 from jinja2 import Environment
@@ -25,6 +26,35 @@ REQUEST_ACCEPT_LANGUAGE_RE = re.compile(r'''
         (?:\s*,\s*|$)                           # Multiple accepts per header.
         ''', re.VERBOSE)
 
+def install_plugins(plugins=[]):
+        config = Config()
+        third_party_plugin_dir = '/'.join([config.apppath, 'plugins'])
+        third_party_plugin_module = '.'.join([
+            config.apppath.strip(os.path.sep).split(os.path.sep).pop(),
+            'plugins'])
+        for plugin in plugins:
+            name = ''.join([plugin.capitalize(), 'Plugin'])
+            if name in globals():
+              cls = globals()[name]
+            else:
+              cls = None
+
+            if not cls and os.path.isdir(third_party_plugin_dir):
+                for plugin_file in os.listdir(third_party_plugin_dir):
+                    if not plugin_file.endswith('.py'):
+                        continue
+                    module = __import__(
+                        '.'.join([
+                            third_party_plugin_module,
+                            os.path.splitext(plugin_file)[0]]),
+                        fromlist=[name])
+                    cls = getattr(module, name, None)
+                    if cls:
+                        break
+
+            if not cls:
+                raise ImportWarning(name + ' is not found.')
+            bottle.install(cls())
 
 class DecanterLoader(BaseLoader):
 

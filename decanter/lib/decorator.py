@@ -14,16 +14,11 @@ def route(path=None, method='GET', func=None, name=None, apply=None, skip=None, 
     def decorator(callback):
         plugins = []
 
-        def apply_plugin(plugin):
-            cls = ''.join([plugin.capitalize(), 'Plugin'])
-            cls = getattr(lib_plugin, cls)
-            plugins.append(cls())
-
         if isinstance(apply, str):
-            apply_plugin(apply)
+            plugins = [apply]
         elif isinstance(apply, list):
-            for plugin in apply:
-                apply_plugin(plugin)
+            plugins = apply
+        lib_plugin.install_plugins(plugins=apply)
 
         rpath = path
         if rpath != '/':
