@@ -27,7 +27,10 @@ class DecanterTest(unittest.TestCase):
         lib.plugin.JsonPlugin = json_plugin
         lib.plugin.XmlPlugin = xml_plugin
 
-        self.decanter.install(['json', 'xml'])
+        config_mock = mock.Mock()
+        config_mock.apppath = ''
+        config_mock.plugins = ['json', 'xml']
+        self.decanter.install_plugins(config_mock)
         bottle_install.assert_any_call(json_plugin())
         bottle_install.assert_any_call(xml_plugin())
 
