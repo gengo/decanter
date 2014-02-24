@@ -43,7 +43,7 @@ class Decanter(Daemon):
         bottle.debug(self.config.debug)
 
         # install plugins
-        self.install(plugins=self.config.plugins)
+        self.install_plugins(config=self.config)
         if self.config.debug or not development:
             stdout = os.popen('tty').read().strip()
             stderr = os.popen('tty').read().strip()
@@ -52,31 +52,8 @@ class Decanter(Daemon):
             super(Decanter, self).__init__(
                 pidfile, stdout=stdout, stderr=stderr)
 
-    def install(self, plugins=[]):
-        third_party_plugin_dir = '/'.join([self.config.apppath, 'plugins'])
-        third_party_plugin_module = '.'.join([
-            self.config.apppath.strip(os.path.sep).split(os.path.sep).pop(),
-            'plugins'])
-        for plugin in plugins:
-            name = ''.join([plugin.capitalize(), 'Plugin'])
-            cls = getattr(lib.plugin, name, None)
-
-            if not cls and os.path.isdir(third_party_plugin_dir):
-                for plugin_file in os.listdir(third_party_plugin_dir):
-                    if not plugin_file.endswith('.py'):
-                        continue
-                    module = __import__(
-                        '.'.join([
-                            third_party_plugin_module,
-                            os.path.splitext(plugin_file)[0]]),
-                        fromlist=[name])
-                    cls = getattr(module, name, None)
-                    if cls:
-                        break
-
-            if not cls:
-                raise ImportWarning(name + ' is not found.')
-            bottle.install(cls())
+    def install_plugins(self, config):
+        install_plugins(config)
 
     def daemonize(self):
         haspid = os.path.isfile(self.pidfile)
@@ -164,8 +141,29 @@ def parse_args(filepath=__file__, source=sys.argv, custom_commands=[]):
     args.config.close()
     args.config = os.path.relpath(os.path.realpath(args.config.name),
                                   os.path.dirname(os.path.realpath(filepath)))
-
     return args
+
+
+def install_plugins(config):
+    plugins = config.plugins
+    third_party_plugin_dir = '/'.join([config.apppath, 'plugins'])
+    third_party_plugin_module = '.'.join([config.apppath.strip(os.path.sep).split(os.path.sep).pop(), 'plugins'])
+    for plugin in plugins:
+        name = plugin.capitalize() + 'Plugin'
+        cls = getattr(lib.plugin, name, None)
+
+        if not cls and os.path.isdir(third_party_plugin_dir):
+            for plugin_file in os.listdir(third_party_plugin_dir):
+                if not plugin_file.endswith('.py'):
+                    continue
+                module = __import__('.'.join([third_party_plugin_module, os.path.splitext(plugin_file)[0]]), fromlist=[name])
+                cls = getattr(module, name, None)
+                if cls:
+                    break
+
+        if not cls:
+            raise ImportWarning(name + ' is not found.')
+        bottle.install(cls())
 
 if __name__ == '__main__':
     args = parse_args()
