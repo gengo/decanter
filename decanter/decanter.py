@@ -149,7 +149,7 @@ def install_plugins(config):
     third_party_plugin_dir = '/'.join([config.apppath, 'plugins'])
     third_party_plugin_module = '.'.join([config.apppath.strip(os.path.sep).split(os.path.sep).pop(), 'plugins'])
     for plugin in plugins:
-        name = ''.join([plugin.capitalize(), 'Plugin'])
+        name = plugin.capitalize() + 'Plugin'
         cls = getattr(lib.plugin, name, None)
 
         if not cls and os.path.isdir(third_party_plugin_dir):
