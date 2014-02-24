@@ -141,15 +141,13 @@ def parse_args(filepath=__file__, source=sys.argv, custom_commands=[]):
     args.config.close()
     args.config = os.path.relpath(os.path.realpath(args.config.name),
                                   os.path.dirname(os.path.realpath(filepath)))
-
     return args
+
 
 def install_plugins(config):
     plugins = config.plugins
     third_party_plugin_dir = '/'.join([config.apppath, 'plugins'])
-    third_party_plugin_module = '.'.join([
-        config.apppath.strip(os.path.sep).split(os.path.sep).pop(),
-        'plugins'])
+    third_party_plugin_module = '.'.join([config.apppath.strip(os.path.sep).split(os.path.sep).pop(), 'plugins'])
     for plugin in plugins:
         name = ''.join([plugin.capitalize(), 'Plugin'])
         cls = getattr(lib.plugin, name, None)
@@ -158,11 +156,7 @@ def install_plugins(config):
             for plugin_file in os.listdir(third_party_plugin_dir):
                 if not plugin_file.endswith('.py'):
                     continue
-                module = __import__(
-                    '.'.join([
-                        third_party_plugin_module,
-                        os.path.splitext(plugin_file)[0]]),
-                    fromlist=[name])
+                module = __import__('.'.join([third_party_plugin_module, os.path.splitext(plugin_file)[0]]), fromlist=[name])
                 cls = getattr(module, name, None)
                 if cls:
                     break
