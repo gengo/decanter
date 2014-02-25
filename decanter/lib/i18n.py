@@ -102,8 +102,18 @@ def get_translations():
     config = Config()
     domain = getattr(config, 'domain', 'locale')
     locale_dir = getattr(config, 'locale_dir')
+    translations = None
 
-    translations = request.environ.get('babel_translations', None)
+    try:
+        translations = request.environ.get('babel_translations', None)
+    except RuntimeError e:
+        Log.get_instance().warn(
+            "Warning tracked: babel_translations don't exist on environ. \Request: %s\nMessage: %s" % (
+                request,
+                e.message
+            )
+        )
+
     if translations is None:
         translations = support.Translations.load(locale_dir, [get_locale()], domain=domain)
         request.environ['babel_translations'] = translations
@@ -116,7 +126,18 @@ def get_locale():
     a request.
     """
     config = Config()
-    locale = request.environ.get('babel_locale', None)
+    locale = None
+
+    try:
+        locale = request.environ.get('babel_locale', None)
+    except RuntimeError e:
+        Log.get_instance().warn(
+            "Warning tracked: \Request: %s\nMessage: %s" % (
+                request,
+                e.message
+            )
+        )
+
     if locale is None:
         preferred_lc = locale_selector_func()
         if not preferred_lc:
