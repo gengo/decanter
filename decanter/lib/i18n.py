@@ -132,7 +132,7 @@ def get_locale():
         locale = request.environ.get('babel_locale', None)
     except RuntimeError e:
         Log.get_instance().warn(
-            "Warning tracked: \Request: %s\nMessage: %s" % (
+            "Warning tracked: babel_locale don't exist on environ. \Request: %s\nMessage: %s" % (
                 request,
                 e.message
             )
