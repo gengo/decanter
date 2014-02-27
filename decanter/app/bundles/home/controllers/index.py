@@ -10,6 +10,6 @@ def index():
 
 
 @get('/home/')
-@get('/home/<name>')
+@get('/home/<name>', timeout=30)
 def home(name='Decanter'):
     return {'greeting': "Hello {0}!".format(name.title())}
