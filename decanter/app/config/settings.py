@@ -47,7 +47,10 @@ default = {
 }
 
 # list of plugins names to install by default
-plugins = ['jinja2']
+plugins = ['timeout', 'jinja2']
+
+# default timeout seconds
+timeout = 60
 
 # redis config settings
 redis = {

@@ -5,6 +5,7 @@ import os
 import re
 import json
 import traceback
+import bottle
 from functools import wraps
 from jinja2 import BaseLoader
 from jinja2 import Environment
@@ -16,6 +17,9 @@ from .logger import Log
 from .config import Config
 from .errors import BaseError, ValidationError, ConnectionError
 from .i18n import get_translations, gettext, ngettext
+from multiprocessing import TimeoutError
+from multiprocessing.pool import ThreadPool
+
 
 # Format of http.request.header.Accept-Language.
 # refs: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
@@ -285,6 +289,42 @@ class SessionPlugin(object):
                 # session does not need to be close or released as
                 # StrictRedis releases the connection after each operation
             return data
+        return wrapper
+
+    def setup(self, app):
+        pass
+
+    def close(self):
+        pass
+
+
+class TimeoutPlugin(object):
+    name = 'timeout'
+    api = 2
+
+    def __init__(self):
+        pass
+
+    def get_timeout_sec(self, route):
+        if 'timeout' in route.config:
+            return route.config['timeout']
+
+        config = Config()
+        if hasattr(config, 'timeout'):
+            return config.timeout
+
+        return 60
+
+    def apply(self, callback, route):
+        @wraps(callback)
+        def wrapper(*args, **kwargs):
+            pool = ThreadPool(processes=1)
+            async = pool.apply_async(callback, args, kwargs)
+            try:
+                return async.get(self.get_timeout_sec(route))
+            except TimeoutError:
+                pool.terminate()
+                raise bottle.HTTPError(503, 'Service Unavailable, process timeout')
         return wrapper
 
     def setup(self, app):
