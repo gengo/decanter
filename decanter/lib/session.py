@@ -194,6 +194,7 @@ class ExpressSession(SessionAbstract):
         data = phpserialize.dumps(
             self.data, object_hook=phpserialize.phpobject)
         self.redis.set(self.cookie['session_id'], data)
+        self.redis.expire(self.cookie['session_id'], max_age)
         response.set_cookie(self.name, urllib.quote_plus(
             self.crypt.encrypt(phpserialize.dumps(self.cookie))), **params)
 
