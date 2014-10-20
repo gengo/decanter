@@ -12,6 +12,7 @@ class Tests(unittest.TestCase):
     How to perform the test the difference, because the program is to be
     terminated when it failed.
     """
+
     def is_error_occurred(self, arg):
         command = 'python test_parse_args.py {0}'.format(arg)
         options = {'stdout': PIPE, 'stderr': PIPE, 'close_fds': True}
