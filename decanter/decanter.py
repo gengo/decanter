@@ -13,7 +13,7 @@ from gevent import pywsgi
 import bottle
 from datetime import date
 from vendor.daemon import Daemon
-from lib.middleware import Dispatcher, StripPath, SessionWsgi
+from lib.middleware import Dispatcher, StripPath
 from lib.config import Config
 import lib.plugin
 from lib.logger import Log
@@ -184,7 +184,7 @@ if __name__ == '__main__':
         os.makedirs(piddir)
 
     # the app
-    app = Dispatcher(StripPath(SessionWsgi(bottle.app())), config)
+    app = Dispatcher(StripPath(bottle.app()), config)
     decanter = Decanter(
         app, hostname=args.hostname, port=args.port, pidfile=pidfile,
         development=args.command == 'runserver')

@@ -12,6 +12,7 @@ class Log(object):
     """
     simple logging.Logger wrapper
     """
+
     def __init__(self, filepath=None):
         """ Borg pattern """
         self.__dict__ = self.__state

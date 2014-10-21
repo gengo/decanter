@@ -1,7 +1,7 @@
 import re
 
 from bottle import request
-from babel import support, Locale
+from babel import support
 
 from .config import Config
 
@@ -42,7 +42,7 @@ def get_ui_lc():
     """
     config = Config()
     domain_lc = request.url.split('://')[1].split('.')[0]
-    if not domain_lc in config.supported_languages:
+    if domain_lc not in config.supported_languages:
         domain_lc = None
 
     ui_lc = domain_lc
@@ -76,11 +76,11 @@ def get_language_list():
         lang_codes.append('%s_%s' % (lang_country[0], country))
         lang_codes.append('%s_%s' % (lang_country[0], country.swapcase()))
 
-    if not lang_code is None:
+    if lang_code is not None:
         lang_codes += [lang_code]
 
     ui_lc = get_ui_lc()
-    if not ui_lc is None:
+    if ui_lc is not None:
         lang_codes = [ui_lc] + lang_codes
 
     return lang_codes

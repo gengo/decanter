@@ -16,7 +16,7 @@ from bottle import request, response, PluginError
 from .logger import Log
 from .config import Config
 from .errors import BaseError, ValidationError, ConnectionError
-from .i18n import get_translations, gettext, ngettext
+from .i18n import get_translations, gettext
 from multiprocessing import TimeoutError
 from multiprocessing.pool import ThreadPool
 
@@ -178,7 +178,7 @@ class Jinja2i18nPlugin(Jinja2Plugin):
             lang_codes.append('%s_%s' % (lang_country[0], country))
             lang_codes.append('%s_%s' % (lang_country[0], country.swapcase()))
 
-        if not self.lang_code is None:
+        if self.lang_code is not None:
             lang_codes += [self.lang_code]
 
         return lang_codes
