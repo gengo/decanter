@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-from singleton import Singleton
+from .singleton import Singleton
 import sys
 
 

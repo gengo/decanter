@@ -1,23 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+import argparse
 import os
 import sys
 import textwrap
 import pwd
 import grp
-from gevent import monkey
-monkey.patch_all()
 from gevent import pywsgi
 import bottle
 from datetime import date
-from vendor.daemon import Daemon
-from lib.middleware import Dispatcher, StripPath
-from lib.config import Config
+
 import lib.plugin
-from lib.logger import Log
-import argparse
+from .vendor.daemon import Daemon
+from .lib.middleware import Dispatcher, StripPath
+from .lib.config import Config
+from .lib.logger import Log
+
+from gevent import monkey
+monkey.patch_all()
 
 original_args = []
 
@@ -147,7 +148,8 @@ def parse_args(filepath=__file__, source=sys.argv, custom_commands=[]):
 def install_plugins(config):
     plugins = config.plugins
     third_party_plugin_dir = '/'.join([config.apppath, 'plugins'])
-    third_party_plugin_module = '.'.join([config.apppath.strip(os.path.sep).split(os.path.sep).pop(), 'plugins'])
+    third_party_plugin_module = '.'.join(
+        [config.apppath.strip(os.path.sep).split(os.path.sep).pop(), 'plugins'])
     for plugin in plugins:
         name = plugin.capitalize() + 'Plugin'
         cls = getattr(lib.plugin, name, None)
@@ -156,7 +158,9 @@ def install_plugins(config):
             for plugin_file in os.listdir(third_party_plugin_dir):
                 if not plugin_file.endswith('.py'):
                     continue
-                module = __import__('.'.join([third_party_plugin_module, os.path.splitext(plugin_file)[0]]), fromlist=[name])
+                module = __import__('.'.join(
+                    [third_party_plugin_module, os.path.splitext(plugin_file)[0]]
+                ), fromlist=[name])
                 cls = getattr(module, name, None)
                 if cls:
                     break
@@ -164,6 +168,7 @@ def install_plugins(config):
         if not cls:
             raise ImportWarning(name + ' is not found.')
         bottle.install(cls())
+
 
 if __name__ == '__main__':
     args = parse_args()

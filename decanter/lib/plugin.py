@@ -41,7 +41,7 @@ class DecanterLoader(BaseLoader):
         filepath = os.path.join(self.path, bundle[0], 'views', bundle[2])
         if os.path.isabs(filepath) and os.path.isfile(filepath):
             mtime = os.path.getmtime(filepath)
-            with file(filepath) as f:
+            with open(filepath) as f:
                 source = f.read().decode('utf-8')
             return (source,
                     filepath,
@@ -238,7 +238,7 @@ class JsonPlugin(object):
                 elif hasattr(e, 'msg') and e.msg:
                     data['error'] = e.msg
                 else:
-                    data['error'] = unicode(e)
+                    data['error'] = str(e)
                 if hasattr(e, 'fields') and isinstance(e.fields, dict):
                     data['fields'] = e.fields
                 if hasattr(e, 'returned') and isinstance(e.returned, dict):

@@ -4,7 +4,7 @@
 import os
 import logging
 import logging.handlers
-from config import Config
+from .config import Config
 
 
 class Log(object):
