@@ -16,7 +16,7 @@ import errno
 
 
 def create_project(args):
-    print "Creating your project..."
+    print("Creating your project...")
     project_name = args.name
     create_dirs = [
         project_name,
@@ -30,11 +30,7 @@ def create_project(args):
             if exception.errno != errno.EEXIST:
                 raise
 
-    # creating files is :TODO:
-    create_files = [
-    ]
-
-    print "Directory structure created!"
+    print("Directory structure created!")
 
 
 if __name__ == '__main__':

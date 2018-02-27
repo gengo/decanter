@@ -3,6 +3,7 @@
 
 import os
 import sys
+import imp
 
 
 class Dispatcher(object):
@@ -62,12 +63,12 @@ class Dispatcher(object):
                 if self.config.debug:
                     self.imported[to_imported_key(name)] = module
             elif self.config.debug:
-                reload(self.imported[to_imported_key(name)])
+                imp.reload(self.imported[to_imported_key(name)])
 
         except Exception as e:
             import traceback
             tb = traceback.format_exc()
-            print("Dispatcher: {0}".format(e))
+            print(("Dispatcher: {0}".format(e)))
             print(tb)
 
     def is_bundle(self, bundle):

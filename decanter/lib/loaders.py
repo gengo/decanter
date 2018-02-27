@@ -7,7 +7,7 @@ Classes for loading views and JSON schemas, etc
 
 import os
 import codecs
-from singleton import Singleton
+from .singleton import Singleton
 
 
 class BaseLoader(Singleton):
@@ -49,16 +49,15 @@ class JSONLoader(BaseLoader):
         # find all 'validations' folders:
         folders = {}
         for root, dirs, files in os.walk(path):
-            validations = filter(lambda f: f == 'validations', dirs)
-            folders.update(dict((f, []) for f in map(
-                lambda f: os.path.join(root, f), validations)))
+            validations = [f for f in dirs if f == 'validations']
+            folders.update(dict((f, []) for f in [os.path.join(root, f) for f in validations]))
 
         # list all files in these folders
-        for k, folder in folders.items():
+        for k, folder in list(folders.items()):
             for root, dirs, files in os.walk(k):
-                files = filter(lambda f: f.endswith('.json'), files)
-                folder += map(lambda f: os.path.join(
-                    os.path.relpath(root, k), f), files)
+                files = [f for f in files if f.endswith('.json')]
+                folder += [os.path.join(
+                    os.path.relpath(root, k), f) for f in files]
 
         data['directories'] = folders
 
@@ -66,7 +65,7 @@ class JSONLoader(BaseLoader):
 
     def load_template(self, path):
         rel_path = path
-        for full_path, directory in self.directories.items():
+        for full_path, directory in list(self.directories.items()):
             if rel_path in directory:
                 return codecs.open(os.path.join(full_path, path), 'r', 'utf-8').read()
         return None

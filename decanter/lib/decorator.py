@@ -5,8 +5,8 @@ from gettext import gettext as _
 from functools import wraps
 import bottle
 from bottle import request, redirect
-import plugin as lib_plugin
-from errors import ValidationError
+from . import plugin as lib_plugin
+from .errors import ValidationError
 from . import jsonvalidation
 
 
