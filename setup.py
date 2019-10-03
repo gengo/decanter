@@ -87,7 +87,7 @@ setup(
         "pika==0.9.13",
         "pycrypto==2.6",
         "redis==2.7.5",
-        "requests==1.2.0",
+        "requests==2.20.0",
         "unittest2==0.5.1",
         "wsgiref==0.1.2",
     ),
