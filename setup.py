@@ -76,7 +76,7 @@ setup(
         "MarkupSafe==0.15",
         "argparse==1.2.1",
         "Babel==1.3",
-        "bottle==0.11.6",
+        "bottle==0.12.19",
         "gevent==0.13.8",
         "greenlet==0.4.0",
         "jsonschema==1.3.0",
