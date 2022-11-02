@@ -72,7 +72,7 @@ setup(
     packages=find_packages(),
     scripts=['decanter/decanter-admin.py'],
     install_requires=(
-        "Jinja2==2.6",
+        "Jinja2==2.11.3",
         "MarkupSafe==0.15",
         "argparse==1.2.1",
         "Babel==1.3",
